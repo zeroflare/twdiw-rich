@@ -3,45 +3,85 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "twdiw-rich",
-	"main": "src/index.ts",
-	"compatibility_date": "2025-11-01",
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./public"
-	},
-	"observability": {
-		"enabled": true
-	}
-	/**
-	 * Smart Placement
-	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-	 */
-	// "placement": { "mode": "smart" }
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
-	/**
-	 * Environment Variables
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-	 */
-	// "vars": { "MY_VARIABLE": "production_value" }
-	/**
-	 * Note: Use secrets to store sensitive data.
-	 * https://developers.cloudflare.com/workers/configuration/secrets/
-	 */
-	/**
-	 * Static Assets
-	 * https://developers.cloudflare.com/workers/static-assets/binding/
-	 */
-	// "assets": { "directory": "./public/", "binding": "ASSETS" }
-	/**
-	 * Service Bindings (communicate between multiple Workers)
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
-	 */
-	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "twdiw-rich",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-11-01",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./public"
+  },
+  "dev": {
+    "port": 8787
+  },
+  "observability": {
+    "enabled": true
+  },
+  /**
+   * Smart Placement
+   * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+   */
+  // "placement": { "mode": "smart" }
+  /**
+   * Bindings
+   * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+   * databases, object storage, AI inference, real-time communication and more.
+   * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+   */
+  /**
+   * D1 Database
+   * https://developers.cloudflare.com/d1/
+   */
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "twdiw-rich-db",
+      "database_id": "4892e8d2-3ffa-4963-b72b-43ebfb8baed2" // 正式環境 ID
+    }
+  ],
+  /**
+   * KV Namespaces
+   * https://developers.cloudflare.com/kv/
+   */
+  "kv_namespaces": [
+    {
+      "binding": "SESSIONS",
+      "id": "dbd16623851244bfad7a4a99b4838a7b", // 正式環境 ID
+      "preview_id": "3574aac4d8d9451686aa173d4756b284" // 預覽環境 ID
+    }
+  ],
+  /**
+   * Environment Variables
+   * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+   * 
+   * 注意：敏感資訊（如 OIDC_CLIENT_SECRET）應使用 secrets，不要放在這裡
+   * 使用命令：wrangler secret put OIDC_CLIENT_SECRET
+   */
+  "vars": {
+    "OIDC_WELL_KNOWN_URL": "https://twdiw-sso.zeroflare.tw/.well-known/openid-configuration",
+    "OIDC_AUTH_URL": "https://twdiw-sso.zeroflare.tw/auth/login",
+    "OIDC_TOKEN_URL": "https://twdiw-sso.zeroflare.tw/oidc/token",
+    "OIDC_JWKS_URL": "https://twdiw-sso.zeroflare.tw/oidc/jwks",
+    "OIDC_CLIENT_ID": "12665038-053d-4d23-82d2-524ba5dc521d",
+    "OIDC_REDIRECT_URI": "https://twdiw-rich.zeroflare.tw/redirect",
+    "WALLET_API_BASE_URL": "https://verifier-sandbox.wallet.gov.tw",
+    "ISSUER_API_BASE_URL": "https://issuer-sandbox.wallet.gov.tw"
+  },
+  /**
+   * Note: Use secrets to store sensitive data.
+   * https://developers.cloudflare.com/workers/configuration/secrets/
+   * 
+   * 設置敏感環境變數（Secrets）：
+   * wrangler secret put OIDC_CLIENT_SECRET
+   */
+  /**
+   * Static Assets
+   * https://developers.cloudflare.com/workers/static-assets/binding/
+   */
+  // "assets": { "directory": "./public/", "binding": "ASSETS" }
+  /**
+   * Service Bindings (communicate between multiple Workers)
+   * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+   */
+  // "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 }

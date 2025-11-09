@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <title>資產憑證登記 - Rich App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="nav-container">
+      <nav class="navbar">
+        <div class="nav-links">
+          <a href="/index.html" class="nav-link">首頁</a>
+          <a href="/dashboard.html" class="nav-link">淨資產儀表板</a>
+          <a href="/certificate.html" class="nav-link active">資產憑證登記</a>
+          <a href="/admin.html" class="nav-link">憑證發行後台</a>
+        </div>
+        <div class="nav-user-section">
+          <div class="user-info" id="user-info" style="display: none;">
+            <div class="user-info-content">
+              <span class="user-icon">👤</span>
+              <div class="user-details">
+                <span class="user-name" id="user-name">載入中...</span>
+                <span class="user-email" id="user-email"></span>
+              </div>
+            </div>
+          </div>
+          <button id="settings-btn" class="nav-link settings-btn" title="設定">⚙️</button>
+          <a href="/logout" class="nav-link logout-link">登出</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <h1>資產憑證登記</h1>
+
+      <div class="certificate-layout">
+        <!-- Left Panel - Registered Certificates -->
+        <div class="certificate-left-panel">
+          <div class="card">
+            <h2>已登記憑證</h2>
+            <div id="certificates-list" class="certificate-list-text">
+              <div class="empty-state">
+                <p>載入中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel - Registration Form -->
+        <div class="certificate-right-panel">
+          <div class="card">
+            <h2>資產憑證登記</h2>
+            <div id="registration-form">
+              <div class="form-group">
+                <label>選擇憑證類型</label>
+                <select id="certificate-type" class="form-control">
+                  <option value="">請選擇憑證類型</option>
+                  <option value="0052696330_vp_liquid_finance_certificate">流動性金融憑證</option>
+                  <option value="0052696330_vp_real_estate_asset_certificate">
+                    不動產資產憑證
+                  </option>
+                  <option value="0052696330_vp_personal_property_certificate">動產憑證</option>
+                  <option value="0052696330_vp_credit_liability_certificate">信用與負債憑證</option>
+                  <option value="0052696330_vp_income_certificate">年收入憑證</option>
+                </select>
+              </div>
+              <button id="generate-qr-btn" class="btn-primary">生成 QR Code</button>
+            </div>
+
+            <div id="qrcode-section" style="display: none">
+              <div class="qrcode-section">
+                <div id="cert-type-info" class="verified-info"></div>
+                <img id="qrcode-image" src="" alt="QR Code" class="qrcode-image" />
+                <p class="status-text" id="status-text">請使用數位憑證皮夾 APP 掃描 QR Code</p>
+                <button id="reset-btn" class="btn-secondary">重新生成</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/certificate.js"></script>
+  </body>
+</html>

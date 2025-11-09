@@ -1,19 +1,583 @@
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hello, World!</title>
-	</head>
-	<body>
-		<h1 id="heading"></h1>
-		<script>
-			fetch('/message')
-				.then((resp) => resp.text())
-				.then((text) => {
-					const h1 = document.getElementById('heading');
-					h1.textContent = text;
-				});
-		</script>
-	</body>
+<html lang="zh-TW">
+  <head>
+    <title>首頁 - Rich App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="nav-container">
+      <nav class="navbar">
+        <div class="nav-links">
+          <a href="/index.html" class="nav-link active">首頁</a>
+          <a href="/dashboard.html" class="nav-link">淨資產儀表板</a>
+          <a href="/certificate.html" class="nav-link">資產憑證登記</a>
+          <a href="/admin.html" class="nav-link">憑證發行後台</a>
+        </div>
+        <div class="nav-user-section">
+          <div class="user-info" id="user-info" style="display: none;">
+            <div class="user-info-content">
+              <span class="user-icon">👤</span>
+              <div class="user-details">
+                <span class="user-name" id="user-name">載入中...</span>
+                <span class="user-email" id="user-email"></span>
+              </div>
+            </div>
+          </div>
+          <a href="/login" class="nav-link logout-link" id="login-link">登入</a>
+          <a href="/logout" class="nav-link logout-link" id="logout-link" style="display: none;">登出</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <h1>歡迎使用 Rich App</h1>
+      
+      <div class="card">
+        <h2>📖 專案介紹</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
+          Rich App 是一個整合數位憑證皮夾的身價計算系統，幫助您管理個人資產、負債，並透過數位憑證記錄您的財富狀況。
+          系統使用 Cloudflare Workers 運行，整合 OIDC 認證、D1 資料庫和 KV 儲存，提供安全可靠的服務。
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🎯 功能頁面說明</h2>
+        
+        <div class="feature-section">
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>淨資產儀表板</h3>
+            <p class="feature-description">
+              這是您的主要財務總覽頁面。在這裡您可以：
+            </p>
+            <ul class="feature-list">
+              <li>查看目前的淨資產總額（資產 - 負債）</li>
+              <li>了解您的身價在台灣家庭中的排名百分比</li>
+              <li>查看詳細的資產和負債明細</li>
+              <li>領取和查看財富階層憑證</li>
+              <li>查看年收入資訊和憑證</li>
+            </ul>
+            <div class="feature-action">
+              <a href="/dashboard.html" class="btn-primary">前往儀表板</a>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📜</div>
+            <h3>資產憑證登記</h3>
+            <p class="feature-description">
+              使用數位憑證皮夾登記您的資產憑證。此頁面提供：
+            </p>
+            <ul class="feature-list">
+              <li>掃描 QR Code 登記各種資產憑證</li>
+              <li>支援多種憑證類型：流動性金融、不動產、動產、信用負債、年收入</li>
+              <li>查看已登記的憑證列表</li>
+              <li>使用 AI 分析資產價值</li>
+              <li>管理已登記的憑證</li>
+            </ul>
+            <div class="feature-action">
+              <a href="/certificate.html" class="btn-primary">前往登記頁面</a>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3>憑證發行後台</h3>
+            <p class="feature-description">
+              管理員專用的憑證發行工具。功能包括：
+            </p>
+            <ul class="feature-list">
+              <li>發行各種類型的數位憑證</li>
+              <li>生成憑證 QR Code 供使用者掃描</li>
+              <li>查詢憑證狀態和資訊</li>
+              <li>撤銷已發行的憑證</li>
+              <li>設定憑證的發行和到期日期</li>
+            </ul>
+            <div class="feature-action">
+              <a href="/admin.html" class="btn-primary">前往後台</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📋 支援的憑證類型</h2>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: #4a5568; margin-bottom: 24px;">
+          本系統支援以下 5 種數位憑證類型，涵蓋您的各種資產、負債和收入資訊：
+        </p>
+        
+        <div class="certificate-types-grid">
+          <div class="cert-type-card">
+            <div class="cert-type-icon">💳</div>
+            <h3>流動性金融憑證</h3>
+            <p class="cert-type-desc">記錄您的流動性金融資產</p>
+            <ul class="cert-type-items">
+              <li>銀行帳戶</li>
+              <li>證券戶</li>
+            </ul>
+          </div>
+
+          <div class="cert-type-card">
+            <div class="cert-type-icon">🏠</div>
+            <h3>不動產資產憑證</h3>
+            <p class="cert-type-desc">記錄您的不動產資產資訊</p>
+            <ul class="cert-type-items">
+              <li>不動產（包含位置、坪數等資訊）</li>
+            </ul>
+          </div>
+
+          <div class="cert-type-card">
+            <div class="cert-type-icon">🚗</div>
+            <h3>動產憑證</h3>
+            <p class="cert-type-desc">記錄您的動產資產</p>
+            <ul class="cert-type-items">
+              <li>車輛（包含型號、年份等資訊）</li>
+            </ul>
+          </div>
+
+          <div class="cert-type-card">
+            <div class="cert-type-icon">📊</div>
+            <h3>信用與負債憑證</h3>
+            <p class="cert-type-desc">記錄您的負債資訊</p>
+            <ul class="cert-type-items">
+              <li>房貸</li>
+              <li>個人貸款</li>
+              <li>學貸</li>
+              <li>車貸</li>
+              <li>信用卡債務</li>
+            </ul>
+          </div>
+
+          <div class="cert-type-card">
+            <div class="cert-type-icon">💰</div>
+            <h3>年收入憑證</h3>
+            <p class="cert-type-desc">記錄您的年度收入資訊</p>
+            <ul class="cert-type-items">
+              <li>年度收入（包含年份、金額、類型等資訊）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🤖 AI 智能估值功能</h2>
+        <div class="ai-feature-content">
+          <div class="ai-feature-intro">
+            <p style="font-size: 1.1rem; line-height: 1.8; color: #4a5568; margin-bottom: 24px;">
+              本系統整合 Google Gemini AI 技術，提供智能資產估值服務，幫助您快速評估資產價值。
+            </p>
+          </div>
+
+          <div class="ai-feature-grid">
+            <div class="ai-feature-item">
+              <div class="ai-feature-icon">🎯</div>
+              <h4>精準估值</h4>
+              <p>使用先進的 AI 模型，根據資產的詳細資訊（如位置、坪數、型號、年份等）進行智能分析，提供準確的市場估值。</p>
+            </div>
+
+            <div class="ai-feature-item">
+              <div class="ai-feature-icon">⚡</div>
+              <h4>快速分析</h4>
+              <p>只需點擊「AI 分析」按鈕，系統會在數秒內完成資產價值評估，無需手動查詢市場行情。</p>
+            </div>
+
+            <div class="ai-feature-item">
+              <div class="ai-feature-icon">📈</div>
+              <h4>市場參考</h4>
+              <p>AI 會參考當前市場行情、區域價格趨勢等多項因素，提供更貼近實際市場價值的評估結果。</p>
+            </div>
+
+            <div class="ai-feature-item">
+              <div class="ai-feature-icon">💾</div>
+              <h4>一鍵儲存</h4>
+              <p>估值完成後，可直接將 AI 評估的價值儲存到系統中，自動更新您的淨資產計算。</p>
+            </div>
+          </div>
+
+          <div class="ai-feature-usage">
+            <h3 style="color: #1e3c72; margin-bottom: 16px; font-size: 1.3rem;">使用方式</h3>
+            <ol class="ai-usage-steps">
+              <li>前往「資產憑證登記」頁面，查看已登記的資產憑證</li>
+              <li>點擊資產項目旁的「AI 分析」按鈕</li>
+              <li>確認資產資訊後，系統會開始進行 AI 估值分析</li>
+              <li>查看估值結果，可選擇直接儲存或取消</li>
+            </ol>
+            <div class="ai-feature-note">
+              <strong>注意：</strong>使用 AI 估值功能前，請先前往「資產憑證登記」頁面的設定按鈕（⚙️）設定您的 Gemini API Key。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🚀 開始使用</h2>
+        <div class="getting-started">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>登入系統</h4>
+              <p>點擊右上角的「登入」按鈕，使用 OIDC 認證登入系統</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>登記資產憑證</h4>
+              <p>前往「資產憑證登記」頁面，使用數位憑證皮夾掃描 QR Code 登記您的資產</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>查看淨資產</h4>
+              <p>在「淨資產儀表板」查看您的財務總覽和財富排名</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>領取階層憑證</h4>
+              <p>當您的淨資產達到特定門檻時，可以領取財富階層憑證</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>💡 使用提示</h2>
+        <ul class="tips-list">
+          <li>✅ 首次使用請先登入系統，才能使用完整功能</li>
+          <li>✅ 登記憑證時，請確保使用支援的數位憑證皮夾 APP</li>
+          <li>✅ 定期更新您的資產和負債資訊，以獲得準確的淨資產計算</li>
+          <li>✅ 財富階層憑證會根據您的淨資產自動計算排名</li>
+          <li>✅ 所有資料都經過加密保護，安全可靠</li>
+        </ul>
+      </div>
+    </div>
+
+    <style>
+      .feature-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 28px;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .feature-card h3 {
+        text-align: center;
+        color: #1e3c72;
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        font-weight: 700;
+      }
+
+      .feature-description {
+        color: #4a5568;
+        font-size: 1rem;
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        padding-left: 24px;
+        position: relative;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .feature-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #48bb78;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .feature-action {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .feature-action .btn-primary {
+        display: inline-block;
+        text-decoration: none;
+      }
+
+      .getting-started {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 24px;
+      }
+
+      .step-item {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+      }
+
+      .step-number {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      .step-content h4 {
+        margin: 0 0 8px 0;
+        color: #1e3c72;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .step-content p {
+        margin: 0;
+        color: #4a5568;
+        line-height: 1.6;
+      }
+
+      .tips-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .tips-list li {
+        padding: 14px 0;
+        padding-left: 32px;
+        position: relative;
+        color: #2d3748;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .tips-list li:last-child {
+        border-bottom: none;
+      }
+
+      .tips-list li::before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        font-size: 1.2rem;
+      }
+
+      .certificate-types-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 24px;
+      }
+
+      .cert-type-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .cert-type-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+      }
+
+      .cert-type-icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+      }
+
+      .cert-type-card h3 {
+        color: #1e3c72;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        font-weight: 700;
+      }
+
+      .cert-type-desc {
+        color: #718096;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .cert-type-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+      }
+
+      .cert-type-items li {
+        padding: 6px 0;
+        padding-left: 0;
+        display: flex;
+        align-items: center;
+        color: #4a5568;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .cert-type-items li::before {
+        content: "•";
+        color: #667eea;
+        font-weight: bold;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-right: 8px;
+        flex-shrink: 0;
+        align-self: center;
+      }
+
+      .ai-feature-content {
+        margin-top: 24px;
+      }
+
+      .ai-feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+      }
+
+      .ai-feature-item {
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+        border: 2px solid #cbd5e0;
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s ease;
+      }
+
+      .ai-feature-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        border-color: #667eea;
+      }
+
+      .ai-feature-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .ai-feature-item h4 {
+        color: #1e3c72;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .ai-feature-item p {
+        color: #4a5568;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
+        text-align: center;
+      }
+
+      .ai-feature-usage {
+        background: linear-gradient(135deg, #fff5d6 0%, #ffeaa7 100%);
+        border: 2px solid #fdcb6e;
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 24px;
+      }
+
+      .ai-usage-steps {
+        margin: 16px 0;
+        padding-left: 24px;
+        color: #2d3748;
+        line-height: 2;
+      }
+
+      .ai-usage-steps li {
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+
+      .ai-feature-note {
+        margin-top: 20px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 8px;
+        color: #2d3748;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .ai-feature-note strong {
+        color: #e67e22;
+      }
+
+      @media (max-width: 768px) {
+        .feature-section {
+          grid-template-columns: 1fr;
+        }
+
+        .step-item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .step-content {
+          text-align: center;
+        }
+
+        .certificate-types-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .ai-feature-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <script src="/index.js"></script>
+  </body>
 </html>
