@@ -30,11 +30,7 @@ export class AiController {
     const metadata = assetDetails.metadata || assetDetails;
 
     try {
-      const estimatedValue = await geminiService.getAssetValuation(
-        assetName,
-        assetType,
-        metadata,
-      );
+      const estimatedValue = await geminiService.getAssetValuation(assetName, assetType, metadata);
       return c.json({ estimatedValue });
     } catch (error) {
       console.error(error);

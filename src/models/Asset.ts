@@ -124,7 +124,9 @@ export class AssetModel {
     const now = Math.floor(Date.now() / 1000);
 
     const result = await db
-      .prepare("UPDATE assets SET current_value = ?, updated_at = ? WHERE asset_id = ? AND user_id = ?")
+      .prepare(
+        "UPDATE assets SET current_value = ?, updated_at = ? WHERE asset_id = ? AND user_id = ?"
+      )
       .bind(currentValue, now, assetId, userId)
       .run();
 

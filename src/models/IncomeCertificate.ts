@@ -62,4 +62,3 @@ export class IncomeCertificateModel {
     return result.success;
   }
 }
-

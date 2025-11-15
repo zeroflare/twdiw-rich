@@ -40,7 +40,11 @@ export class GeminiService {
     }
   }
 
-  private createValuationPrompt(assetName: string, assetType: string, assetDetails: unknown): string {
+  private createValuationPrompt(
+    assetName: string,
+    assetType: string,
+    assetDetails: unknown
+  ): string {
     // --- 1. 建立資產詳細資訊區塊 ---
     // 無論是哪種資產，都先提供基本資訊
     let detailsBlock = `資產名稱: ${assetName}\n`;

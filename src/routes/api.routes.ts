@@ -14,7 +14,7 @@ import { AiController } from "../controllers/AiController";
 export function setupApiRoutes(app: Hono<{ Bindings: AppBindings }>) {
   // API - 獲取使用者資訊（包含設定，需要認證）
   app.get("/api/user", requireAuth, (c) => UserController.getCurrentUser(c));
-  
+
   // API - 更新使用者設定（需要認證）
   app.put("/api/user/settings", requireAuth, (c) => UserController.updateSettings(c));
 
@@ -58,12 +58,12 @@ export function setupApiRoutes(app: Hono<{ Bindings: AppBindings }>) {
 
   // 年收入憑證相關 API（需要認證）
   app.get("/api/income-certificates", requireAuth, (c) => IncomeCertificateController.getAll(c));
-  app.delete("/api/income-certificates/:id", requireAuth, (c) => IncomeCertificateController.delete(c));
+  app.delete("/api/income-certificates/:id", requireAuth, (c) =>
+    IncomeCertificateController.delete(c)
+  );
 
   // AI
-  app.post("/api/analyze-asset-value", requireAuth, (c) =>
-    AiController.analyzeAssetValue(c)
-  );
+  app.post("/api/analyze-asset-value", requireAuth, (c) => AiController.analyzeAssetValue(c));
 
   // 測試路由（不需要認證）
   app.get("/message", (c) => {

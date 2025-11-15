@@ -12,7 +12,7 @@ export class UserSettingsController {
     }
 
     const settings = await UserSettingsModel.findByUserId(c, session.userId);
-    
+
     // 如果沒有設定，返回空物件
     return c.json({
       gemini_api_key: settings?.gemini_api_key || null,
@@ -45,4 +45,3 @@ export class UserSettingsController {
     }
   }
 }
-

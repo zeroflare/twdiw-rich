@@ -22,7 +22,11 @@ export class UserSettingsModel {
   }
 
   // 更新或創建使用者設定
-  static async upsert(c: Context, userId: string, geminiApiKey: string | null): Promise<UserSettings> {
+  static async upsert(
+    c: Context,
+    userId: string,
+    geminiApiKey: string | null
+  ): Promise<UserSettings> {
     const db = getDB(c);
     const now = Math.floor(Date.now() / 1000);
 
@@ -49,7 +53,9 @@ export class UserSettingsModel {
     } else {
       // 創建新設定
       const result = await db
-        .prepare("INSERT INTO user_settings (user_id, gemini_api_key, created_at, updated_at) VALUES (?, ?, ?, ?)")
+        .prepare(
+          "INSERT INTO user_settings (user_id, gemini_api_key, created_at, updated_at) VALUES (?, ?, ?, ?)"
+        )
         .bind(userId, geminiApiKey, now, now)
         .run();
 
@@ -72,4 +78,3 @@ export class UserSettingsModel {
     return settings?.gemini_api_key || null;
   }
 }
-

@@ -38,7 +38,7 @@ export class CertificateService {
     }
 
     const env = getEnv(c);
-    
+
     if (!env.WALLET_API_BASE_URL) {
       throw new Error("WALLET_API_BASE_URL environment variable is not set");
     }
@@ -82,7 +82,7 @@ export class CertificateService {
     console.log(`Polling certificate result for transactionId: ${transactionId}`);
 
     const env = getEnv(c);
-    
+
     if (!env.WALLET_API_BASE_URL) {
       throw new Error("WALLET_API_BASE_URL environment variable is not set");
     }
@@ -293,7 +293,9 @@ export class CertificateService {
         console.log("Database connection check:", { hasDB: !!db });
       } catch (dbError) {
         console.error("Database connection error:", dbError);
-        errors.push(`Database connection error: ${dbError instanceof Error ? dbError.message : String(dbError)}`);
+        errors.push(
+          `Database connection error: ${dbError instanceof Error ? dbError.message : String(dbError)}`
+        );
       }
 
       try {
@@ -544,7 +546,7 @@ export class CertificateService {
     expiredDate?: string
   ): Promise<{ transactionId: string; qrCode: string }> {
     const env = getEnv(c);
-    
+
     if (!env.ISSUER_API_BASE_URL) {
       throw new Error("ISSUER_API_BASE_URL environment variable is not set");
     }
@@ -600,7 +602,7 @@ export class CertificateService {
     transactionId: string
   ): Promise<{ cid?: string; credential?: string; credentialStatus?: string }> {
     const env = getEnv(c);
-    
+
     if (!env.ISSUER_API_BASE_URL) {
       throw new Error("ISSUER_API_BASE_URL environment variable is not set");
     }
@@ -660,7 +662,7 @@ export class CertificateService {
   // 撤銷憑證
   static async revokeCredential(c: Context, cid: string): Promise<{ credentialStatus: string }> {
     const env = getEnv(c);
-    
+
     if (!env.ISSUER_API_BASE_URL) {
       throw new Error("ISSUER_API_BASE_URL environment variable is not set");
     }
