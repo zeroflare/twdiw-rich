@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Lucide icons after DOM updates
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
+    // 監聽目錄導航的點擊事件，確保圖標在動態更新後重新初始化
+    setTimeout(() => {
+      lucide.createIcons();
+    }, 100);
   }
 });
 

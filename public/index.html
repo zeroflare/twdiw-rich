@@ -8,407 +8,552 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-5">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-6">
     <div class="max-w-7xl mx-auto mb-6">
-      <nav class="flex items-center justify-between rounded-lg border bg-white px-6 py-4 shadow-md">
-        <div class="flex gap-2 flex-wrap">
-          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-blue-500 px-3 py-2 rounded-md bg-blue-50">首頁</a>
-          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">淨資產儀表板</a>
-          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">資產憑證登記</a>
-          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">憑證發行後台</a>
+      <nav class="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 md:px-6 py-3 md:py-4 shadow-lg shadow-slate-200/50">
+        <div class="flex gap-1 md:gap-2 flex-wrap items-center">
+          <a href="/index.html" class="text-sm font-semibold transition-all duration-200 hover:text-blue-600 text-blue-600 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 shadow-sm">
+            <i data-lucide="home" class="w-4 h-4 inline-block mr-1"></i>首頁
+          </a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 inline-block mr-1"></i>淨資產儀表板
+          </a>
+          <a href="/certificate.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="file-text" class="w-4 h-4 inline-block mr-1"></i>資產憑證登記
+          </a>
+          <a href="/admin.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4 inline-block mr-1"></i>憑證發行後台
+          </a>
         </div>
-        <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
-              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
-              <div class="flex flex-col gap-1">
-                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
-                <span class="text-xs text-slate-500" id="user-email"></span>
+            <div class="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg border border-slate-200 shadow-sm">
+              <i data-lucide="user" class="w-4 h-4 md:w-5 md:h-5 text-blue-600"></i>
+              <div class="flex flex-col gap-0.5">
+                <span class="font-semibold text-slate-900 text-xs md:text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500 hidden md:inline" id="user-email"></span>
               </div>
             </div>
           </div>
-          <a href="/login" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50" id="login-link">登入</a>
-          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50" id="logout-link" style="display: none;">登出</a>
+          <a href="/login" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm" id="login-link">
+            <i data-lucide="log-in" class="w-4 h-4 inline-block mr-1"></i>登入
+          </a>
+          <a href="/logout" class="text-sm font-medium transition-all duration-200 hover:text-red-600 hover:bg-red-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm" id="logout-link" style="display: none;">
+            <i data-lucide="log-out" class="w-4 h-4 inline-block mr-1"></i>登出
+          </a>
         </div>
       </nav>
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-slate-800 text-center mb-8 text-4xl md:text-5xl font-bold">歡迎使用 Rich App</h1>
+      <div class="text-center mb-10 md:mb-12 mt-[72px]">
+        <h1 class="text-slate-900 text-center mb-4 text-4xl md:text-6xl font-extrabold text-blue-600 leading-tight">
+          歡迎使用 Rich App
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
+          整合數位憑證皮夾的智能財務管理系統，讓您的財富管理更簡單、更安全
+        </p>
+        
+        <!-- 目錄導航 - 初始位置 -->
+        <div id="toc-initial" class="mb-8">
+          <div class="inline-block rounded-xl border-2 border-slate-200 bg-white/95 backdrop-blur-md shadow-lg shadow-slate-200/50 px-3 md:px-6 py-3 md:py-4 max-w-full">
+            <div class="flex items-center gap-1.5 md:gap-3 flex-wrap justify-center">
+              <span class="text-xs md:text-sm font-semibold text-slate-500 mr-1 md:mr-2 hidden md:inline-flex items-center gap-1">
+                <i data-lucide="list" class="w-3 h-3"></i>
+                <span>快速導航：</span>
+              </span>
+              <a href="#intro" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="intro">
+                <i data-lucide="book-open" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">專案介紹</span>
+              </a>
+              <a href="#features" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="features">
+                <i data-lucide="target" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">功能說明</span>
+              </a>
+              <a href="#certificates" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="certificates">
+                <i data-lucide="file-check" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">憑證類型</span>
+              </a>
+              <a href="#ai-features" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="ai-features">
+                <i data-lucide="bot" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">AI 功能</span>
+              </a>
+              <a href="#getting-started" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="getting-started">
+                <i data-lucide="link-2" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">開始使用</span>
+              </a>
+              <a href="#tips" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="tips">
+                <i data-lucide="lightbulb" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">使用提示</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 目錄導航 - 固定浮動版本 -->
+        <div id="toc-fixed" class="fixed top-0 left-0 right-0 z-40 px-4 md:px-6 py-2 md:py-3 bg-white/98 backdrop-blur-lg border-b border-slate-200 shadow-lg transition-all duration-300 transform -translate-y-full opacity-0">
+          <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-1.5 md:gap-3 flex-wrap justify-center">
+              <span class="text-xs md:text-sm font-semibold text-slate-500 mr-1 md:mr-2 hidden md:inline-flex items-center gap-1">
+                <i data-lucide="list" class="w-3 h-3"></i>
+                <span>快速導航：</span>
+              </span>
+              <a href="#intro" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="intro">
+                <i data-lucide="book-open" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">專案介紹</span>
+              </a>
+              <a href="#features" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="features">
+                <i data-lucide="target" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">功能說明</span>
+              </a>
+              <a href="#certificates" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="certificates">
+                <i data-lucide="file-check" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">憑證類型</span>
+              </a>
+              <a href="#ai-features" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="ai-features">
+                <i data-lucide="bot" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">AI 功能</span>
+              </a>
+              <a href="#getting-started" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="getting-started">
+                <i data-lucide="link-2" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">開始使用</span>
+              </a>
+              <a href="#tips" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="tips">
+                <i data-lucide="lightbulb" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">使用提示</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+      <div id="intro" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6 transition-all hover:shadow-xl hover:shadow-slate-300/50">
         <div class="flex items-center gap-3 mb-4">
-          <i data-lucide="book-open" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">專案介紹</h2>
+          <div class="p-2 bg-blue-100 rounded-lg">
+            <i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">專案介紹</h2>
         </div>
-        <p class="text-lg leading-relaxed text-slate-700 mb-5">
-          Rich App 是一個整合數位憑證皮夾的身價計算系統，幫助您管理個人資產、負債，並透過數位憑證記錄您的財富狀況。
-          系統使用 Cloudflare Workers 運行，整合 OIDC 認證、D1 資料庫和 KV 儲存，提供安全可靠的服務。
+        <p class="text-base md:text-lg leading-relaxed text-slate-700 mb-4">
+          <strong class="text-blue-600">Rich App</strong> 是一個整合數位憑證皮夾的智能財務管理系統，幫助您輕鬆管理個人資產、負債，並透過區塊鏈數位憑證技術記錄您的財富狀況。
         </p>
-      </div>
-
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
-        <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="target" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">功能頁面說明</h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div class="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl p-7 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 flex flex-col">
-            <div class="text-5xl text-center mb-4">
-              <i data-lucide="bar-chart-3" class="w-12 h-12 mx-auto text-blue-500"></i>
-            </div>
-            <h3 class="text-center text-slate-900 text-xl font-bold mb-4">淨資產儀表板</h3>
-            <p class="text-slate-700 font-medium mb-4">
-              這是您的主要財務總覽頁面。在這裡您可以：
-            </p>
-            <ul class="list-none p-0 m-0 mb-5 flex-1">
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                查看目前的淨資產總額（資產 - 負債）
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                了解您的身價在台灣家庭中的排名百分比
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                查看詳細的資產和負債明細
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                領取和查看財富階層憑證
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                查看年收入資訊和憑證
-              </li>
-            </ul>
-            <div class="text-center mt-auto pt-5">
-              <a href="/dashboard.html" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors w-full shadow-sm">
-                前往儀表板
-              </a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <h3 class="font-semibold text-slate-900 mb-1">安全可靠</h3>
+              <p class="text-sm text-slate-600">使用 OIDC 認證，確保資料安全</p>
             </div>
           </div>
-
-          <div class="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl p-7 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 flex flex-col">
-            <div class="text-5xl text-center mb-4">
-              <i data-lucide="file-text" class="w-12 h-12 mx-auto text-blue-500"></i>
-            </div>
-            <h3 class="text-center text-slate-900 text-xl font-bold mb-4">資產憑證登記</h3>
-            <p class="text-slate-700 font-medium mb-4">
-              使用數位憑證皮夾登記您的資產憑證。此頁面提供：
-            </p>
-            <ul class="list-none p-0 m-0 mb-5 flex-1">
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                掃描 QR Code 登記各種資產憑證
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                支援多種憑證類型：流動性金融、不動產、動產、信用負債、年收入
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                查看已登記的憑證列表
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                使用 AI 分析資產價值
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                管理已登記的憑證
-              </li>
-            </ul>
-            <div class="text-center mt-auto pt-5">
-              <a href="/certificate.html" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors w-full shadow-sm">
-                前往登記頁面
-              </a>
+          <div class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <i data-lucide="zap" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <h3 class="font-semibold text-slate-900 mb-1">高效快速</h3>
+              <p class="text-sm text-slate-600">基於 Cloudflare Workers，全球邊緣運算加速</p>
             </div>
           </div>
-
-          <div class="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl p-7 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 flex flex-col">
-            <div class="text-5xl text-center mb-4">
-              <i data-lucide="settings" class="w-12 h-12 mx-auto text-blue-500"></i>
-            </div>
-            <h3 class="text-center text-slate-900 text-xl font-bold mb-4">憑證發行後台</h3>
-            <p class="text-slate-700 font-medium mb-4">
-              管理員專用的憑證發行工具。功能包括：
-            </p>
-            <ul class="list-none p-0 m-0 mb-5 flex-1">
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                發行各種類型的數位憑證
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                生成憑證 QR Code 供使用者掃描
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                查詢憑證狀態和資訊
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                撤銷已發行的憑證
-              </li>
-              <li class="py-2 pl-6 relative text-slate-700">
-                <i data-lucide="check" class="absolute left-0 top-3 w-4 h-4 text-green-500"></i>
-                設定憑證的發行和到期日期
-              </li>
-            </ul>
-            <div class="text-center mt-auto pt-5">
-              <a href="/admin.html" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors w-full shadow-sm">
-                前往後台
-              </a>
+          <div class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <i data-lucide="brain" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <h3 class="font-semibold text-slate-900 mb-1">智能分析</h3>
+              <p class="text-sm text-slate-600">AI 驅動的資產估值與財務分析</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+      <div id="features" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
         <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="file-check" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">支援的憑證類型</h2>
+          <div class="p-2 bg-indigo-100 rounded-lg">
+            <i data-lucide="target" class="w-6 h-6 text-indigo-600"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">功能頁面說明</h2>
         </div>
-        <p class="text-lg leading-relaxed text-slate-700 mb-6">
-          本系統支援以下 5 種數位憑證類型，涵蓋您的各種資產、負債和收入資訊：
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-6">
+          <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 md:p-7 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 flex flex-col group">
+            <div class="text-center mb-4">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <i data-lucide="bar-chart-3" class="w-8 h-8 text-white"></i>
+              </div>
+            </div>
+            <h3 class="text-center text-slate-900 text-xl md:text-2xl font-bold mb-3">淨資產儀表板</h3>
+            <p class="text-slate-600 font-medium mb-4 text-sm md:text-base text-center">
+              一站式財務總覽，掌握您的財富全貌
+            </p>
+            <ul class="list-none p-0 m-0 mb-5 flex-1 space-y-2">
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                即時淨資產總額計算
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                台灣家庭財富排名分析
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                詳細資產負債明細
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                財富階層憑證管理
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                年收入統計與憑證
+              </li>
+            </ul>
+            <div class="text-center mt-auto pt-4">
+              <a href="/dashboard.html" class="inline-flex items-center justify-center rounded-lg bg-blue-500 text-white px-6 py-3 font-semibold hover:bg-blue-600 transition-all duration-200 w-full shadow-md hover:shadow-lg group-hover:scale-105">
+                <i data-lucide="arrow-right" class="w-4 h-4 mr-2"></i>前往儀表板
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 md:p-7 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 flex flex-col group">
+            <div class="text-center mb-4">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <i data-lucide="file-text" class="w-8 h-8 text-white"></i>
+              </div>
+            </div>
+            <h3 class="text-center text-slate-900 text-xl md:text-2xl font-bold mb-3">資產憑證登記</h3>
+            <p class="text-slate-600 font-medium mb-4 text-sm md:text-base text-center">
+              數位憑證皮夾整合，輕鬆管理資產憑證
+            </p>
+            <ul class="list-none p-0 m-0 mb-5 flex-1 space-y-2">
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                QR Code 掃描快速登記
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                支援 5 種憑證類型
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                憑證列表集中管理
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                AI 智能資產估值
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                完整的憑證管理功能
+              </li>
+            </ul>
+            <div class="text-center mt-auto pt-4">
+              <a href="/certificate.html" class="inline-flex items-center justify-center rounded-lg bg-blue-500 text-white px-6 py-3 font-semibold hover:bg-blue-600 transition-all duration-200 w-full shadow-md hover:shadow-lg group-hover:scale-105">
+                <i data-lucide="arrow-right" class="w-4 h-4 mr-2"></i>前往登記頁面
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 md:p-7 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 flex flex-col group">
+            <div class="text-center mb-4">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <i data-lucide="settings" class="w-8 h-8 text-white"></i>
+              </div>
+            </div>
+            <h3 class="text-center text-slate-900 text-xl md:text-2xl font-bold mb-3">憑證發行後台</h3>
+            <p class="text-slate-600 font-medium mb-4 text-sm md:text-base text-center">
+              管理員專用工具，完整憑證發行管理
+            </p>
+            <ul class="list-none p-0 m-0 mb-5 flex-1 space-y-2">
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                發行各類型數位憑證
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                生成 QR Code 供掃描
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                即時查詢憑證狀態
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                憑證撤銷管理
+              </li>
+              <li class="py-2 pl-6 relative text-slate-700 text-sm">
+                <i data-lucide="check-circle" class="absolute left-0 top-2.5 w-4 h-4 text-green-500"></i>
+                發行與到期日期設定
+              </li>
+            </ul>
+            <div class="text-center mt-auto pt-4">
+              <a href="/admin.html" class="inline-flex items-center justify-center rounded-lg bg-blue-500 text-white px-6 py-3 font-semibold hover:bg-blue-600 transition-all duration-200 w-full shadow-md hover:shadow-lg group-hover:scale-105">
+                <i data-lucide="arrow-right" class="w-4 h-4 mr-2"></i>前往後台
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="certificates" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="p-2 bg-green-100 rounded-lg">
+            <i data-lucide="file-check" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">支援的憑證類型</h2>
+        </div>
+        <p class="text-base md:text-lg leading-relaxed text-slate-700 mb-6">
+          本系統支援以下 <strong class="text-blue-600">5 種數位憑證類型</strong>，完整涵蓋您的資產、負債和收入資訊：
         </p>
         
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-5 mt-6">
-          <div class="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center">
-            <div class="text-4xl mb-3">
-              <i data-lucide="credit-card" class="w-10 h-10 mx-auto text-blue-500"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5 mt-6">
+          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 text-center group">
+            <div class="mb-4">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <i data-lucide="credit-card" class="w-7 h-7 text-white"></i>
+              </div>
             </div>
-            <h3 class="text-slate-900 text-lg font-bold mb-2">流動性金融憑證</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">記錄您的流動性金融資產</p>
-            <ul class="list-none p-0 m-0 text-left">
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
+            <h3 class="text-slate-900 text-base md:text-lg font-bold mb-2">流動性金融憑證</h3>
+            <p class="text-slate-600 text-xs md:text-sm font-medium mb-4">記錄流動性金融資產</p>
+            <ul class="list-none p-0 m-0 text-left space-y-1.5">
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
                 銀行帳戶
               </li>
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
                 證券戶
               </li>
             </ul>
           </div>
 
-          <div class="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center">
-            <div class="text-4xl mb-3">
-              <i data-lucide="home" class="w-10 h-10 mx-auto text-blue-500"></i>
+          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 text-center group">
+            <div class="mb-4">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <i data-lucide="home" class="w-7 h-7 text-white"></i>
+              </div>
             </div>
-            <h3 class="text-slate-900 text-lg font-bold mb-2">不動產資產憑證</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">記錄您的不動產資產資訊</p>
-            <ul class="list-none p-0 m-0 text-left">
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                不動產（包含位置、坪數等資訊）
+            <h3 class="text-slate-900 text-base md:text-lg font-bold mb-2">不動產資產憑證</h3>
+            <p class="text-slate-600 text-xs md:text-sm font-medium mb-4">記錄不動產資產資訊</p>
+            <ul class="list-none p-0 m-0 text-left space-y-1.5">
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
+                不動產（位置、坪數等）
               </li>
             </ul>
           </div>
 
-          <div class="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center">
-            <div class="text-4xl mb-3">
-              <i data-lucide="car" class="w-10 h-10 mx-auto text-blue-500"></i>
+          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 text-center group">
+            <div class="mb-4">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <i data-lucide="car" class="w-7 h-7 text-white"></i>
+              </div>
             </div>
-            <h3 class="text-slate-900 text-lg font-bold mb-2">動產憑證</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">記錄您的動產資產</p>
-            <ul class="list-none p-0 m-0 text-left">
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                車輛（包含型號、年份等資訊）
+            <h3 class="text-slate-900 text-base md:text-lg font-bold mb-2">動產憑證</h3>
+            <p class="text-slate-600 text-xs md:text-sm font-medium mb-4">記錄動產資產</p>
+            <ul class="list-none p-0 m-0 text-left space-y-1.5">
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
+                車輛（型號、年份等）
               </li>
             </ul>
           </div>
 
-          <div class="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center">
-            <div class="text-4xl mb-3">
-              <i data-lucide="trending-down" class="w-10 h-10 mx-auto text-blue-500"></i>
+          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 text-center group">
+            <div class="mb-4">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <i data-lucide="trending-down" class="w-7 h-7 text-white"></i>
+              </div>
             </div>
-            <h3 class="text-slate-900 text-lg font-bold mb-2">信用與負債憑證</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">記錄您的負債資訊</p>
-            <ul class="list-none p-0 m-0 text-left">
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                房貸
+            <h3 class="text-slate-900 text-base md:text-lg font-bold mb-2">信用與負債憑證</h3>
+            <p class="text-slate-600 text-xs md:text-sm font-medium mb-4">記錄負債資訊</p>
+            <ul class="list-none p-0 m-0 text-left space-y-1.5">
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
+                房貸、個人貸款
               </li>
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                個人貸款
-              </li>
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                學貸
-              </li>
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                車貸
-              </li>
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                信用卡債務
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
+                學貸、車貸、信用卡債務
               </li>
             </ul>
           </div>
 
-          <div class="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center">
-            <div class="text-4xl mb-3">
-              <i data-lucide="dollar-sign" class="w-10 h-10 mx-auto text-blue-500"></i>
+          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 text-center group">
+            <div class="mb-4">
+              <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <i data-lucide="dollar-sign" class="w-7 h-7 text-white"></i>
+              </div>
             </div>
-            <h3 class="text-slate-900 text-lg font-bold mb-2">年收入憑證</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">記錄您的年度收入資訊</p>
-            <ul class="list-none p-0 m-0 text-left">
-              <li class="py-1.5 flex items-center text-slate-700 text-sm">
-                <i data-lucide="circle" class="w-2 h-2 mr-2 text-blue-500"></i>
-                年度收入（包含年份、金額、類型等資訊）
+            <h3 class="text-slate-900 text-base md:text-lg font-bold mb-2">年收入憑證</h3>
+            <p class="text-slate-600 text-xs md:text-sm font-medium mb-4">記錄年度收入資訊</p>
+            <ul class="list-none p-0 m-0 text-left space-y-1.5">
+              <li class="py-1 flex items-center text-slate-700 text-xs md:text-sm">
+                <i data-lucide="check" class="w-3 h-3 mr-2 text-blue-500 flex-shrink-0"></i>
+                年度收入（年份、金額等）
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+      <div id="ai-features" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
         <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="bot" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">AI 智能估值功能</h2>
+          <div class="p-2 bg-blue-500 rounded-lg">
+            <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">AI 智能估值功能</h2>
         </div>
         <div class="mt-6">
-          <p class="text-lg leading-relaxed text-slate-700 mb-6">
-            本系統整合 Google Gemini AI 技術，提供智能資產估值服務，幫助您快速評估資產價值。
+          <p class="text-base md:text-lg leading-relaxed text-slate-700 mb-6">
+            本系統整合 <strong class="text-blue-600">Google Gemini AI</strong> 技術，提供智能資產估值服務，幫助您快速、準確地評估資產價值。
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
-            <div class="bg-blue-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-500">
-              <div class="text-3xl mb-3 text-center">
-                <i data-lucide="target" class="w-8 h-8 mx-auto text-blue-500"></i>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-8">
+            <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 group">
+              <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                  <i data-lucide="target" class="w-7 h-7 text-white"></i>
+                </div>
               </div>
-              <h4 class="text-slate-900 text-lg font-bold mb-3 text-center">精準估值</h4>
-              <p class="text-slate-700 text-sm text-center">使用先進的 AI 模型，根據資產的詳細資訊（如位置、坪數、型號、年份等）進行智能分析，提供準確的市場估值。</p>
+              <h4 class="text-slate-900 text-base md:text-lg font-bold mb-3 text-center">精準估值</h4>
+              <p class="text-slate-700 text-xs md:text-sm text-center leading-relaxed">使用先進的 AI 模型，根據資產詳細資訊進行智能分析，提供準確的市場估值</p>
             </div>
 
-            <div class="bg-blue-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-500">
-              <div class="text-3xl mb-3 text-center">
-                <i data-lucide="zap" class="w-8 h-8 mx-auto text-blue-500"></i>
+            <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 group">
+              <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                  <i data-lucide="zap" class="w-7 h-7 text-white"></i>
+                </div>
               </div>
-              <h4 class="text-slate-900 text-lg font-bold mb-3 text-center">快速分析</h4>
-              <p class="text-slate-700 text-sm text-center">只需點擊「AI 分析」按鈕，系統會在數秒內完成資產價值評估，無需手動查詢市場行情。</p>
+              <h4 class="text-slate-900 text-base md:text-lg font-bold mb-3 text-center">快速分析</h4>
+              <p class="text-slate-700 text-xs md:text-sm text-center leading-relaxed">只需點擊「AI 分析」按鈕，系統會在數秒內完成資產價值評估</p>
             </div>
 
-            <div class="bg-blue-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-500">
-              <div class="text-3xl mb-3 text-center">
-                <i data-lucide="trending-up" class="w-8 h-8 mx-auto text-blue-500"></i>
+            <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 group">
+              <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                  <i data-lucide="trending-up" class="w-7 h-7 text-white"></i>
+                </div>
               </div>
-              <h4 class="text-slate-900 text-lg font-bold mb-3 text-center">市場參考</h4>
-              <p class="text-slate-700 text-sm text-center">AI 會參考當前市場行情、區域價格趨勢等多項因素，提供更貼近實際市場價值的評估結果。</p>
+              <h4 class="text-slate-900 text-base md:text-lg font-bold mb-3 text-center">市場參考</h4>
+              <p class="text-slate-700 text-xs md:text-sm text-center leading-relaxed">AI 會參考當前市場行情、區域價格趨勢等多項因素，提供貼近實際市場價值的評估</p>
             </div>
 
-            <div class="bg-blue-50 border-2 border-slate-200 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-500">
-              <div class="text-3xl mb-3 text-center">
-                <i data-lucide="save" class="w-8 h-8 mx-auto text-blue-500"></i>
+            <div class="bg-white border-2 border-slate-200 rounded-xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-400 group">
+              <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                  <i data-lucide="save" class="w-7 h-7 text-white"></i>
+                </div>
               </div>
-              <h4 class="text-slate-900 text-lg font-bold mb-3 text-center">一鍵儲存</h4>
-              <p class="text-slate-700 text-sm text-center">估值完成後，可直接將 AI 評估的價值儲存到系統中，自動更新您的淨資產計算。</p>
+              <h4 class="text-slate-900 text-base md:text-lg font-bold mb-3 text-center">一鍵儲存</h4>
+              <p class="text-slate-700 text-xs md:text-sm text-center leading-relaxed">估值完成後，可直接將 AI 評估的價值儲存到系統中，自動更新淨資產計算</p>
             </div>
           </div>
 
-          <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 mt-6">
-            <h3 class="text-slate-900 text-xl font-bold mb-4">使用方式</h3>
-            <ol class="list-decimal list-inside ml-4 text-slate-800 leading-8 space-y-2">
-              <li>前往「資產憑證登記」頁面，查看已登記的資產憑證</li>
-              <li>點擊資產項目旁的「AI 分析」按鈕</li>
-              <li>確認資產資訊後，系統會開始進行 AI 估值分析</li>
-              <li>查看估值結果，可選擇直接儲存或取消</li>
+          <div class="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 md:p-8 mt-6 shadow-md">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="info" class="w-6 h-6 text-orange-600"></i>
+              <h3 class="text-slate-900 text-xl md:text-2xl font-bold">使用方式</h3>
+            </div>
+            <ol class="list-decimal list-inside ml-2 md:ml-4 text-slate-800 leading-relaxed space-y-3 text-sm md:text-base">
+              <li class="pl-2">前往「資產憑證登記」頁面，查看已登記的資產憑證</li>
+              <li class="pl-2">點擊資產項目旁的「AI 分析」按鈕</li>
+              <li class="pl-2">確認資產資訊後，系統會開始進行 AI 估值分析</li>
+              <li class="pl-2">查看估值結果，可選擇直接儲存或取消</li>
             </ol>
-            <div class="mt-5 p-4 bg-white/70 rounded-lg text-slate-800 text-sm leading-relaxed">
-              <strong class="text-orange-600">注意：</strong>使用 AI 估值功能前，請先前往「資產憑證登記」頁面的設定按鈕（⚙️）設定您的 Gemini API Key。
+            <div class="mt-6 p-4 bg-white/80 rounded-lg border border-yellow-200 text-slate-800 text-sm md:text-base leading-relaxed shadow-sm">
+              <div class="flex items-start gap-2">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="text-orange-600">注意：</strong>使用 AI 估值功能前，請先前往「資產憑證登記」頁面的設定按鈕（⚙️）設定您的 Gemini API Key。
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
-        <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-500">
-          <i data-lucide="link-2" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">開始使用</h2>
+      <div id="getting-started" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="p-2 bg-blue-500 rounded-lg">
+            <i data-lucide="link-2" class="w-6 h-6 text-white"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">開始使用</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mt-6">
           <!-- Step 1 -->
-          <div class="bg-slate-50 rounded-lg border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
+          <div class="bg-white rounded-xl border-2 border-slate-200 p-5 md:p-6 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
             <div class="flex items-center gap-3 mb-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-bold text-white text-lg shadow-md">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                 1
               </div>
-              <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
+              <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
             </div>
-            <h4 class="text-slate-900 text-lg font-bold mb-2">登入系統</h4>
-            <p class="text-slate-600 text-sm leading-relaxed">點擊右上角的「登入」按鈕，使用 OIDC 認證登入系統</p>
+            <h4 class="text-slate-900 text-base md:text-lg font-bold mb-2">登入系統</h4>
+            <p class="text-slate-600 text-xs md:text-sm leading-relaxed">點擊右上角的「登入」按鈕，使用 OIDC 認證登入系統</p>
           </div>
 
           <!-- Step 2 -->
-          <div class="bg-slate-50 rounded-lg border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
+          <div class="bg-white rounded-xl border-2 border-slate-200 p-5 md:p-6 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
             <div class="flex items-center gap-3 mb-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-bold text-white text-lg shadow-md">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                 2
               </div>
-              <i data-lucide="file-text" class="w-5 h-5 text-blue-500"></i>
+              <i data-lucide="file-text" class="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h4 class="text-slate-900 text-lg font-bold mb-2">登記資產憑證</h4>
-            <p class="text-slate-600 text-sm leading-relaxed">前往「資產憑證登記」頁面，使用數位憑證皮夾掃描 QR Code 登記您的資產</p>
+            <h4 class="text-slate-900 text-base md:text-lg font-bold mb-2">登記資產憑證</h4>
+            <p class="text-slate-600 text-xs md:text-sm leading-relaxed">前往「資產憑證登記」頁面，使用數位憑證皮夾掃描 QR Code 登記您的資產</p>
           </div>
 
           <!-- Step 3 -->
-          <div class="bg-slate-50 rounded-lg border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
+          <div class="bg-white rounded-xl border-2 border-slate-200 p-5 md:p-6 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
             <div class="flex items-center gap-3 mb-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-bold text-white text-lg shadow-md">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                 3
               </div>
-              <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-500"></i>
+              <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h4 class="text-slate-900 text-lg font-bold mb-2">查看淨資產</h4>
-            <p class="text-slate-600 text-sm leading-relaxed">在「淨資產儀表板」查看您的財務總覽和財富排名</p>
+            <h4 class="text-slate-900 text-base md:text-lg font-bold mb-2">查看淨資產</h4>
+            <p class="text-slate-600 text-xs md:text-sm leading-relaxed">在「淨資產儀表板」查看您的財務總覽和財富排名</p>
           </div>
 
           <!-- Step 4 -->
-          <div class="bg-slate-50 rounded-lg border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
+          <div class="bg-white rounded-xl border-2 border-slate-200 p-5 md:p-6 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
             <div class="flex items-center gap-3 mb-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-bold text-white text-lg shadow-md">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                 4
               </div>
-              <i data-lucide="award" class="w-5 h-5 text-blue-500"></i>
+              <i data-lucide="award" class="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h4 class="text-slate-900 text-lg font-bold mb-2">領取階層憑證</h4>
-            <p class="text-slate-600 text-sm leading-relaxed">當您的淨資產達到特定門檻時，可以領取財富階層憑證</p>
+            <h4 class="text-slate-900 text-base md:text-lg font-bold mb-2">領取階層憑證</h4>
+            <p class="text-slate-600 text-xs md:text-sm leading-relaxed">當您的淨資產達到特定門檻時，可以領取財富階層憑證</p>
           </div>
         </div>
       </div>
 
-      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+      <div id="tips" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-12 md:mb-60">
         <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="lightbulb" class="w-6 h-6 text-blue-500"></i>
-          <h2 class="text-2xl font-semibold">使用提示</h2>
+          <div class="p-2 bg-yellow-500 rounded-lg">
+            <i data-lucide="lightbulb" class="w-6 h-6 text-white"></i>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">使用提示</h2>
         </div>
-        <ul class="list-none p-0 m-0">
-          <li class="py-4 pl-8 relative text-slate-800 leading-relaxed text-base border-b border-slate-200">
-            <i data-lucide="check-circle" class="absolute left-0 top-5 w-5 h-5 text-green-500"></i>
-            首次使用請先登入系統，才能使用完整功能
+        <ul class="list-none p-0 m-0 space-y-3">
+          <li class="py-4 pl-10 pr-4 relative text-slate-800 leading-relaxed text-sm md:text-base border-2 border-slate-100 rounded-lg bg-slate-50 hover:border-blue-200 hover:shadow-sm transition-all">
+            <i data-lucide="check-circle" class="absolute left-3 top-5 w-5 h-5 text-green-500"></i>
+            <strong class="text-blue-600">首次使用：</strong>請先登入系統，才能使用完整功能
           </li>
-          <li class="py-4 pl-8 relative text-slate-800 leading-relaxed text-base border-b border-slate-200">
-            <i data-lucide="check-circle" class="absolute left-0 top-5 w-5 h-5 text-green-500"></i>
-            登記憑證時，請確保使用支援的數位憑證皮夾 APP
+          <li class="py-4 pl-10 pr-4 relative text-slate-800 leading-relaxed text-sm md:text-base border-2 border-slate-100 rounded-lg bg-slate-50 hover:border-blue-200 hover:shadow-sm transition-all">
+            <i data-lucide="check-circle" class="absolute left-3 top-5 w-5 h-5 text-green-500"></i>
+            <strong class="text-blue-600">憑證登記：</strong>請確保使用支援的數位憑證皮夾 APP
           </li>
-          <li class="py-4 pl-8 relative text-slate-800 leading-relaxed text-base border-b border-slate-200">
-            <i data-lucide="check-circle" class="absolute left-0 top-5 w-5 h-5 text-green-500"></i>
-            定期更新您的資產和負債資訊，以獲得準確的淨資產計算
+          <li class="py-4 pl-10 pr-4 relative text-slate-800 leading-relaxed text-sm md:text-base border-2 border-slate-100 rounded-lg bg-slate-50 hover:border-blue-200 hover:shadow-sm transition-all">
+            <i data-lucide="check-circle" class="absolute left-3 top-5 w-5 h-5 text-green-500"></i>
+            <strong class="text-blue-600">定期更新：</strong>定期更新您的資產和負債資訊，以獲得準確的淨資產計算
           </li>
-          <li class="py-4 pl-8 relative text-slate-800 leading-relaxed text-base border-b border-slate-200">
-            <i data-lucide="check-circle" class="absolute left-0 top-5 w-5 h-5 text-green-500"></i>
-            財富階層憑證會根據您的淨資產自動計算排名
+          <li class="py-4 pl-10 pr-4 relative text-slate-800 leading-relaxed text-sm md:text-base border-2 border-slate-100 rounded-lg bg-slate-50 hover:border-blue-200 hover:shadow-sm transition-all">
+            <i data-lucide="check-circle" class="absolute left-3 top-5 w-5 h-5 text-green-500"></i>
+            <strong class="text-blue-600">財富排名：</strong>財富階層憑證會根據您的淨資產自動計算排名
           </li>
-          <li class="py-4 pl-8 relative text-slate-800 leading-relaxed text-base">
-            <i data-lucide="check-circle" class="absolute left-0 top-5 w-5 h-5 text-green-500"></i>
-            所有資料都經過加密保護，安全可靠
+          <li class="py-4 pl-10 pr-4 relative text-slate-800 leading-relaxed text-sm md:text-base border-2 border-slate-100 rounded-lg bg-slate-50 hover:border-blue-200 hover:shadow-sm transition-all">
+            <i data-lucide="check-circle" class="absolute left-3 top-5 w-5 h-5 text-green-500"></i>
+            <strong class="text-blue-600">資料安全：</strong>所有資料都經過加密保護，安全可靠
           </li>
         </ul>
       </div>
@@ -417,6 +562,121 @@
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
+      
+      // 目錄導航功能
+      document.addEventListener('DOMContentLoaded', () => {
+        const tocInitial = document.getElementById('toc-initial');
+        const tocFixed = document.getElementById('toc-fixed');
+        const headerHeight = tocInitial ? tocInitial.offsetTop + tocInitial.offsetHeight : 300;
+        
+        // 滾動時顯示/隱藏固定導航
+        let ticking = false;
+        function handleScroll() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          
+          if (scrollTop > headerHeight) {
+            // 顯示固定導航
+            if (tocFixed.classList.contains('opacity-0')) {
+              tocFixed.classList.remove('-translate-y-full', 'opacity-0');
+              tocFixed.classList.add('translate-y-0', 'opacity-100');
+            }
+          } else {
+            // 隱藏固定導航
+            if (!tocFixed.classList.contains('opacity-0')) {
+              tocFixed.classList.add('-translate-y-full', 'opacity-0');
+              tocFixed.classList.remove('translate-y-0', 'opacity-100');
+            }
+          }
+          
+          ticking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(handleScroll);
+            ticking = true;
+          }
+        });
+        
+        // 平滑滾動到對應區塊（處理兩個版本的連結）
+        function setupTocLinks(selector) {
+          document.querySelectorAll(selector).forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const targetId = link.getAttribute('href').substring(1);
+              const targetElement = document.getElementById(targetId);
+              
+              if (targetElement) {
+                // 根據固定導航是否顯示來調整偏移量
+                const isFixedVisible = !tocFixed.classList.contains('opacity-0');
+                const offsetTop = targetElement.offsetTop - (isFixedVisible ? 100 : 80);
+                window.scrollTo({
+                  top: Math.max(0, offsetTop),
+                  behavior: 'smooth'
+                });
+                
+                // 更新活動狀態
+                updateActiveLink(targetId);
+              }
+            });
+          });
+        }
+        
+        setupTocLinks('.table-of-contents-link');
+        setupTocLinks('.table-of-contents-link-fixed');
+        
+        // 滾動時更新活動狀態
+        let sections = ['intro', 'features', 'certificates', 'ai-features', 'getting-started', 'tips'];
+        let observerOptions = {
+          root: null,
+          rootMargin: '-20% 0px -70% 0px',
+          threshold: 0
+        };
+        
+        let observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              updateActiveLink(entry.target.id);
+            }
+          });
+        }, observerOptions);
+        
+        sections.forEach(sectionId => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            observer.observe(section);
+          }
+        });
+        
+        function updateActiveLink(activeSectionId) {
+          // 更新兩個版本的連結狀態
+          document.querySelectorAll('.table-of-contents-link, .table-of-contents-link-fixed').forEach(link => {
+            const sectionId = link.getAttribute('data-section');
+            if (sectionId === activeSectionId) {
+              link.classList.add('active');
+              link.classList.remove('text-slate-700', 'border-transparent');
+              link.classList.add('text-blue-600', 'bg-blue-50', 'border-blue-300', 'font-semibold');
+            } else {
+              link.classList.remove('active', 'text-blue-600', 'bg-blue-50', 'border-blue-300', 'font-semibold');
+              link.classList.add('text-slate-700', 'border-transparent');
+            }
+          });
+          // 重新初始化圖標以確保活動狀態的圖標正確顯示
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+        }
+        
+        // 初始化時設置第一個為活動狀態
+        updateActiveLink('intro');
+        
+        // 確保固定導航的圖標也正確初始化
+        setTimeout(() => {
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+        }, 200);
+      });
     </script>
     <script src="/index.js"></script>
   </body>

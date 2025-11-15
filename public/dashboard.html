@@ -8,48 +8,75 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-5">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-6">
     <div class="max-w-7xl mx-auto mb-6">
-      <nav class="flex items-center justify-between rounded-lg border bg-white px-6 py-4 shadow-md">
-        <div class="flex gap-2 flex-wrap">
-          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">首頁</a>
-          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-blue-500 px-3 py-2 rounded-md bg-blue-50">淨資產儀表板</a>
-          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">資產憑證登記</a>
-          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">憑證發行後台</a>
+      <nav class="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 md:px-6 py-3 md:py-4 shadow-lg shadow-slate-200/50">
+        <div class="flex gap-1 md:gap-2 flex-wrap items-center">
+          <a href="/index.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="home" class="w-4 h-4 inline-block mr-1"></i>首頁
+          </a>
+          <a href="/dashboard.html" class="text-sm font-semibold transition-all duration-200 hover:text-blue-600 text-blue-600 px-3 py-2 rounded-lg bg-blue-50 shadow-sm">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 inline-block mr-1"></i>淨資產儀表板
+          </a>
+          <a href="/certificate.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="file-text" class="w-4 h-4 inline-block mr-1"></i>資產憑證登記
+          </a>
+          <a href="/admin.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4 inline-block mr-1"></i>憑證發行後台
+          </a>
         </div>
-        <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
-              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
-              <div class="flex flex-col gap-1">
-                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
-                <span class="text-xs text-slate-500" id="user-email"></span>
+            <div class="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg border border-slate-200 shadow-sm">
+              <i data-lucide="user" class="w-4 h-4 md:w-5 md:h-5 text-blue-600"></i>
+              <div class="flex flex-col gap-0.5">
+                <span class="font-semibold text-slate-900 text-xs md:text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500 hidden md:inline" id="user-email"></span>
               </div>
             </div>
           </div>
-          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-all duration-200 hover:text-red-600 hover:bg-red-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="log-out" class="w-4 h-4 inline-block mr-1"></i>登出
+          </a>
         </div>
       </nav>
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-slate-800 text-center mb-8 text-4xl md:text-5xl font-bold">淨資產儀表板</h1>
+      <div class="text-center mb-8 md:mb-10">
+        <h1 class="text-slate-900 text-center mb-3 text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">
+          淨資產儀表板
+        </h1>
+        <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
+          即時掌握您的財務狀況與財富排名
+        </p>
+      </div>
 
-      <div id="loading" class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
-        <p class="text-center py-10">載入中...</p>
+      <div id="loading" class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-8 md:p-10 mb-6">
+        <div class="flex flex-col items-center justify-center py-12">
+          <i data-lucide="loader-2" class="w-12 h-12 text-blue-500 animate-spin mb-4"></i>
+          <p class="text-lg text-slate-600 font-medium">載入中...</p>
+        </div>
       </div>
 
       <div id="content" style="display: none">
         <!-- Net Worth Summary -->
-        <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
-          <h2 class="text-2xl font-semibold mb-6">目前淨資產</h2>
-          <div class="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent text-center my-8" id="net-worth">$0</div>
+        <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-blue-500 rounded-lg">
+              <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">目前淨資產</h2>
+          </div>
+          <div class="text-5xl md:text-6xl font-extrabold text-blue-600 text-center my-8" id="net-worth">$0</div>
 
           <!-- PR Value Display -->
-          <div class="flex items-center justify-center gap-3 my-8 p-5 bg-yellow-50 rounded-lg border-2 border-yellow-200" id="pr-value" style="display: none">
-            <i data-lucide="trophy" class="w-10 h-10 text-yellow-600"></i>
-            <div class="text-lg text-slate-800 font-semibold">
-              你的身價贏過 <span class="text-2xl font-extrabold text-orange-600" id="pr-percentage">0%</span> 的台灣家庭
+          <div class="flex items-center justify-center gap-4 my-8 p-6 bg-yellow-50 rounded-xl border-2 border-yellow-300 shadow-md" id="pr-value" style="display: none">
+            <div class="p-3 bg-yellow-500 rounded-lg shadow-lg">
+              <i data-lucide="trophy" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+            </div>
+            <div class="text-base md:text-lg text-slate-800 font-semibold">
+              你的身價贏過 <span class="text-2xl md:text-3xl font-extrabold text-orange-600" id="pr-percentage">0%</span> 的台灣家庭
             </div>
           </div>
 
@@ -70,9 +97,14 @@
           </div>
         </div>
 
-        <!-- Annual Income Section -->
-        <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6" id="income-section" style="display: none">
-          <h2 class="text-2xl font-semibold mb-6">年收入資訊</h2>
+          <!-- Annual Income Section -->
+        <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6" id="income-section" style="display: none">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-blue-500 rounded-lg">
+              <i data-lucide="dollar-sign" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">年收入資訊</h2>
+          </div>
           <div id="income-content">
             <div class="text-center py-5 text-slate-500">載入中...</div>
           </div>
@@ -82,18 +114,28 @@
         <div class="mb-6">
           <!-- Assets Section -->
           <div class="mb-5">
-            <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="assets-toggle">
-              <span class="text-lg font-semibold text-slate-900">資產明細 (<span id="assets-count">0</span> 項)</span>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform" id="assets-icon"></i>
+            <button class="w-full flex justify-between items-center p-5 md:p-6 bg-blue-50 rounded-xl border-2 border-blue-200 cursor-pointer hover:bg-blue-100 hover:border-blue-300 hover:shadow-md transition-all duration-200 group" id="assets-toggle">
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-blue-500 rounded-lg group-hover:scale-110 transition-transform">
+                  <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="text-base md:text-lg font-bold text-slate-900">資產明細 (<span id="assets-count" class="text-blue-600">0</span> 項)</span>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform group-hover:translate-x-1" id="assets-icon"></i>
             </button>
             <div id="assets-content" class="mt-3" style="display: none"></div>
           </div>
 
           <!-- Liabilities Section -->
           <div class="mb-5">
-            <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="liabilities-toggle">
-              <span class="text-lg font-semibold text-slate-900">負債明細 (<span id="liabilities-count">0</span> 項)</span>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform" id="liabilities-icon"></i>
+            <button class="w-full flex justify-between items-center p-5 md:p-6 bg-red-50 rounded-xl border-2 border-red-200 cursor-pointer hover:bg-red-100 hover:border-red-300 hover:shadow-md transition-all duration-200 group" id="liabilities-toggle">
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-red-500 rounded-lg group-hover:scale-110 transition-transform">
+                  <i data-lucide="trending-down" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="text-base md:text-lg font-bold text-slate-900">負債明細 (<span id="liabilities-count" class="text-red-600">0</span> 項)</span>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-red-500 transition-transform group-hover:translate-x-1" id="liabilities-icon"></i>
             </button>
             <div id="liabilities-content" class="mt-3" style="display: none"></div>
           </div>

@@ -8,41 +8,63 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-5">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-6">
     <div class="max-w-7xl mx-auto mb-6">
-      <nav class="flex items-center justify-between rounded-lg border bg-white px-6 py-4 shadow-md">
-        <div class="flex gap-2 flex-wrap">
-          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">首頁</a>
-          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">淨資產儀表板</a>
-          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-blue-500 px-3 py-2 rounded-md bg-blue-50">資產憑證登記</a>
-          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">憑證發行後台</a>
+      <nav class="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 md:px-6 py-3 md:py-4 shadow-lg shadow-slate-200/50">
+        <div class="flex gap-1 md:gap-2 flex-wrap items-center">
+          <a href="/index.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="home" class="w-4 h-4 inline-block mr-1"></i>首頁
+          </a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 inline-block mr-1"></i>淨資產儀表板
+          </a>
+          <a href="/certificate.html" class="text-sm font-semibold transition-all duration-200 hover:text-blue-600 text-blue-600 px-3 py-2 rounded-lg bg-blue-50 shadow-sm">
+            <i data-lucide="file-text" class="w-4 h-4 inline-block mr-1"></i>資產憑證登記
+          </a>
+          <a href="/admin.html" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4 inline-block mr-1"></i>憑證發行後台
+          </a>
         </div>
-        <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
-              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
-              <div class="flex flex-col gap-1">
-                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
-                <span class="text-xs text-slate-500" id="user-email"></span>
+            <div class="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg border border-slate-200 shadow-sm">
+              <i data-lucide="user" class="w-4 h-4 md:w-5 md:h-5 text-blue-600"></i>
+              <div class="flex flex-col gap-0.5">
+                <span class="font-semibold text-slate-900 text-xs md:text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500 hidden md:inline" id="user-email"></span>
               </div>
             </div>
           </div>
-          <button id="settings-btn" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50" title="設定">
-            <i data-lucide="settings" class="w-5 h-5"></i>
+          <button id="settings-btn" class="text-sm font-medium transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm" title="設定">
+            <i data-lucide="settings" class="w-4 h-4 md:w-5 md:h-5"></i>
           </button>
-          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-all duration-200 hover:text-red-600 hover:bg-red-50 text-slate-700 px-3 py-2 rounded-lg hover:shadow-sm">
+            <i data-lucide="log-out" class="w-4 h-4 inline-block mr-1"></i>登出
+          </a>
         </div>
       </nav>
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-white text-center mb-8 text-4xl md:text-5xl font-bold text-shadow-lg">資產憑證登記</h1>
+      <div class="text-center mb-8 md:mb-10">
+        <h1 class="text-slate-900 text-center mb-3 text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">
+          資產憑證登記
+        </h1>
+        <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
+          使用數位憑證皮夾掃描 QR Code，輕鬆登記您的資產憑證
+        </p>
+      </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <!-- Left Panel - Registered Certificates -->
         <div>
-          <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8">
-            <h2 class="text-2xl font-semibold mb-6">已登記憑證</h2>
+          <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-blue-500 rounded-lg">
+                <i data-lucide="file-check" class="w-6 h-6 text-white"></i>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900">已登記憑證</h2>
+            </div>
             <div id="certificates-list" class="max-h-[600px] overflow-y-auto">
               <div class="text-center py-12 text-slate-500">
                 <p>載入中...</p>
@@ -53,8 +75,13 @@
 
         <!-- Right Panel - Registration Form -->
         <div>
-          <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8">
-            <h2 class="text-2xl font-semibold mb-6">資產憑證登記</h2>
+          <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-blue-500 rounded-lg">
+                <i data-lucide="qrcode" class="w-6 h-6 text-white"></i>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900">資產憑證登記</h2>
+            </div>
             <div id="registration-form">
               <div class="space-y-2 mb-4">
                 <label class="text-sm font-medium">選擇憑證類型</label>
