@@ -8,14 +8,14 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-5">
     <div class="max-w-7xl mx-auto mb-6">
-      <nav class="flex items-center justify-between rounded-lg border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 shadow-sm">
+      <nav class="flex items-center justify-between rounded-lg border bg-white px-6 py-4 shadow-md">
         <div class="flex gap-2 flex-wrap">
-          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">首頁</a>
-          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">淨資產儀表板</a>
-          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-blue-600 px-3 py-2 rounded-md">資產憑證登記</a>
-          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">憑證發行後台</a>
+          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">首頁</a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">淨資產儀表板</a>
+          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-blue-500 px-3 py-2 rounded-md bg-blue-50">資產憑證登記</a>
+          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">憑證發行後台</a>
         </div>
         <div class="flex items-center gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
@@ -27,10 +27,10 @@
               </div>
             </div>
           </div>
-          <button id="settings-btn" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md" title="設定">
+          <button id="settings-btn" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50" title="設定">
             <i data-lucide="settings" class="w-5 h-5"></i>
           </button>
-          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">登出</a>
         </div>
       </nav>
     </div>
@@ -67,7 +67,7 @@
                   <option value="0052696330_vp_income_certificate">年收入憑證</option>
                 </select>
               </div>
-              <button id="generate-qr-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-6 py-2 font-semibold hover:bg-blue-700 transition-colors w-full">
+              <button id="generate-qr-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors w-full shadow-sm">
                 <i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>
                 生成 QR Code
               </button>

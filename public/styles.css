@@ -30,23 +30,23 @@
 
   * {
     @apply border-border;
-  }
+}
 
-  body {
-    @apply bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-foreground font-sans;
+body {
+    @apply bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 text-foreground font-sans;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 }
 
 @layer components {
   /* Card Component */
-  .card {
+.card {
     @apply rounded-lg border bg-card text-card-foreground shadow-sm;
   }
 
   .card-header {
     @apply flex flex-col space-y-1.5 p-6;
-  }
+}
 
   .card-title {
     @apply text-2xl font-semibold leading-none tracking-tight;
@@ -62,24 +62,24 @@
 
   .card-footer {
     @apply flex items-center p-6 pt-0;
-  }
+}
 
   /* Button Components */
   .btn {
     @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-  }
+}
 
-  .btn-primary {
+.btn-primary {
     @apply btn bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2;
-  }
+}
 
-  .btn-secondary {
+.btn-secondary {
     @apply btn bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2;
-  }
+}
 
   .btn-destructive {
     @apply btn bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2;
-  }
+}
 
   .btn-outline {
     @apply btn border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2;
@@ -87,12 +87,12 @@
 
   .btn-ghost {
     @apply btn hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2;
-  }
+}
 
   /* Input Components */
   .input {
     @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-  }
+}
 
   .form-control {
     @apply input;
@@ -105,16 +105,16 @@
 
   .form-group {
     @apply space-y-2 mb-4;
-  }
+}
 
   .form-group label {
     @apply label;
-  }
+}
 
   /* Badge */
   .badge {
     @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
-  }
+}
 
   .badge-default {
     @apply badge border-transparent bg-primary text-primary-foreground hover:bg-primary/80;
@@ -122,24 +122,24 @@
 
   .badge-secondary {
     @apply badge border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80;
-  }
+}
 
   /* Modal */
   .modal-overlay {
     @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm;
-  }
+}
 
   .modal-content {
     @apply relative z-50 w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg;
-  }
+}
 
   .modal-header {
     @apply flex flex-col space-y-1.5 text-center sm:text-left mb-4;
-  }
+}
 
   .modal-title {
     @apply text-lg font-semibold leading-none tracking-tight;
-  }
+}
 
   .modal-footer {
     @apply flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4;
@@ -164,7 +164,7 @@
   }
 
   .net-worth {
-    @apply text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center my-8;
+    @apply text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent text-center my-8;
   }
 
   .pr-value {
@@ -177,83 +177,83 @@
 
   .breakdown-item {
     @apply flex justify-between items-center p-4 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-primary mb-2 shadow-sm;
-  }
+}
 
-  .collapse-header {
+.collapse-header {
     @apply w-full flex justify-between items-center p-5 bg-slate-50 dark:bg-slate-800 rounded-lg border-2 border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors;
-  }
+}
 
   .category-badge {
-    @apply inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-bold;
+    @apply inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-bold;
   }
 
   .rank-certificate-card {
-    @apply relative mt-6 p-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white text-center shadow-lg overflow-hidden;
+    @apply relative mt-6 p-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg text-white text-center shadow-lg overflow-hidden;
   }
 
   .certificate-icon {
     @apply text-5xl mb-4 filter drop-shadow-lg;
-  }
+}
 
   .certificate-title {
     @apply text-2xl font-bold mb-5 text-shadow;
-  }
+}
 
   .certificate-divider {
     @apply w-16 h-1 bg-white/50 mx-auto mb-5 rounded;
-  }
+}
 
   .income-summary {
     @apply grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-200 dark:border-blue-800;
   }
 
   .income-summary-value {
-    @apply text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent;
+    @apply text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent;
   }
 
   .loading-animation {
     @apply flex flex-col items-center justify-center p-10;
-  }
+}
 
   .loading-number {
-    @apply text-6xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse;
+    @apply text-6xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent animate-pulse;
   }
 
   .empty-state {
     @apply text-center py-12 text-muted-foreground;
-  }
+}
 
   .qrcode-image {
     @apply max-w-xs w-full h-auto my-5 border-4 border-primary rounded-lg p-4 bg-white;
-  }
+}
 
   .status-text {
     @apply text-lg text-foreground font-semibold my-5;
-  }
+}
 
   .error-message {
     @apply mt-5 p-0 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg shadow-sm overflow-hidden;
-  }
+}
 
   .error-content {
     @apply p-5;
-  }
+}
 
-  .error-item {
+.error-item {
     @apply flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-red-500 mb-2;
-  }
+}
 
-  .error-field {
+.error-field {
     @apply font-semibold text-foreground min-w-20 flex-shrink-0;
-  }
+}
 
-  .error-reason {
+.error-reason {
     @apply text-red-600 dark:text-red-400 flex-1;
-  }
+}
 
   .user-info {
     @apply flex items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700;
-  }
+}
 
   .user-info-content {
     @apply flex items-center gap-3;
@@ -261,11 +261,11 @@
 
   .user-details {
     @apply flex flex-col gap-1;
-  }
+}
 
   .user-name {
     @apply font-semibold text-foreground text-sm;
-  }
+}
 
   .user-email {
     @apply text-xs text-muted-foreground;
@@ -274,7 +274,7 @@
   /* Feature Cards */
   .feature-card {
     @apply bg-gradient-to-br from-slate-50 to-white dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-7 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500;
-  }
+}
 
   .feature-icon {
     @apply text-5xl text-center mb-4;
@@ -282,176 +282,176 @@
 
   .step-item {
     @apply flex gap-5 items-start p-5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500;
-  }
+}
 
   .step-number {
-    @apply flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg;
+    @apply flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-lg;
   }
 
   .cert-type-card {
     @apply bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-blue-500 text-center;
-  }
+}
 
   .cert-type-icon {
     @apply text-4xl mb-3;
-  }
+}
 
   .ai-feature-item {
     @apply bg-blue-50 dark:bg-blue-900/20 border-2 border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-500;
-  }
+}
 
   .ai-feature-icon {
     @apply text-3xl mb-3 text-center;
-  }
+}
 
   .tips-list li {
     @apply py-4 pl-8 relative text-foreground leading-relaxed text-base border-b border-slate-200 dark:border-slate-700;
-  }
+}
 
   .tips-list li:last-child {
     @apply border-b-0;
-  }
+}
 
   .tips-list li::before {
     @apply absolute left-0 text-xl;
     content: "💡";
-  }
+}
 
   .income-cert-item {
     @apply flex justify-between items-center p-4 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-blue-500 transition-all hover:shadow-md hover:translate-x-1;
-  }
+}
 
   .income-year-group {
     @apply bg-slate-50 dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700;
-  }
+}
 
   .income-year-header {
     @apply flex justify-between items-center mb-4 pb-3 border-b-2 border-slate-200 dark:border-slate-700;
-  }
+}
 
   .income-year-badge {
-    @apply inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-sm font-bold;
+    @apply inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-sm font-bold;
   }
 
-  .certificate-item-text {
+.certificate-item-text {
     @apply p-4 mb-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 transition-all hover:bg-slate-100 dark:hover:bg-slate-700 hover:shadow-md;
-  }
+}
 
-  .cert-badges-row {
+.cert-badges-row {
     @apply flex gap-2 mb-3 flex-wrap;
-  }
+}
 
   .cert-category-badge {
-    @apply inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-semibold;
+    @apply inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-semibold;
   }
 
-  .cert-type-badge {
+.cert-type-badge {
     @apply inline-block px-3 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-md text-xs font-semibold;
-  }
+}
 
-  .certificate-row {
+.certificate-row {
     @apply flex items-center justify-between gap-3;
-  }
+}
 
-  .cert-info-group {
+.cert-info-group {
     @apply flex-1 flex flex-col gap-1;
-  }
+}
 
-  .cert-info {
+.cert-info {
     @apply font-semibold text-foreground;
-  }
+}
 
-  .cert-value {
+.cert-value {
     @apply font-bold text-blue-600 dark:text-blue-400 text-sm;
-  }
+}
 
-  .cert-status {
+.cert-status {
     @apply text-green-600 dark:text-green-400 font-bold text-lg;
-  }
+}
 
-  .cert-time {
+.cert-time {
     @apply text-muted-foreground text-xs;
-  }
+}
 
-  .cert-actions {
+.cert-actions {
     @apply flex items-center gap-2;
-  }
+}
 
-  .btn-ai-analyze {
+.btn-ai-analyze {
     @apply btn-primary text-xs px-3 py-1.5 h-auto;
-  }
+}
 
-  .btn-delete {
+.btn-delete {
     @apply bg-transparent border-none cursor-pointer text-lg p-1 rounded-md transition-all opacity-70 hover:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/30 hover:scale-110;
-  }
+}
 
-  .asset-info-section {
+.asset-info-section {
     @apply bg-slate-50 dark:bg-slate-800 rounded-xl p-5 mb-5 border border-slate-200 dark:border-slate-700;
-  }
+}
 
-  .info-row {
+.info-row {
     @apply flex items-center py-3 border-b border-slate-200 dark:border-slate-700;
-  }
+}
 
-  .info-row:last-child {
+.info-row:last-child {
     @apply border-b-0;
-  }
+}
 
-  .info-label {
+.info-label {
     @apply font-semibold text-muted-foreground min-w-24 text-sm;
-  }
+}
 
-  .info-value {
+.info-value {
     @apply text-foreground font-medium flex-1 text-sm;
-  }
+}
 
   .certificate-reclaim-btn {
     @apply absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-semibold cursor-pointer transition-all hover:bg-white/30 hover:border-white/50 hover:-translate-y-0.5 hover:shadow-lg z-10;
   }
-
+  
   .certificate-reclaim-btn:disabled {
     @apply opacity-60 cursor-not-allowed;
   }
-
+  
   .reclaim-icon {
     @apply text-base inline-block transition-transform;
   }
 
   .certificate-reclaim-btn:hover .reclaim-icon {
     @apply rotate-180;
-  }
+}
 
-  .income-empty-state {
+.income-empty-state {
     @apply text-center py-12;
-  }
+}
 
-  .income-icon {
+.income-icon {
     @apply text-6xl mb-4 opacity-50;
-  }
+}
 
-  .income-empty-text {
+.income-empty-text {
     @apply text-xl text-foreground font-semibold mb-2;
-  }
+}
 
-  .income-empty-hint {
+.income-empty-hint {
     @apply text-sm text-muted-foreground;
-  }
+}
 
   .income-cert-description {
     @apply font-semibold text-foreground;
-  }
+}
 
   .income-cert-time {
     @apply text-xs text-muted-foreground;
-  }
+}
 
   .income-cert-value {
     @apply font-bold text-blue-600 dark:text-blue-400 text-lg;
-  }
+}
 
   .income-year-total {
     @apply text-xl font-bold text-blue-600 dark:text-blue-400;
-  }
+}
 
   .button-group {
     @apply flex gap-3 mt-6;
@@ -459,21 +459,21 @@
 
   .btn-danger {
     @apply btn-destructive;
-  }
+}
 
   .verified-info {
     @apply mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800;
-  }
+}
 
   .verified-info p {
     @apply text-blue-700 dark:text-blue-300 font-semibold;
-  }
+}
 
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .navbar {
       @apply flex-col items-stretch;
-    }
+}
 
     .nav-links {
       @apply justify-center;
@@ -481,29 +481,29 @@
 
     .nav-user-section {
       @apply justify-between border-t border-slate-200 dark:border-slate-700 pt-3 mt-2;
-    }
+}
 
     .logout-link {
       @apply ml-0;
-    }
+}
 
     .user-info {
       @apply flex-1;
-    }
+}
 
     .certificate-layout {
       @apply grid-cols-1;
-    }
+}
 
-    .income-summary {
+  .income-summary {
       @apply grid-cols-1 gap-4;
-    }
+  }
 
-    .income-summary-value {
+  .income-summary-value {
       @apply text-2xl;
-    }
+  }
 
-    .income-year-header {
+  .income-year-header {
       @apply flex-col items-start gap-2;
     }
 

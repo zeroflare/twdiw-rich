@@ -183,7 +183,7 @@ function updateAssets(assets) {
       <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
         <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
           <div>
-            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
+            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
             <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
           </div>
         </div>
@@ -231,7 +231,7 @@ function updateLiabilities(liabilities) {
       <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
         <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
           <div>
-            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
+            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
             <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
           </div>
         </div>
@@ -298,7 +298,7 @@ function displayRankCertificate(certificate) {
   });
   
   container.innerHTML = `
-    <div class="relative mt-6 p-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white text-center shadow-lg overflow-hidden">
+    <div class="relative mt-6 p-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg text-white text-center shadow-lg overflow-hidden">
       <button class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-semibold cursor-pointer transition-all hover:bg-white/30 hover:border-white/50 hover:-translate-y-0.5 hover:shadow-lg z-10" id="reclaim-rank-btn" title="重新領取憑證">
         <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         <span class="hidden md:inline">重新領取</span>
@@ -608,11 +608,11 @@ function displayIncomeCertificates(certificates) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
       <div class="text-center">
         <div class="text-sm text-slate-700 font-semibold mb-2">${currentYear} 年度收入</div>
-        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">$${formatNumber(currentYearIncome)}</div>
+        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">$${formatNumber(currentYearIncome)}</div>
       </div>
       <div class="text-center">
         <div class="text-sm text-slate-700 font-semibold mb-2">累計總收入</div>
-        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">$${formatNumber(totalIncome)}</div>
+        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">$${formatNumber(totalIncome)}</div>
       </div>
     </div>
   `;
@@ -626,7 +626,7 @@ function displayIncomeCertificates(certificates) {
     html += `
       <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-5">
         <div class="flex justify-between items-center mb-4 pb-3 border-b-2 border-slate-200">
-          <span class="inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-sm font-bold">${year} 年</span>
+          <span class="inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-sm font-bold">${year} 年</span>
           <span class="text-xl font-bold text-blue-600">$${formatNumber(yearTotal)}</span>
         </div>
         <div class="flex flex-col gap-3">

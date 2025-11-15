@@ -8,14 +8,14 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-5">
     <div class="max-w-7xl mx-auto mb-6">
-      <nav class="flex items-center justify-between rounded-lg border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 shadow-sm">
+      <nav class="flex items-center justify-between rounded-lg border bg-white px-6 py-4 shadow-md">
         <div class="flex gap-2 flex-wrap">
-          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">首頁</a>
-          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-blue-600 px-3 py-2 rounded-md">淨資產儀表板</a>
-          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">資產憑證登記</a>
-          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">憑證發行後台</a>
+          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">首頁</a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-blue-500 px-3 py-2 rounded-md bg-blue-50">淨資產儀表板</a>
+          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">資產憑證登記</a>
+          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">憑證發行後台</a>
         </div>
         <div class="flex items-center gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
@@ -27,13 +27,13 @@
               </div>
             </div>
           </div>
-          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-500 text-slate-600 px-3 py-2 rounded-md hover:bg-slate-50">登出</a>
         </div>
       </nav>
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-white text-center mb-8 text-4xl md:text-5xl font-bold text-shadow-lg">淨資產儀表板</h1>
+      <h1 class="text-slate-800 text-center mb-8 text-4xl md:text-5xl font-bold">淨資產儀表板</h1>
 
       <div id="loading" class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
         <p class="text-center py-10">載入中...</p>
@@ -43,7 +43,7 @@
         <!-- Net Worth Summary -->
         <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
           <h2 class="text-2xl font-semibold mb-6">目前淨資產</h2>
-          <div class="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center my-8" id="net-worth">$0</div>
+          <div class="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent text-center my-8" id="net-worth">$0</div>
 
           <!-- PR Value Display -->
           <div class="flex items-center justify-center gap-3 my-8 p-5 bg-yellow-50 rounded-lg border-2 border-yellow-200" id="pr-value" style="display: none">
@@ -58,7 +58,7 @@
 
           <!-- Claim Rank Certificate Button -->
           <div id="claim-rank-btn-container" style="margin-top: 20px; text-align: center;">
-            <button id="claim-rank-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-8 py-4 text-lg font-semibold hover:bg-blue-700 transition-colors" style="display: none;">
+            <button id="claim-rank-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-8 py-4 text-lg font-semibold hover:bg-blue-600 transition-colors shadow-sm" style="display: none;">
               <i data-lucide="award" class="w-5 h-5 mr-2"></i>
               領取財富階層憑證
             </button>
@@ -84,7 +84,7 @@
           <div class="mb-5">
             <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="assets-toggle">
               <span class="text-lg font-semibold text-slate-900">資產明細 (<span id="assets-count">0</span> 項)</span>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-600 transition-transform" id="assets-icon"></i>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform" id="assets-icon"></i>
             </button>
             <div id="assets-content" class="mt-3" style="display: none"></div>
           </div>
@@ -93,7 +93,7 @@
           <div class="mb-5">
             <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="liabilities-toggle">
               <span class="text-lg font-semibold text-slate-900">負債明細 (<span id="liabilities-count">0</span> 項)</span>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-600 transition-transform" id="liabilities-icon"></i>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform" id="liabilities-icon"></i>
             </button>
             <div id="liabilities-content" class="mt-3" style="display: none"></div>
           </div>

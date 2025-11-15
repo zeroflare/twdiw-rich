@@ -193,7 +193,7 @@ function displayCertificates(certificates) {
       return `
     <div class="p-4 mb-3 bg-slate-50 rounded-lg border border-slate-200 transition-all hover:bg-slate-100 hover:shadow-md" data-cert-id="${actualId}" data-is-liability="${isLiability}" data-is-income="${isIncome}">
       <div class="flex gap-2 mb-3 flex-wrap">
-        <div class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-semibold">${typeNames[cert.type] || "未知憑證"}</div>
+        <div class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-semibold">${typeNames[cert.type] || "未知憑證"}</div>
         <div class="inline-block px-3 py-1 bg-slate-200 text-slate-700 rounded-md text-xs font-semibold">${cert.typeName}</div>
       </div>
       <div class="flex items-center justify-between gap-3">
@@ -203,7 +203,7 @@ function displayCertificates(certificates) {
         </div>
         <div class="flex items-center gap-2">
           ${isAnalyzable
-            ? `<button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-3 py-1.5 text-xs font-semibold hover:bg-blue-700 transition-colors ${!userSettings.gemini_api_key ? 'opacity-50 cursor-not-allowed' : ''}" 
+            ? `<button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-3 py-1.5 text-xs font-semibold hover:bg-blue-600 transition-colors shadow-sm ${!userSettings.gemini_api_key ? 'opacity-50 cursor-not-allowed' : ''}" 
                  title="${!userSettings.gemini_api_key ? '請先設定 Gemini API Key' : 'AI 估值'}" 
                  ${!userSettings.gemini_api_key ? 'disabled' : ''}>
                  <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i>AI 估值
@@ -350,7 +350,7 @@ function showConfirmAnalysisModal(cert, certId, isLiability) {
         ${assetInfoHtml}
         <div class="flex gap-3 justify-end mt-6">
           <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" id="confirm-modal-cancel">取消</button>
-          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" id="confirm-modal-confirm">確認開始估值</button>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-4 py-2 font-semibold hover:bg-blue-600 shadow-sm transition-colors" id="confirm-modal-confirm">確認開始估值</button>
         </div>
       </div>
     </div>
@@ -479,7 +479,7 @@ function showAnalysisModal(assetName) {
       <div class="p-6">
         <p class="mb-5 text-slate-700">正在估值：<strong>${assetName}</strong></p>
         <div class="flex flex-col items-center justify-center p-10">
-          <div class="text-6xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse" id="loading-number">0</div>
+          <div class="text-6xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent animate-pulse" id="loading-number">0</div>
           <p class="text-slate-500 mt-3">估值中...</p>
         </div>
       </div>
@@ -556,12 +556,12 @@ function showAnalysisResult(estimatedValue, certId, isLiability, cert) {
     <div class="text-center">
       <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
       <p class="mb-5 text-slate-700 font-semibold">估值完成！</p>
-      <div class="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent my-5">
+      <div class="text-4xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent my-5">
         $${formatNumber(estimatedValue)}
       </div>
       <p class="text-slate-500 mb-6">AI 預估價值</p>
       <div class="flex gap-3 justify-center">
-        <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="saveAnalysisResult('${certId}', ${isLiability}, ${estimatedValue})">
+        <button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-4 py-2 font-semibold hover:bg-blue-600 shadow-sm transition-colors" onclick="saveAnalysisResult('${certId}', ${isLiability}, ${estimatedValue})">
           <i data-lucide="save" class="w-4 h-4 mr-2"></i>儲存價值
         </button>
         <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" onclick="closeAnalysisModal()">
@@ -644,7 +644,7 @@ async function saveAnalysisResult(certId, isLiability, estimatedValue) {
           <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
           <p class="mb-5 text-green-600 font-semibold">儲存成功</p>
           <p class="text-slate-500 mb-6">價值已更新為 $${formatNumber(estimatedValue)}</p>
-          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="closeAnalysisModal(); void loadCertificates();">
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-4 py-2 font-semibold hover:bg-blue-600 shadow-sm transition-colors" onclick="closeAnalysisModal(); void loadCertificates();">
             確定
           </button>
         </div>
@@ -860,7 +860,7 @@ async function showSettingsModal() {
         </div>
         <div class="flex gap-3 justify-end mt-6">
           <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" onclick="closeSettingsModal()">取消</button>
-          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="saveSettings()">
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-4 py-2 font-semibold hover:bg-blue-600 shadow-sm transition-colors" onclick="saveSettings()">
             <i data-lucide="save" class="w-4 h-4 mr-2"></i>儲存
           </button>
         </div>
@@ -939,7 +939,7 @@ async function saveSettings() {
         <div class="text-center py-5">
           <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
           <p class="mb-5 text-green-600 font-semibold">${message}</p>
-          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="closeSettingsModal()">確定</button>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-4 py-2 font-semibold hover:bg-blue-600 shadow-sm transition-colors" onclick="closeSettingsModal()">確定</button>
         </div>
       `;
       if (typeof lucide !== 'undefined') {
