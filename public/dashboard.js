@@ -1,6 +1,7 @@
 /* eslint-env browser */
 // Dashboard JavaScript
 let pollingInterval = null;
+let countdownInterval = null;
 let animatedNetWorth = 0;
 
 // 頁面載入時初始化
@@ -11,17 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   void loadUserInfo();
 
   // 設置事件監聽器
-  document.getElementById("assets-toggle")?.addEventListener("click", () => {
-    toggleSection("assets-content", "assets-toggle");
-  });
-
-  document.getElementById("liabilities-toggle")?.addEventListener("click", () => {
-    toggleSection("liabilities-content", "liabilities-toggle");
-  });
-
   document.getElementById("claim-rank-btn")?.addEventListener("click", claimRankCertificate);
   document.getElementById("close-modal")?.addEventListener("click", closeModal);
   document.getElementById("close-modal-btn")?.addEventListener("click", closeModal);
+  document.getElementById("refresh-btn")?.addEventListener("click", () => {
+    void refreshDashboard();
+  });
   
   // Initialize Lucide icons
   if (typeof lucide !== 'undefined') {
@@ -51,6 +47,7 @@ async function loadUserInfo() {
       document.getElementById("user-name").textContent = user.name || user.email || "使用者";
       document.getElementById("user-email").textContent = user.email || "";
       document.getElementById("user-info").style.display = "flex";
+      
       // Refresh Lucide icons
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -124,6 +121,143 @@ function updateSummary(summary) {
     document.getElementById("pr-value").style.display = "flex";
     document.getElementById("pr-percentage").textContent = summary.prValue.toFixed(1);
   }
+
+  // 計算並顯示資產負債比例
+  updateAssetLiabilityRatio(summary.assets, summary.liabilities);
+  
+  // 更新統計卡片
+  updateStatisticsCards(summary);
+}
+
+// 更新資產負債比例
+function updateAssetLiabilityRatio(assets, liabilities) {
+  const ratioEl = document.getElementById("asset-liability-ratio");
+  if (!ratioEl) return;
+  
+  if (assets === 0 && liabilities === 0) {
+    ratioEl.textContent = "";
+    return;
+  }
+  
+  const total = assets + liabilities;
+  if (total === 0) {
+    ratioEl.textContent = "";
+    return;
+  }
+  
+  const assetPercent = ((assets / total) * 100).toFixed(1);
+  const liabilityPercent = ((liabilities / total) * 100).toFixed(1);
+  
+  ratioEl.innerHTML = `
+    <span class="text-emerald-600 font-semibold">資產 ${assetPercent}%</span>
+    <span class="mx-2">·</span>
+    <span class="text-red-600 font-semibold">負債 ${liabilityPercent}%</span>
+  `;
+}
+
+// 更新統計卡片
+function updateStatisticsCards(summary) {
+  const container = document.getElementById("statistics-cards");
+  if (!container) return;
+  
+  const netWorth = summary.netWorth;
+  const assets = summary.assets;
+  const liabilities = summary.liabilities;
+  
+  // 計算負債比率
+  const debtRatio = assets > 0 ? ((liabilities / assets) * 100).toFixed(1) : 0;
+  
+  // 計算健康度評分（簡單的評分系統）
+  let healthScore = 100;
+  let healthLabel = "優秀";
+  let healthColor = "emerald";
+  
+  if (debtRatio > 50) {
+    healthScore = 50;
+    healthLabel = "需注意";
+    healthColor = "orange";
+  } else if (debtRatio > 30) {
+    healthScore = 70;
+    healthLabel = "良好";
+    healthColor = "yellow";
+  }
+  
+  if (netWorth < 0) {
+    healthScore = 20;
+    healthLabel = "需改善";
+    healthColor = "red";
+  }
+  
+  container.innerHTML = `
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-sm text-slate-600 font-medium">財務健康度</div>
+        <i data-lucide="activity" class="w-5 h-5 text-blue-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-blue-600 mb-1">${healthScore}</div>
+      <div class="text-xs text-slate-500">${healthLabel}</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-sm text-slate-600 font-medium">負債比率</div>
+        <i data-lucide="percent" class="w-5 h-5 text-slate-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-slate-700 mb-1">${debtRatio}%</div>
+      <div class="text-xs text-slate-500">${debtRatio < 30 ? "健康" : debtRatio < 50 ? "可接受" : "偏高"}</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-sm text-slate-600 font-medium">資產項目</div>
+        <i data-lucide="layers" class="w-5 h-5 text-slate-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-slate-700 mb-1" id="stat-assets-count">0</div>
+      <div class="text-xs text-slate-500">項資產記錄</div>
+    </div>
+  `;
+  
+  // 初始化 Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+
+// 重新整理儀表板
+async function refreshDashboard() {
+  const refreshBtn = document.getElementById("refresh-btn");
+  if (refreshBtn) {
+    const icon = refreshBtn.querySelector("i");
+    if (icon) {
+      icon.setAttribute("data-lucide", "loader-2");
+      icon.classList.add("animate-spin");
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
+    refreshBtn.disabled = true;
+  }
+  
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("content").style.display = "none";
+  
+  try {
+    await Promise.all([
+      loadDashboardData(),
+      loadRankCertificate(),
+      loadIncomeCertificates(),
+    ]);
+  } finally {
+    if (refreshBtn) {
+      const icon = refreshBtn.querySelector("i");
+      if (icon) {
+        icon.setAttribute("data-lucide", "refresh-cw");
+        icon.classList.remove("animate-spin");
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      }
+      refreshBtn.disabled = false;
+    }
+  }
 }
 
 // 動畫顯示淨資產
@@ -159,12 +293,29 @@ function animateNetWorth(targetValue) {
 
 // 更新資產列表
 function updateAssets(assets) {
+  const totalAssets = assets.reduce((sum, asset) => sum + (asset.current_value || 0), 0);
+  
   document.getElementById("assets-count").textContent = assets.length;
+  document.getElementById("assets-total-display").textContent = formatNumber(totalAssets);
+  document.getElementById("stat-assets-count").textContent = assets.length;
 
   const container = document.getElementById("assets-content");
+  if (!container) return;
+  
+  // 確保容器預設顯示
+  container.style.display = "block";
+  
   if (assets.length === 0) {
-    container.innerHTML =
-      '<div class="py-5 text-center text-slate-500">尚無資產記錄</div>';
+    container.innerHTML = `
+      <div class="py-12 text-center">
+        <i data-lucide="trending-up" class="w-16 h-16 mx-auto mb-4 text-slate-400 opacity-50"></i>
+        <div class="text-lg text-slate-700 font-semibold mb-2">尚無資產記錄</div>
+        <div class="text-sm text-slate-500">請前往「資產憑證登記」頁面登記資產憑證</div>
+      </div>
+    `;
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     return;
   }
 
@@ -176,42 +327,85 @@ function updateAssets(assets) {
     REAL_ESTATE: "不動產",
     VEHICLE: "車輛",
   };
+  
+  const typeColors = {
+    CASH_AND_EQUIVALENTS: "from-emerald-500 to-teal-600",
+    SECURITIES: "from-blue-500 to-indigo-600",
+    REAL_ESTATE: "from-purple-500 to-pink-600",
+    VEHICLE: "from-orange-500 to-red-600",
+  };
 
   let html = "";
   for (const [type, items] of Object.entries(grouped)) {
+    const typeTotal = items.reduce((sum, item) => sum + (item.current_value || 0), 0);
+    const typePercent = totalAssets > 0 ? ((typeTotal / totalAssets) * 100).toFixed(1) : 0;
+    
     html += `
-      <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
-        <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
-          <div>
-            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
-            <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
+      <div class="mb-4 p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <span class="inline-block px-3 py-1.5 bg-emerald-500 text-white rounded-md text-sm font-semibold">${typeNames[type] || type}</span>
+            <span class="text-sm text-slate-500 font-medium">${items.length} 項</span>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-slate-900">$${formatNumber(typeTotal)}</div>
+            <div class="text-xs text-slate-500">佔 ${typePercent}%</div>
           </div>
         </div>
-        ${items
-          .map(
-            (asset) => `
-          <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-600 mb-2 shadow-sm">
-            <span class="font-semibold text-slate-900">${asset.asset_name}</span>
-            <span class="font-bold text-blue-600">$${formatNumber(asset.current_value)}</span>
-          </div>
-        `
-          )
-          .join("")}
+        <div class="space-y-3">
+          ${items
+            .map(
+              (asset) => `
+            <div class="flex justify-between items-start p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all">
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-slate-900 mb-1">${asset.asset_name}</div>
+                ${asset.asset_type === "REAL_ESTATE" && asset.location ? `<div class="text-xs text-slate-500 flex items-center gap-1 mt-1"><i data-lucide="map-pin" class="w-3 h-3"></i>${asset.location}</div>` : ""}
+                ${asset.asset_type === "VEHICLE" && asset.model_no ? `<div class="text-xs text-slate-500 flex items-center gap-1 mt-1"><i data-lucide="car" class="w-3 h-3"></i>${asset.model_no}${asset.model_year ? ` · ${asset.model_year}年` : ""}</div>` : ""}
+              </div>
+              <div class="ml-4 text-right flex-shrink-0">
+                <div class="font-bold text-emerald-600 text-lg">$${formatNumber(asset.current_value || 0)}</div>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
       </div>
     `;
   }
 
   container.innerHTML = html;
+  
+  // 初始化 Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 // 更新負債列表
 function updateLiabilities(liabilities) {
+  const totalLiabilities = liabilities.reduce((sum, liability) => sum + (liability.remaining_balance || 0), 0);
+  
   document.getElementById("liabilities-count").textContent = liabilities.length;
+  document.getElementById("liabilities-total-display").textContent = formatNumber(totalLiabilities);
 
   const container = document.getElementById("liabilities-content");
+  if (!container) return;
+  
+  // 確保容器預設顯示
+  container.style.display = "block";
+  
   if (liabilities.length === 0) {
-    container.innerHTML =
-      '<div class="py-5 text-center text-slate-500">尚無負債記錄</div>';
+    container.innerHTML = `
+      <div class="py-12 text-center">
+        <i data-lucide="trending-down" class="w-16 h-16 mx-auto mb-4 text-slate-400 opacity-50"></i>
+        <div class="text-lg text-slate-700 font-semibold mb-2">尚無負債記錄</div>
+        <div class="text-sm text-slate-500">恭喜！目前沒有負債</div>
+      </div>
+    `;
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     return;
   }
 
@@ -224,32 +418,59 @@ function updateLiabilities(liabilities) {
     CAR_LOAN: "車貸",
     CREDIT_CARD_DEBT: "信用卡債務",
   };
+  
+  const typeColors = {
+    MORTGAGE: "from-red-500 to-orange-600",
+    PERSONAL_LOAN: "from-pink-500 to-rose-600",
+    STUDENT_LOAN: "from-purple-500 to-indigo-600",
+    CAR_LOAN: "from-orange-500 to-red-600",
+    CREDIT_CARD_DEBT: "from-red-600 to-pink-600",
+  };
 
   let html = "";
   for (const [type, items] of Object.entries(grouped)) {
+    const typeTotal = items.reduce((sum, item) => sum + (item.remaining_balance || 0), 0);
+    const typePercent = totalLiabilities > 0 ? ((typeTotal / totalLiabilities) * 100).toFixed(1) : 0;
+    
     html += `
-      <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
-        <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
-          <div>
-            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
-            <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
+      <div class="mb-4 p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <span class="inline-block px-3 py-1.5 bg-red-500 text-white rounded-md text-sm font-semibold">${typeNames[type] || type}</span>
+            <span class="text-sm text-slate-500 font-medium">${items.length} 項</span>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-slate-900">$${formatNumber(typeTotal)}</div>
+            <div class="text-xs text-slate-500">佔 ${typePercent}%</div>
           </div>
         </div>
-        ${items
-          .map(
-            (liability) => `
-          <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-600 mb-2 shadow-sm">
-            <span class="font-semibold text-slate-900">${liability.liability_name}</span>
-            <span class="font-bold text-blue-600">$${formatNumber(liability.remaining_balance)}</span>
-          </div>
-        `
-          )
-          .join("")}
+        <div class="space-y-3">
+          ${items
+            .map(
+              (liability) => `
+            <div class="flex justify-between items-start p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all">
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-slate-900 mb-1">${liability.liability_name}</div>
+                ${liability.interest_rate ? `<div class="text-xs text-slate-500 flex items-center gap-1 mt-1"><i data-lucide="percent" class="w-3 h-3"></i>利率 ${liability.interest_rate}%</div>` : ""}
+              </div>
+              <div class="ml-4 text-right flex-shrink-0">
+                <div class="font-bold text-red-600 text-lg">$${formatNumber(liability.remaining_balance || 0)}</div>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
       </div>
     `;
   }
 
   container.innerHTML = html;
+  
+  // 初始化 Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 // 載入財富階層憑證
@@ -459,11 +680,32 @@ function startPolling(transactionId) {
         }
       }
 
-      // 5 秒後自動關閉
-      setTimeout(() => {
-        closeModal();
-        void loadRankCertificate();
-      }, 5000);
+      // 倒數計時並自動關閉
+      let countdown = 5;
+      const countdownElement = document.getElementById("countdown-timer");
+      if (countdownElement) {
+        // 清除之前的倒數計時器（如果存在）
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+        countdownElement.textContent = countdown;
+        countdownInterval = setInterval(() => {
+          countdown--;
+          countdownElement.textContent = countdown;
+          if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            closeModal();
+            void loadRankCertificate();
+          }
+        }, 1000);
+      } else {
+        // 如果找不到倒數元素，使用原來的 setTimeout
+        setTimeout(() => {
+          closeModal();
+          void loadRankCertificate();
+        }, 5000);
+      }
     } catch (err) {
       console.error("Error polling credential:", err);
     }
@@ -477,33 +719,14 @@ function closeModal() {
     clearInterval(pollingInterval);
     pollingInterval = null;
   }
-}
-
-// 切換區塊顯示
-function toggleSection(contentId, toggleId) {
-  const content = document.getElementById(contentId);
-  const toggle = document.getElementById(toggleId);
-  const iconId = contentId === "assets-content" ? "assets-icon" : "liabilities-icon";
-  const icon = document.getElementById(iconId);
-
-  if (content.style.display === "none") {
-    content.style.display = "block";
-    if (icon) {
-      icon.setAttribute("data-lucide", "chevron-down");
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
-  } else {
-    content.style.display = "none";
-    if (icon) {
-      icon.setAttribute("data-lucide", "chevron-right");
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
   }
 }
+
+// 此函數已不再需要，因為明細預設展開
+// 保留以備將來需要時使用
 
 // 工具函數
 function deduplicateByUuid(items) {
@@ -563,7 +786,7 @@ async function loadIncomeCertificates() {
 
 // 顯示年收入憑證
 function displayIncomeCertificates(certificates) {
-  const section = document.getElementById("income-section");
+  const section = document.getElementById("income-info");
   const content = document.getElementById("income-content");
   
   if (!certificates || certificates.length === 0) {
@@ -605,14 +828,22 @@ function displayIncomeCertificates(certificates) {
 
   // 顯示總覽
   html += `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-      <div class="text-center">
-        <div class="text-sm text-slate-700 font-semibold mb-2">${currentYear} 年度收入</div>
-        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">$${formatNumber(currentYearIncome)}</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+      <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-sm text-slate-600 font-medium">${currentYear} 年度收入</div>
+          <i data-lucide="calendar" class="w-5 h-5 text-slate-400"></i>
+        </div>
+        <div class="text-3xl md:text-4xl font-extrabold text-slate-900">$${formatNumber(currentYearIncome)}</div>
+        <div class="text-xs text-slate-500 mt-2">${certificates.filter(cert => cert.year === currentYear).length} 筆記錄</div>
       </div>
-      <div class="text-center">
-        <div class="text-sm text-slate-700 font-semibold mb-2">累計總收入</div>
-        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">$${formatNumber(totalIncome)}</div>
+      <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-sm text-slate-600 font-medium">累計總收入</div>
+          <i data-lucide="trending-up" class="w-5 h-5 text-slate-400"></i>
+        </div>
+        <div class="text-3xl md:text-4xl font-extrabold text-slate-900">$${formatNumber(totalIncome)}</div>
+        <div class="text-xs text-slate-500 mt-2">共 ${certificates.length} 筆記錄</div>
       </div>
     </div>
   `;
@@ -624,19 +855,30 @@ function displayIncomeCertificates(certificates) {
     const yearTotal = yearCerts.reduce((sum, cert) => sum + cert.value, 0);
     
     html += `
-      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-5">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b-2 border-slate-200">
-          <span class="inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-sm font-bold">${year} 年</span>
-          <span class="text-xl font-bold text-blue-600">$${formatNumber(yearTotal)}</span>
+      <div class="bg-white rounded-xl p-5 border border-slate-200 mb-4 shadow-sm">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <span class="inline-block px-3 py-1.5 bg-slate-700 text-white rounded-md text-sm font-semibold">${year} 年</span>
+            <span class="text-xs text-slate-500 font-medium">${yearCerts.length} 筆記錄</span>
+          </div>
+          <div class="text-right">
+            <div class="text-xl md:text-2xl font-bold text-slate-900">$${formatNumber(yearTotal)}</div>
+            <div class="text-xs text-slate-500">年度總額</div>
+          </div>
         </div>
         <div class="flex flex-col gap-3">
           ${yearCerts.map(cert => `
-            <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-500 transition-all hover:shadow-md hover:translate-x-1">
-              <div class="flex-1 flex flex-col gap-1">
-                <div class="font-semibold text-slate-900">${cert.description || "年收入憑證"}</div>
-                <div class="text-xs text-slate-500">${cert.created_at ? new Date(cert.created_at * 1000).toLocaleDateString("zh-TW") : ""}</div>
+            <div class="flex justify-between items-start p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all">
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-slate-900 mb-1">${cert.description || "年收入憑證"}</div>
+                <div class="text-xs text-slate-500 flex items-center gap-1">
+                  <i data-lucide="calendar" class="w-3 h-3"></i>
+                  ${cert.created_at ? new Date(cert.created_at * 1000).toLocaleDateString("zh-TW", { year: "numeric", month: "long", day: "numeric" }) : ""}
+                </div>
               </div>
-              <div class="font-bold text-blue-600 text-lg">$${formatNumber(cert.value)}</div>
+              <div class="ml-4 text-right flex-shrink-0">
+                <div class="font-bold text-slate-900 text-lg">$${formatNumber(cert.value)}</div>
+              </div>
             </div>
           `).join("")}
         </div>
@@ -650,5 +892,13 @@ function displayIncomeCertificates(certificates) {
   // Refresh Lucide icons
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
+  }
+}
+
+// 更新統計卡片中的資產數量（當資產更新時）
+function updateStatisticsCardsAssets(count) {
+  const statAssetsCount = document.getElementById("stat-assets-count");
+  if (statAssetsCount) {
+    statAssetsCount.textContent = count;
   }
 }

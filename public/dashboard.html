@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-6">
+    <!-- 導航列 -->
     <div class="max-w-7xl mx-auto mb-6">
       <nav class="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 md:px-6 py-3 md:py-4 shadow-lg shadow-slate-200/50">
         <div class="flex gap-1 md:gap-2 flex-wrap items-center">
@@ -43,13 +44,69 @@
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-8 md:mb-10">
+      <div class="text-center mb-8 md:mb-10 mt-8">
         <h1 class="text-slate-900 text-center mb-3 text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">
           淨資產儀表板
         </h1>
         <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
           即時掌握您的財務狀況與財富排名
         </p>
+        
+        <!-- 目錄導航 - 初始位置 -->
+        <div id="toc-initial" class="mb-8 mt-6">
+          <div class="inline-block rounded-xl border-2 border-slate-200 bg-white/95 backdrop-blur-md shadow-lg shadow-slate-200/50 px-3 md:px-6 py-3 md:py-4 max-w-full">
+            <div class="flex items-center gap-1.5 md:gap-3 flex-wrap justify-center">
+              <span class="text-xs md:text-sm font-semibold text-slate-500 mr-1 md:mr-2 hidden md:inline-flex items-center gap-1">
+                <i data-lucide="list" class="w-3 h-3"></i>
+                <span>快速導航：</span>
+              </span>
+              <a href="#net-worth-summary" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="net-worth-summary">
+                <i data-lucide="trending-up" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">淨資產摘要</span>
+              </a>
+              <a href="#statistics" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="statistics">
+                <i data-lucide="activity" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">統計分析</span>
+              </a>
+              <a href="#income-info" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="income-info">
+                <i data-lucide="dollar-sign" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">年收入資訊</span>
+              </a>
+              <a href="#breakdown" class="table-of-contents-link inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="breakdown">
+                <i data-lucide="layers" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">資產負債明細</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 目錄導航 - 固定浮動版本 -->
+        <div id="toc-fixed" class="fixed top-0 left-0 right-0 z-40 px-4 md:px-6 py-2 md:py-3 bg-white/98 backdrop-blur-lg border-b border-slate-200 shadow-lg transition-all duration-300 transform -translate-y-full opacity-0">
+          <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-1.5 md:gap-3 flex-wrap justify-center">
+              <span class="text-xs md:text-sm font-semibold text-slate-500 mr-1 md:mr-2 hidden md:inline-flex items-center gap-1">
+                <i data-lucide="list" class="w-3 h-3"></i>
+                <span>快速導航：</span>
+              </span>
+              <a href="#net-worth-summary" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="net-worth-summary">
+                <i data-lucide="trending-up" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">淨資產摘要</span>
+              </a>
+              <a href="#statistics" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="statistics">
+                <i data-lucide="activity" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">統計分析</span>
+              </a>
+              <a href="#income-info" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="income-info">
+                <i data-lucide="dollar-sign" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">年收入資訊</span>
+              </a>
+              <a href="#breakdown" class="table-of-contents-link-fixed inline-flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 md:py-2 text-xs md:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 active:scale-95" data-section="breakdown">
+                <i data-lucide="layers" class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap">資產負債明細</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="loading" class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-8 md:p-10 mb-6">
@@ -61,18 +118,37 @@
 
       <div id="content" style="display: none">
         <!-- Net Worth Summary -->
-        <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="p-2 bg-blue-500 rounded-lg">
-              <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+        <div id="net-worth-summary" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-md">
+                <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900">目前淨資產</h2>
             </div>
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">目前淨資產</h2>
+            <button id="refresh-btn" class="p-2 rounded-lg hover:bg-slate-100 transition-colors" title="重新整理">
+              <i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i>
+            </button>
           </div>
-          <div class="text-5xl md:text-6xl font-extrabold text-blue-600 text-center my-8" id="net-worth">$0</div>
+          
+          <div class="text-center mb-8">
+            <div class="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent my-6" id="net-worth">$0</div>
+            <div class="flex items-center justify-center gap-6 mt-6">
+              <div class="flex flex-col items-center p-5 bg-white rounded-xl border border-slate-200 shadow-sm min-w-[140px] hover:shadow-md transition-shadow">
+                <div class="text-xs text-slate-600 font-medium mb-2">總資產</div>
+                <div class="text-xl md:text-2xl font-bold text-emerald-600">$<span id="total-assets">0</span></div>
+              </div>
+              <div class="flex flex-col items-center p-5 bg-white rounded-xl border border-slate-200 shadow-sm min-w-[140px] hover:shadow-md transition-shadow">
+                <div class="text-xs text-slate-600 font-medium mb-2">總負債</div>
+                <div class="text-xl md:text-2xl font-bold text-red-600">$<span id="total-liabilities">0</span></div>
+              </div>
+            </div>
+            <div class="mt-4 text-sm text-slate-500" id="asset-liability-ratio"></div>
+          </div>
 
           <!-- PR Value Display -->
-          <div class="flex items-center justify-center gap-4 my-8 p-6 bg-yellow-50 rounded-xl border-2 border-yellow-300 shadow-md" id="pr-value" style="display: none">
-            <div class="p-3 bg-yellow-500 rounded-lg shadow-lg">
+          <div class="flex items-center justify-center gap-4 my-6 p-6 bg-white rounded-xl border border-slate-200 shadow-md" id="pr-value" style="display: none">
+            <div class="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg">
               <i data-lucide="trophy" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
             </div>
             <div class="text-base md:text-lg text-slate-800 font-semibold">
@@ -85,22 +161,24 @@
 
           <!-- Claim Rank Certificate Button -->
           <div id="claim-rank-btn-container" style="margin-top: 20px; text-align: center;">
-            <button id="claim-rank-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-8 py-4 text-lg font-semibold hover:bg-blue-600 transition-colors shadow-sm" style="display: none;">
+            <button id="claim-rank-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-8 py-4 text-lg font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg" style="display: none;">
               <i data-lucide="award" class="w-5 h-5 mr-2"></i>
               領取財富階層憑證
             </button>
           </div>
+        </div>
 
-          <div class="flex justify-around mt-8 pt-6 border-t-2 border-slate-200">
-            <div class="text-lg text-slate-700 font-medium">資產: $<span id="total-assets">0</span></div>
-            <div class="text-lg text-slate-700 font-medium">負債: $<span id="total-liabilities">0</span></div>
+        <!-- Statistics Cards -->
+        <div id="statistics" class="scroll-mt-24 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div id="statistics-cards" class="contents">
+            <!-- Cards will be dynamically generated -->
           </div>
         </div>
 
           <!-- Annual Income Section -->
-        <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6" id="income-section" style="display: none">
+        <div id="income-info" class="scroll-mt-24 rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6" style="display: none">
           <div class="flex items-center gap-3 mb-6">
-            <div class="p-2 bg-blue-500 rounded-lg">
+            <div class="p-2 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg shadow-md">
               <i data-lucide="dollar-sign" class="w-6 h-6 text-white"></i>
             </div>
             <h2 class="text-2xl md:text-3xl font-bold text-slate-900">年收入資訊</h2>
@@ -110,34 +188,42 @@
           </div>
         </div>
 
-        <!-- Detailed Breakdown -->
-        <div class="mb-6">
-          <!-- Assets Section -->
-          <div class="mb-5">
-            <button class="w-full flex justify-between items-center p-5 md:p-6 bg-blue-50 rounded-xl border-2 border-blue-200 cursor-pointer hover:bg-blue-100 hover:border-blue-300 hover:shadow-md transition-all duration-200 group" id="assets-toggle">
-              <div class="flex items-center gap-3">
-                <div class="p-2 bg-blue-500 rounded-lg group-hover:scale-110 transition-transform">
+        <!-- Detailed Breakdown - Book Layout -->
+        <div id="breakdown" class="scroll-mt-24 mb-6">
+          <div class="mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">資產負債明細</h2>
+            <p class="text-sm text-slate-600">完整的資產與負債清單，左右對照查看</p>
+        </div>
+
+          <!-- Book-style Layout: Assets on Left, Liabilities on Right -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            <!-- Assets Section (Left Page) -->
+            <div class="bg-white rounded-xl border-2 border-slate-200 shadow-lg p-5 md:p-6">
+              <div class="flex items-center gap-3 mb-4 pb-4 border-b border-slate-200">
+                <div class="p-2 bg-emerald-500 rounded-lg">
                   <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
                 </div>
-                <span class="text-base md:text-lg font-bold text-slate-900">資產明細 (<span id="assets-count" class="text-blue-600">0</span> 項)</span>
+                <div class="flex flex-col flex-1">
+                  <span class="text-lg md:text-xl font-bold text-slate-900">資產明細</span>
+                  <span class="text-xs text-slate-500 font-medium"><span id="assets-count">0</span> 項 · 總值 $<span id="assets-total-display">0</span></span>
+                </div>
               </div>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-500 transition-transform group-hover:translate-x-1" id="assets-icon"></i>
-            </button>
-            <div id="assets-content" class="mt-3" style="display: none"></div>
+              <div id="assets-content" class="mt-3"></div>
           </div>
 
-          <!-- Liabilities Section -->
-          <div class="mb-5">
-            <button class="w-full flex justify-between items-center p-5 md:p-6 bg-red-50 rounded-xl border-2 border-red-200 cursor-pointer hover:bg-red-100 hover:border-red-300 hover:shadow-md transition-all duration-200 group" id="liabilities-toggle">
-              <div class="flex items-center gap-3">
-                <div class="p-2 bg-red-500 rounded-lg group-hover:scale-110 transition-transform">
+            <!-- Liabilities Section (Right Page) -->
+            <div class="bg-white rounded-xl border-2 border-slate-200 shadow-lg p-5 md:p-6">
+              <div class="flex items-center gap-3 mb-4 pb-4 border-b border-slate-200">
+                <div class="p-2 bg-red-500 rounded-lg">
                   <i data-lucide="trending-down" class="w-5 h-5 text-white"></i>
                 </div>
-                <span class="text-base md:text-lg font-bold text-slate-900">負債明細 (<span id="liabilities-count" class="text-red-600">0</span> 項)</span>
+                <div class="flex flex-col flex-1">
+                  <span class="text-lg md:text-xl font-bold text-slate-900">負債明細</span>
+                  <span class="text-xs text-slate-500 font-medium"><span id="liabilities-count">0</span> 項 · 總額 $<span id="liabilities-total-display">0</span></span>
+                </div>
               </div>
-              <i data-lucide="chevron-right" class="w-5 h-5 text-red-500 transition-transform group-hover:translate-x-1" id="liabilities-icon"></i>
-            </button>
-            <div id="liabilities-content" class="mt-3" style="display: none"></div>
+              <div id="liabilities-content" class="mt-3"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +246,7 @@
             <p class="text-lg text-slate-900 font-semibold my-5" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
             <div id="success-info" style="display: none" class="mt-5 p-4 bg-green-50 rounded-lg">
               <p class="my-2 text-green-800 font-semibold"><strong>CID:</strong> <span id="credential-cid"></span></p>
-              <p class="text-sm text-green-600 italic">將在 5 秒後自動關閉</p>
+              <p class="text-sm text-green-600 italic">將在 <span id="countdown-timer">5</span> 秒後自動關閉</p>
             </div>
           </div>
         </div>
@@ -173,6 +259,128 @@
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
+      
+      // 目錄導航功能
+      document.addEventListener('DOMContentLoaded', () => {
+        const tocInitial = document.getElementById('toc-initial');
+        const tocFixed = document.getElementById('toc-fixed');
+        
+        if (!tocInitial || !tocFixed) return;
+        
+        const headerHeight = tocInitial.offsetTop + tocInitial.offsetHeight;
+        
+        // 滾動時顯示/隱藏固定導航
+        let ticking = false;
+        function handleScroll() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          
+          if (scrollTop > headerHeight) {
+            // 顯示固定導航
+            if (tocFixed.classList.contains('opacity-0')) {
+              tocFixed.classList.remove('-translate-y-full', 'opacity-0');
+              tocFixed.classList.add('translate-y-0', 'opacity-100');
+              // 確保圖標正確初始化
+              if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+              }
+            }
+          } else {
+            // 隱藏固定導航
+            if (!tocFixed.classList.contains('opacity-0')) {
+              tocFixed.classList.add('-translate-y-full', 'opacity-0');
+              tocFixed.classList.remove('translate-y-0', 'opacity-100');
+            }
+          }
+          
+          ticking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(handleScroll);
+            ticking = true;
+          }
+        });
+        
+        // 平滑滾動到對應區塊（處理兩個版本的連結）
+        function setupTocLinks(selector) {
+          document.querySelectorAll(selector).forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const targetId = link.getAttribute('href').substring(1);
+              const targetElement = document.getElementById(targetId);
+              
+              if (targetElement) {
+                // 根據固定導航是否顯示來調整偏移量
+                const isFixedVisible = !tocFixed.classList.contains('opacity-0');
+                const offsetTop = targetElement.offsetTop - (isFixedVisible ? 100 : 80);
+                window.scrollTo({
+                  top: Math.max(0, offsetTop),
+                  behavior: 'smooth'
+                });
+                
+                // 更新活動狀態
+                updateActiveLink(targetId);
+              }
+            });
+          });
+        }
+        
+        setupTocLinks('.table-of-contents-link');
+        setupTocLinks('.table-of-contents-link-fixed');
+        
+        // 滾動時更新活動狀態
+        let sections = ['net-worth-summary', 'statistics', 'income-info', 'breakdown'];
+        let observerOptions = {
+          root: null,
+          rootMargin: '-20% 0px -70% 0px',
+          threshold: 0
+        };
+        
+        let observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              updateActiveLink(entry.target.id);
+            }
+          });
+        }, observerOptions);
+        
+        sections.forEach(sectionId => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            observer.observe(section);
+          }
+        });
+        
+        function updateActiveLink(activeSectionId) {
+          // 更新兩個版本的連結狀態
+          document.querySelectorAll('.table-of-contents-link, .table-of-contents-link-fixed').forEach(link => {
+            const sectionId = link.getAttribute('data-section');
+            if (sectionId === activeSectionId) {
+              link.classList.add('active');
+              link.classList.remove('text-slate-700', 'border-transparent');
+              link.classList.add('text-blue-600', 'bg-blue-50', 'border-blue-300', 'font-semibold');
+            } else {
+              link.classList.remove('active', 'text-blue-600', 'bg-blue-50', 'border-blue-300', 'font-semibold');
+              link.classList.add('text-slate-700', 'border-transparent');
+            }
+          });
+          // 重新初始化圖標以確保活動狀態的圖標正確顯示
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+        }
+        
+        // 初始化時設置第一個為活動狀態
+        updateActiveLink('net-worth-summary');
+        
+        // 確保固定導航的圖標也正確初始化
+        setTimeout(() => {
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+        }, 200);
+      });
     </script>
     <script src="/dashboard.js"></script>
   </body>

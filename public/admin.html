@@ -43,7 +43,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-8 md:mb-10">
+      <div class="text-center mb-8 md:mb-10 mt-[72px]">
         <h1 class="text-slate-900 text-center mb-3 text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">
           憑證發行後台
         </h1>
@@ -55,7 +55,7 @@
       <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
         <div class="flex items-center gap-3 mb-6">
           <div class="p-2 bg-blue-500 rounded-lg">
-            <i data-lucide="qrcode" class="w-6 h-6 text-white"></i>
+            <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
           </div>
           <h2 class="text-2xl md:text-3xl font-bold text-slate-900">憑證發行</h2>
         </div>
@@ -100,7 +100,7 @@
 
         <div class="flex gap-3 mt-6">
           <button id="generate-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors shadow-sm">
-            <i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>
+            <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
             生成憑證 QR Code
           </button>
           <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">
@@ -147,7 +147,7 @@
             <p class="text-lg text-slate-900 font-semibold my-5" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
             <div id="success-info" style="display: none" class="mt-5 p-4 bg-green-50 rounded-lg">
               <p class="my-2 text-green-800 font-semibold"><strong>CID:</strong> <span id="success-cid"></span></p>
-              <p class="text-sm text-green-600 italic">將在 5 秒後自動關閉</p>
+              <p class="text-sm text-green-600 italic">將在 <span id="countdown-timer">5</span> 秒後自動關閉</p>
             </div>
           </div>
         </div>

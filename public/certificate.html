@@ -46,7 +46,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-8 md:mb-10">
+      <div class="text-center mb-8 md:mb-10 mt-[72px]">
         <h1 class="text-slate-900 text-center mb-3 text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">
           資產憑證登記
         </h1>
@@ -78,7 +78,7 @@
           <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8">
             <div class="flex items-center gap-3 mb-6">
               <div class="p-2 bg-blue-500 rounded-lg">
-                <i data-lucide="qrcode" class="w-6 h-6 text-white"></i>
+                <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
               </div>
               <h2 class="text-2xl md:text-3xl font-bold text-slate-900">資產憑證登記</h2>
             </div>
@@ -95,7 +95,7 @@
                 </select>
               </div>
               <button id="generate-qr-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors w-full shadow-sm">
-                <i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>
+                <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
                 生成 QR Code
               </button>
             </div>
@@ -103,6 +103,14 @@
             <div id="qrcode-section" style="display: none">
               <div class="text-center">
                 <div id="cert-type-info" class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200"></div>
+                <div id="countdown-timer" class="mb-4 p-3 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
+                  <div class="flex items-center justify-center gap-2">
+                    <i data-lucide="clock" class="w-5 h-5 text-orange-600"></i>
+                    <span class="text-orange-700 font-semibold">QR Code 將於</span>
+                    <span id="countdown-display" class="text-2xl font-bold text-orange-600">05:00</span>
+                    <span class="text-orange-700 font-semibold">後過期</span>
+                  </div>
+                </div>
                 <img id="qrcode-image" src="" alt="QR Code" class="max-w-xs w-full h-auto my-5 border-4 border-blue-600 rounded-lg p-4 bg-white mx-auto" />
                 <p class="text-lg text-slate-900 font-semibold my-5" id="status-text">請使用數位憑證皮夾 APP 掃描 QR Code</p>
                 <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">

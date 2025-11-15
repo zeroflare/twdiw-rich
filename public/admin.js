@@ -44,6 +44,7 @@ const CERTIFICATE_CONFIGS = {
 };
 
 let pollingInterval = null;
+let countdownInterval = null;
 
 // 計算薪資百分位數並生成描述
 function calculateIncomePercentile(income) {
@@ -376,7 +377,7 @@ async function generateCertificate() {
     }
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>生成憑證 QR Code';
+    btn.innerHTML = '<i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>生成憑證 QR Code';
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
@@ -419,10 +420,30 @@ function startPolling(transactionId) {
       document.getElementById("credential-info").style.display = "block";
       document.getElementById("credential-cid").textContent = data.cid || "N/A";
 
-      // 5 秒後自動關閉
-      setTimeout(() => {
-        closeModal();
-      }, 5000);
+      // 倒數計時並自動關閉
+      let countdown = 5;
+      const countdownElement = document.getElementById("countdown-timer");
+      if (countdownElement) {
+        // 清除之前的倒數計時器（如果存在）
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+        countdownElement.textContent = countdown;
+        countdownInterval = setInterval(() => {
+          countdown--;
+          countdownElement.textContent = countdown;
+          if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            closeModal();
+          }
+        }, 1000);
+      } else {
+        // 如果找不到倒數元素，使用原來的 setTimeout
+        setTimeout(() => {
+          closeModal();
+        }, 5000);
+      }
     } catch (err) {
       console.error("Error polling credential:", err);
     }
@@ -478,6 +499,10 @@ function closeModal() {
   if (pollingInterval) {
     clearInterval(pollingInterval);
     pollingInterval = null;
+  }
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
   }
 }
 

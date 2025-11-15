@@ -1,6 +1,7 @@
 /* eslint-env browser */
 // Certificate JavaScript
 let pollingInterval = null;
+let countdownInterval = null;
 let userCertificates = [];
 let userSettings = { gemini_api_key: null };
 
@@ -177,6 +178,18 @@ function displayCertificates(certificates) {
     "0052696330_vp_income_certificate": "年收入憑證",
   };
 
+  // 憑證類型配色方案
+  const getCertificateTypeColor = (type) => {
+    const colorMap = {
+      "0052696330_vp_liquid_finance_certificate": "bg-gradient-to-r from-blue-500 to-indigo-600",
+      "0052696330_vp_real_estate_asset_certificate": "bg-gradient-to-r from-emerald-500 to-teal-600",
+      "0052696330_vp_personal_property_certificate": "bg-gradient-to-r from-purple-500 to-pink-600",
+      "0052696330_vp_credit_liability_certificate": "bg-gradient-to-r from-orange-500 to-red-600",
+      "0052696330_vp_income_certificate": "bg-gradient-to-r from-amber-500 to-yellow-600",
+    };
+    return colorMap[type] || "bg-gradient-to-r from-slate-500 to-slate-600";
+  };
+
   const html = certificates
     .map((cert) => {
       const isLiability = cert.id.startsWith("liability_");
@@ -189,11 +202,12 @@ function displayCertificates(certificates) {
       const isAnalyzable =
         cert.type === "0052696330_vp_real_estate_asset_certificate" ||
         cert.type === "0052696330_vp_personal_property_certificate";
+      const typeColorClass = getCertificateTypeColor(cert.type);
 
       return `
     <div class="p-4 mb-3 bg-slate-50 rounded-lg border border-slate-200 transition-all hover:bg-slate-100 hover:shadow-md" data-cert-id="${actualId}" data-is-liability="${isLiability}" data-is-income="${isIncome}">
       <div class="flex gap-2 mb-3 flex-wrap">
-        <div class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-md text-xs font-semibold">${typeNames[cert.type] || "未知憑證"}</div>
+        <div class="inline-block px-3 py-1 ${typeColorClass} text-white rounded-md text-xs font-semibold shadow-sm">${typeNames[cert.type] || "未知憑證"}</div>
         <div class="inline-block px-3 py-1 bg-slate-200 text-slate-700 rounded-md text-xs font-semibold">${cert.typeName}</div>
       </div>
       <div class="flex items-center justify-between gap-3">
@@ -220,6 +234,13 @@ function displayCertificates(certificates) {
   `;
     })
     .join("");
+
+  container.innerHTML = html;
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 let animationFrameId = null;
@@ -704,11 +725,87 @@ async function generateQRCode() {
     document.getElementById("registration-form").style.display = "none";
     document.getElementById("qrcode-section").style.display = "block";
 
+    // 初始化 Lucide icons（確保倒數計時器的時鐘圖標顯示）
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    startCountdown();
     startPolling(data.transactionId);
   } catch (error) {
     console.error("Error generating QR code:", error);
     alert("生成 QR Code 失敗");
   }
+}
+
+function startCountdown() {
+  // 清除之前的倒數計時器
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
+
+  let timeLeft = 300; // 5 分鐘 = 300 秒
+  const countdownDisplay = document.getElementById("countdown-display");
+  const countdownTimer = document.getElementById("countdown-timer");
+
+  const updateCountdown = () => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    
+    if (countdownDisplay) {
+      countdownDisplay.textContent = formattedTime;
+      
+      // 當剩餘時間少於 1 分鐘時，改變顏色為紅色警告
+      if (timeLeft <= 60) {
+        countdownDisplay.classList.remove("text-orange-600");
+        countdownDisplay.classList.add("text-red-600");
+        if (countdownTimer) {
+          countdownTimer.classList.remove("from-orange-50", "to-red-50", "border-orange-200");
+          countdownTimer.classList.add("from-red-50", "to-red-100", "border-red-300");
+        }
+      } else {
+        countdownDisplay.classList.remove("text-red-600");
+        countdownDisplay.classList.add("text-orange-600");
+        if (countdownTimer) {
+          countdownTimer.classList.remove("from-red-50", "to-red-100", "border-red-300");
+          countdownTimer.classList.add("from-orange-50", "to-red-50", "border-orange-200");
+        }
+      }
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(countdownInterval);
+      if (countdownDisplay) {
+        countdownDisplay.textContent = "00:00";
+      }
+      if (countdownTimer) {
+        countdownTimer.innerHTML = `
+          <div class="flex items-center justify-center gap-2">
+            <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
+            <span class="text-red-700 font-semibold">QR Code 已過期，請重新生成</span>
+          </div>
+        `;
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      }
+      // 停止輪詢
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+        pollingInterval = null;
+      }
+      return;
+    }
+
+    timeLeft--;
+  };
+
+  // 立即更新一次
+  updateCountdown();
+  
+  // 每秒更新一次
+  countdownInterval = setInterval(updateCountdown, 1000);
 }
 
 function startPolling(transactionId) {
@@ -745,6 +842,11 @@ function startPolling(transactionId) {
           lucide.createIcons();
         }
         clearInterval(pollingInterval);
+        // 停止倒數計時器
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
 
         setTimeout(() => {
           resetQRCode();
@@ -758,6 +860,12 @@ function startPolling(transactionId) {
         // 如果輪詢次數過多，停止輪詢
         if (pollCount >= maxPolls) {
           clearInterval(pollingInterval);
+          pollingInterval = null;
+          // 停止倒數計時器
+          if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+          }
           document.getElementById("status-text").textContent = "⏱️ QR Code 已過期，請重新生成";
           alert("QR Code 已過期（5分鐘），請重新生成");
         }
@@ -766,6 +874,12 @@ function startPolling(transactionId) {
       console.error("Error polling result:", error);
       document.getElementById("status-text").textContent = "❌ 輪詢發生錯誤，請重新生成 QR Code";
       clearInterval(pollingInterval);
+      pollingInterval = null;
+      // 停止倒數計時器
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
     }
   }, 2000);
 }
@@ -778,6 +892,12 @@ function resetQRCode() {
   if (pollingInterval) {
     clearInterval(pollingInterval);
     pollingInterval = null;
+  }
+
+  // 清除倒數計時器
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
   }
 }
 
