@@ -2,6 +2,10 @@
 // Home Page JavaScript
 document.addEventListener("DOMContentLoaded", () => {
   void loadUserInfo();
+  // Initialize Lucide icons after DOM updates
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // 載入使用者資訊（如果已登入）
@@ -28,9 +32,13 @@ async function loadUserInfo() {
       const user = await response.json();
       document.getElementById("user-name").textContent = user.name || user.email || "使用者";
       document.getElementById("user-email").textContent = user.email || "";
-      document.getElementById("user-info").style.display = "block";
+      document.getElementById("user-info").style.display = "flex";
       document.getElementById("login-link").style.display = "none";
       document.getElementById("logout-link").style.display = "block";
+      // Refresh Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
   } catch (error) {
     console.error("Error loading user info:", error);
@@ -44,5 +52,9 @@ function showLoginButton() {
   document.getElementById("user-info").style.display = "none";
   document.getElementById("login-link").style.display = "block";
   document.getElementById("logout-link").style.display = "none";
+  // Refresh Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 

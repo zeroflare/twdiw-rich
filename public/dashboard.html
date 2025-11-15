@@ -4,50 +4,52 @@
     <title>淨資產儀表板 - Rich App</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
-    <div class="nav-container">
-      <nav class="navbar">
-        <div class="nav-links">
-          <a href="/index.html" class="nav-link">首頁</a>
-          <a href="/dashboard.html" class="nav-link active">淨資產儀表板</a>
-          <a href="/certificate.html" class="nav-link">資產憑證登記</a>
-          <a href="/admin.html" class="nav-link">憑證發行後台</a>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5">
+    <div class="max-w-7xl mx-auto mb-6">
+      <nav class="flex items-center justify-between rounded-lg border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 shadow-sm">
+        <div class="flex gap-2 flex-wrap">
+          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">首頁</a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-blue-600 px-3 py-2 rounded-md">淨資產儀表板</a>
+          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">資產憑證登記</a>
+          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">憑證發行後台</a>
         </div>
-        <div class="nav-user-section">
+        <div class="flex items-center gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="user-info-content">
-              <span class="user-icon">👤</span>
-              <div class="user-details">
-                <span class="user-name" id="user-name">載入中...</span>
-                <span class="user-email" id="user-email"></span>
+            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
+              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
+              <div class="flex flex-col gap-1">
+                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500" id="user-email"></span>
               </div>
             </div>
           </div>
-          <a href="/logout" class="nav-link logout-link">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">登出</a>
         </div>
       </nav>
     </div>
 
-    <div class="container">
-      <h1>淨資產儀表板</h1>
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-white text-center mb-8 text-4xl md:text-5xl font-bold text-shadow-lg">淨資產儀表板</h1>
 
-      <div id="loading" class="card">
-        <p style="text-align: center; padding: 40px;">載入中...</p>
+      <div id="loading" class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+        <p class="text-center py-10">載入中...</p>
       </div>
 
       <div id="content" style="display: none">
         <!-- Net Worth Summary -->
-        <div class="card">
-          <h2>目前淨資產</h2>
-          <div class="net-worth" id="net-worth">$0</div>
+        <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+          <h2 class="text-2xl font-semibold mb-6">目前淨資產</h2>
+          <div class="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center my-8" id="net-worth">$0</div>
 
           <!-- PR Value Display -->
-          <div class="pr-value" id="pr-value" style="display: none">
-            <div class="pr-icon">🏆</div>
-            <div class="pr-text">
-              你的身價贏過 <span class="pr-percentage" id="pr-percentage">0%</span> 的台灣家庭
+          <div class="flex items-center justify-center gap-3 my-8 p-5 bg-yellow-50 rounded-lg border-2 border-yellow-200" id="pr-value" style="display: none">
+            <i data-lucide="trophy" class="w-10 h-10 text-yellow-600"></i>
+            <div class="text-lg text-slate-800 font-semibold">
+              你的身價贏過 <span class="text-2xl font-extrabold text-orange-600" id="pr-percentage">0%</span> 的台灣家庭
             </div>
           </div>
 
@@ -56,73 +58,80 @@
 
           <!-- Claim Rank Certificate Button -->
           <div id="claim-rank-btn-container" style="margin-top: 20px; text-align: center;">
-            <button id="claim-rank-btn" class="btn-primary" style="display: none; padding: 16px 32px; font-size: 18px; margin: 0 auto;">
-              🎖️ 領取財富階層憑證
+            <button id="claim-rank-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-8 py-4 text-lg font-semibold hover:bg-blue-700 transition-colors" style="display: none;">
+              <i data-lucide="award" class="w-5 h-5 mr-2"></i>
+              領取財富階層憑證
             </button>
           </div>
 
-          <div class="details">
-            <div>資產: $<span id="total-assets">0</span></div>
-            <div>負債: $<span id="total-liabilities">0</span></div>
+          <div class="flex justify-around mt-8 pt-6 border-t-2 border-slate-200">
+            <div class="text-lg text-slate-700 font-medium">資產: $<span id="total-assets">0</span></div>
+            <div class="text-lg text-slate-700 font-medium">負債: $<span id="total-liabilities">0</span></div>
           </div>
         </div>
 
         <!-- Annual Income Section -->
-        <div class="card" id="income-section" style="display: none">
-          <h2>年收入資訊</h2>
+        <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6" id="income-section" style="display: none">
+          <h2 class="text-2xl font-semibold mb-6">年收入資訊</h2>
           <div id="income-content">
-            <div style="text-align: center; padding: 20px; color: #718096;">
-              載入中...
-            </div>
+            <div class="text-center py-5 text-slate-500">載入中...</div>
           </div>
         </div>
 
         <!-- Detailed Breakdown -->
-        <div class="detailed-breakdown">
+        <div class="mb-6">
           <!-- Assets Section -->
-          <div class="collapse-section">
-            <button class="collapse-header" id="assets-toggle">
-              <span>資產明細 (<span id="assets-count">0</span> 項)</span>
-              <span class="collapse-icon">▶</span>
+          <div class="mb-5">
+            <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="assets-toggle">
+              <span class="text-lg font-semibold text-slate-900">資產明細 (<span id="assets-count">0</span> 項)</span>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-600 transition-transform" id="assets-icon"></i>
             </button>
-            <div id="assets-content" class="breakdown-items" style="display: none"></div>
+            <div id="assets-content" class="mt-3" style="display: none"></div>
           </div>
 
           <!-- Liabilities Section -->
-          <div class="collapse-section">
-            <button class="collapse-header" id="liabilities-toggle">
-              <span>負債明細 (<span id="liabilities-count">0</span> 項)</span>
-              <span class="collapse-icon">▶</span>
+          <div class="mb-5">
+            <button class="w-full flex justify-between items-center p-5 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" id="liabilities-toggle">
+              <span class="text-lg font-semibold text-slate-900">負債明細 (<span id="liabilities-count">0</span> 項)</span>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-blue-600 transition-transform" id="liabilities-icon"></i>
             </button>
-            <div id="liabilities-content" class="breakdown-items" style="display: none"></div>
+            <div id="liabilities-content" class="mt-3" style="display: none"></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- QR Code Modal for Rank Certificate -->
-    <div id="qr-modal" class="modal-overlay" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>財富階層憑證領取</h2>
-          <button class="modal-close" id="close-modal">×</button>
+    <div id="qr-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" style="display: none">
+      <div class="relative z-50 w-full max-w-lg rounded-lg border bg-white p-6 shadow-lg">
+        <div class="flex flex-col space-y-1.5 mb-4">
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold">財富階層憑證領取</h2>
+            <button class="bg-slate-100 border-none text-slate-600 text-2xl w-10 h-10 rounded-full cursor-pointer hover:bg-slate-200 transition-colors" id="close-modal">
+              <i data-lucide="x" class="w-5 h-5 mx-auto"></i>
+            </button>
+          </div>
         </div>
-        <div class="modal-body">
-          <div class="qrcode-section">
-            <img id="qr-code-image" src="" alt="QR Code" class="qrcode-image" />
-            <p class="status-text" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
-            <div id="success-info" style="display: none">
-              <p><strong>CID:</strong> <span id="credential-cid"></span></p>
-              <p class="auto-close-hint">將在 5 秒後自動關閉</p>
+        <div class="p-6">
+          <div class="text-center">
+            <img id="qr-code-image" src="" alt="QR Code" class="max-w-xs w-full h-auto my-5 border-4 border-blue-600 rounded-lg p-4 bg-white mx-auto" />
+            <p class="text-lg text-slate-900 font-semibold my-5" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
+            <div id="success-info" style="display: none" class="mt-5 p-4 bg-green-50 rounded-lg">
+              <p class="my-2 text-green-800 font-semibold"><strong>CID:</strong> <span id="credential-cid"></span></p>
+              <p class="text-sm text-green-600 italic">將在 5 秒後自動關閉</p>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button id="close-modal-btn" class="btn-secondary">關閉</button>
+        <div class="flex justify-end mt-4">
+          <button id="close-modal-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">關閉</button>
         </div>
       </div>
     </div>
 
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
     <script src="/dashboard.js"></script>
   </body>
 </html>

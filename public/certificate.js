@@ -10,31 +10,36 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("generate-qr-btn")?.addEventListener("click", generateQRCode);
   document.getElementById("reset-btn")?.addEventListener("click", resetQRCode);
   document.getElementById("settings-btn")?.addEventListener("click", showSettingsModal);
-
+  
   // 使用事件委派處理刪除按鈕點擊
   document.getElementById("certificates-list")?.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-delete") || e.target.closest(".btn-delete")) {
-      const btn = e.target.classList.contains("btn-delete")
-        ? e.target
-        : e.target.closest(".btn-delete");
-      const certItem = btn.closest(".certificate-item-text");
+    // 檢查是否點擊了刪除按鈕或其圖標
+    const deleteBtn = e.target.closest('button[title="刪除憑證"]');
+    if (deleteBtn || e.target.closest('i[data-lucide="trash-2"]')) {
+      const certItem = deleteBtn ? deleteBtn.closest('[data-cert-id]') : e.target.closest('[data-cert-id]');
       if (!certItem) return;
       const certId = certItem.dataset.certId;
       const isLiability = certItem.dataset.isLiability === "true";
       const isIncome = certItem.dataset.isIncome === "true";
       void deleteCertificate(certId, isLiability, isIncome);
-    } else if (e.target.classList.contains("btn-ai-analyze") || e.target.closest(".btn-ai-analyze")) {
-      const btn = e.target.classList.contains("btn-ai-analyze")
-        ? e.target
-        : e.target.closest(".btn-ai-analyze");
-      const certItem = btn.closest(".certificate-item-text");
+      return;
+    }
+    
+    // 檢查是否點擊了 AI 分析按鈕
+    const aiBtn = e.target.closest('button[title*="AI"]');
+    if (aiBtn) {
+      const certItem = aiBtn.closest('[data-cert-id]');
       if (!certItem) return;
-
       const certId = certItem.dataset.certId;
       const isLiability = certItem.dataset.isLiability === "true";
-      void analyzeAssetValue(certId, isLiability, btn);
+      void analyzeAssetValue(certId, isLiability, aiBtn);
     }
   });
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // 載入使用者資訊和設定（從 /api/user 獲取）
@@ -60,7 +65,11 @@ async function loadUserInfo() {
       // 更新使用者資訊顯示
       document.getElementById("user-name").textContent = user.name || user.email || "使用者";
       document.getElementById("user-email").textContent = user.email || "";
-      document.getElementById("user-info").style.display = "block";
+      document.getElementById("user-info").style.display = "flex";
+      // Refresh Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
       
       // 更新使用者設定（只記錄是否有設定，不儲存完整的 key）
       userSettings = { 
@@ -153,7 +162,10 @@ function displayCertificates(certificates) {
 
   if (certificates.length === 0) {
     container.innerHTML =
-      '<div class="empty-state"><p>尚無登記的憑證</p><p class="empty-hint">請在右側選擇憑證類型並完成登記</p></div>';
+      '<div class="text-center py-12 text-slate-500"><i data-lucide="file-x" class="w-12 h-12 mx-auto mb-3 text-slate-400"></i><p class="text-lg font-semibold mb-2">尚無登記的憑證</p><p class="text-sm text-slate-400">請在右側選擇憑證類型並完成登記</p></div>';
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     return;
   }
 
@@ -165,7 +177,7 @@ function displayCertificates(certificates) {
     "0052696330_vp_income_certificate": "年收入憑證",
   };
 
-  container.innerHTML = certificates
+  const html = certificates
     .map((cert) => {
       const isLiability = cert.id.startsWith("liability_");
       const isIncome = cert.id.startsWith("income_");
@@ -179,26 +191,28 @@ function displayCertificates(certificates) {
         cert.type === "0052696330_vp_personal_property_certificate";
 
       return `
-    <div class="certificate-item-text" data-cert-id="${actualId}" data-is-liability="${isLiability}" data-is-income="${isIncome}">
-      <div class="cert-badges-row">
-        <div class="cert-category-badge">${typeNames[cert.type] || "未知憑證"}</div>
-        <div class="cert-type-badge">${cert.typeName}</div>
+    <div class="p-4 mb-3 bg-slate-50 rounded-lg border border-slate-200 transition-all hover:bg-slate-100 hover:shadow-md" data-cert-id="${actualId}" data-is-liability="${isLiability}" data-is-income="${isIncome}">
+      <div class="flex gap-2 mb-3 flex-wrap">
+        <div class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-semibold">${typeNames[cert.type] || "未知憑證"}</div>
+        <div class="inline-block px-3 py-1 bg-slate-200 text-slate-700 rounded-md text-xs font-semibold">${cert.typeName}</div>
       </div>
-      <div class="certificate-row">
-        <div class="cert-info-group">
-          <span class="cert-info">${cert.name}</span>
-          <span class="cert-value">${cert.value === 0 || !cert.value ? "待估值" : `$${formatNumber(cert.value)}`}</span>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex-1 flex flex-col gap-1">
+          <span class="font-semibold text-slate-900">${cert.name}</span>
+          <span class="font-bold text-blue-600 text-sm">${cert.value === 0 || !cert.value ? "待估值" : `$${formatNumber(cert.value)}`}</span>
         </div>
-        <div class="cert-actions">
+        <div class="flex items-center gap-2">
           ${isAnalyzable
-            ? `<button class="btn-ai-analyze ${!userSettings.gemini_api_key ? 'btn-disabled' : ''}" 
+            ? `<button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-3 py-1.5 text-xs font-semibold hover:bg-blue-700 transition-colors ${!userSettings.gemini_api_key ? 'opacity-50 cursor-not-allowed' : ''}" 
                  title="${!userSettings.gemini_api_key ? '請先設定 Gemini API Key' : 'AI 估值'}" 
-                 ${!userSettings.gemini_api_key ? 'disabled' : ''}>AI 估值</button>`
+                 ${!userSettings.gemini_api_key ? 'disabled' : ''}>
+                 <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i>AI 估值
+               </button>`
             : ""}
-          <span class="cert-status">✓</span>
-          <span class="cert-time">${cert.timestamp.toLocaleTimeString("zh-TW")}</span>
-          <button class="btn-delete" title="刪除憑證">
-            🗑️
+          <i data-lucide="check-circle" class="w-5 h-5 text-green-600 font-bold"></i>
+          <span class="text-xs text-slate-500">${cert.timestamp.toLocaleTimeString("zh-TW")}</span>
+          <button class="bg-transparent border-none cursor-pointer text-lg p-1 rounded-md transition-all opacity-70 hover:opacity-100 hover:bg-red-100 hover:scale-110" title="刪除憑證">
+            <i data-lucide="trash-2" class="w-5 h-5 text-red-600"></i>
           </button>
         </div>
       </div>
@@ -320,25 +334,34 @@ function showConfirmAnalysisModal(cert, certId, isLiability) {
   // 創建確認 Modal
   const modal = document.createElement("div");
   modal.id = "confirm-analysis-modal";
-  modal.className = "modal-overlay";
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm";
   modal.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>確認 AI 估值</h2>
-        <button class="modal-close" id="confirm-modal-close">×</button>
+    <div class="relative z-50 w-full max-w-lg rounded-lg border bg-white p-6 shadow-lg">
+      <div class="flex flex-col space-y-1.5 mb-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-semibold">確認 AI 估值</h2>
+          <button class="bg-slate-100 border-none text-slate-600 text-2xl w-10 h-10 rounded-full cursor-pointer hover:bg-slate-200 transition-colors" id="confirm-modal-close">
+            <i data-lucide="x" class="w-5 h-5 mx-auto"></i>
+          </button>
+        </div>
       </div>
-      <div class="modal-body">
-        <p style="margin-bottom: 20px; color: #4a5568;">請確認以下資產資訊，確認後將開始 AI 估值：</p>
+      <div class="p-6">
+        <p class="mb-5 text-slate-700">請確認以下資產資訊，確認後將開始 AI 估值：</p>
         ${assetInfoHtml}
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button class="btn-secondary" id="confirm-modal-cancel">取消</button>
-          <button class="btn-primary" id="confirm-modal-confirm">確認開始估值</button>
+        <div class="flex gap-3 justify-end mt-6">
+          <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" id="confirm-modal-cancel">取消</button>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" id="confirm-modal-confirm">確認開始估值</button>
         </div>
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
   // 儲存 cert 資料供後續使用
   window._pendingAnalysisCert = cert;
@@ -442,24 +465,33 @@ function showAnalysisModal(assetName) {
   // 創建 Modal
   const modal = document.createElement("div");
   modal.id = "ai-analysis-modal";
-  modal.className = "modal-overlay";
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm";
   modal.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>AI 價值估值</h2>
-        <button class="modal-close" onclick="closeAnalysisModal()">×</button>
+    <div class="relative z-50 w-full max-w-lg rounded-lg border bg-white p-6 shadow-lg">
+      <div class="flex flex-col space-y-1.5 mb-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-semibold">AI 價值估值</h2>
+          <button class="bg-slate-100 border-none text-slate-600 text-2xl w-10 h-10 rounded-full cursor-pointer hover:bg-slate-200 transition-colors" onclick="closeAnalysisModal()">
+            <i data-lucide="x" class="w-5 h-5 mx-auto"></i>
+          </button>
+        </div>
       </div>
-      <div class="modal-body">
-        <p style="margin-bottom: 20px; color: #4a5568;">正在估值：<strong>${assetName}</strong></p>
-        <div class="loading-animation">
-          <div class="loading-number" id="loading-number">0</div>
-          <p style="color: #718096; margin-top: 10px;">估值中...</p>
+      <div class="p-6">
+        <p class="mb-5 text-slate-700">正在估值：<strong>${assetName}</strong></p>
+        <div class="flex flex-col items-center justify-center p-10">
+          <div class="text-6xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse" id="loading-number">0</div>
+          <p class="text-slate-500 mt-3">估值中...</p>
         </div>
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
   // 點擊 Modal 外部關閉
   modal.addEventListener("click", (e) => {
@@ -517,41 +549,49 @@ function showAnalysisModal(assetName) {
 }
 
 function showAnalysisResult(estimatedValue, certId, isLiability, cert) {
-  const modalBody = document.querySelector("#ai-analysis-modal .modal-body");
+  const modalBody = document.querySelector("#ai-analysis-modal .p-6");
   if (!modalBody) return;
 
   modalBody.innerHTML = `
-    <div style="text-align: center;">
-      <p style="margin-bottom: 20px; color: #4a5568;">估值完成！</p>
-      <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin: 20px 0;">
+    <div class="text-center">
+      <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
+      <p class="mb-5 text-slate-700 font-semibold">估值完成！</p>
+      <div class="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent my-5">
         $${formatNumber(estimatedValue)}
       </div>
-      <p style="color: #718096; margin-bottom: 24px;">AI 預估價值</p>
-      <div style="display: flex; gap: 12px; justify-content: center;">
-        <button class="btn-primary" onclick="saveAnalysisResult('${certId}', ${isLiability}, ${estimatedValue})">
-          儲存價值
+      <p class="text-slate-500 mb-6">AI 預估價值</p>
+      <div class="flex gap-3 justify-center">
+        <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="saveAnalysisResult('${certId}', ${isLiability}, ${estimatedValue})">
+          <i data-lucide="save" class="w-4 h-4 mr-2"></i>儲存價值
         </button>
-        <button class="btn-secondary" onclick="closeAnalysisModal()">
+        <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" onclick="closeAnalysisModal()">
           取消
         </button>
       </div>
     </div>
   `;
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 function showAnalysisError(errorMessage) {
-  const modalBody = document.querySelector("#ai-analysis-modal .modal-body");
+  const modalBody = document.querySelector("#ai-analysis-modal .p-6");
   if (!modalBody) return;
 
   modalBody.innerHTML = `
-    <div style="text-align: center;">
-      <p style="margin-bottom: 20px; color: #e53e3e; font-weight: 600;">估值失敗</p>
-      <p style="color: #718096; margin-bottom: 24px;">${errorMessage}</p>
-      <button class="btn-secondary" onclick="closeAnalysisModal()">
+    <div class="text-center">
+      <i data-lucide="x-circle" class="w-12 h-12 mx-auto mb-4 text-red-600"></i>
+      <p class="mb-5 text-red-600 font-semibold">估值失敗</p>
+      <p class="text-slate-500 mb-6">${errorMessage}</p>
+      <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" onclick="closeAnalysisModal()">
         關閉
       </button>
     </div>
   `;
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 function closeAnalysisModal() {
@@ -597,17 +637,21 @@ async function saveAnalysisResult(certId, isLiability, estimatedValue) {
     }
 
     // 顯示成功訊息
-    const modalBody = document.querySelector("#ai-analysis-modal .modal-body");
+    const modalBody = document.querySelector("#ai-analysis-modal .p-6");
     if (modalBody) {
       modalBody.innerHTML = `
-        <div style="text-align: center;">
-          <p style="margin-bottom: 20px; color: #48bb78; font-weight: 600;">✓ 儲存成功</p>
-          <p style="color: #718096; margin-bottom: 24px;">價值已更新為 $${formatNumber(estimatedValue)}</p>
-          <button class="btn-primary" onclick="closeAnalysisModal(); void loadCertificates();">
+        <div class="text-center">
+          <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
+          <p class="mb-5 text-green-600 font-semibold">儲存成功</p>
+          <p class="text-slate-500 mb-6">價值已更新為 $${formatNumber(estimatedValue)}</p>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="closeAnalysisModal(); void loadCertificates();">
             確定
           </button>
         </div>
       `;
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
   } catch (error) {
     console.error("Error saving analysis result:", error);
@@ -695,7 +739,11 @@ function startPolling(transactionId) {
       console.log(`Poll #${pollCount} result:`, result);
 
       if (result.status === "completed") {
-        document.getElementById("status-text").textContent = "✓ 登記完成";
+        const statusEl = document.getElementById("status-text");
+        statusEl.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 inline-block mr-2 text-green-600"></i>登記完成';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
         clearInterval(pollingInterval);
 
         setTimeout(() => {
@@ -784,14 +832,18 @@ async function showSettingsModal() {
   // 創建 Modal
   const modal = document.createElement("div");
   modal.id = "settings-modal";
-  modal.className = "modal-overlay";
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm";
   modal.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>設定</h2>
-        <button class="modal-close" onclick="closeSettingsModal()">×</button>
+    <div class="relative z-50 w-full max-w-lg rounded-lg border bg-white p-6 shadow-lg">
+      <div class="flex flex-col space-y-1.5 mb-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-semibold">設定</h2>
+          <button class="bg-slate-100 border-none text-slate-600 text-2xl w-10 h-10 rounded-full cursor-pointer hover:bg-slate-200 transition-colors" onclick="closeSettingsModal()">
+            <i data-lucide="x" class="w-5 h-5 mx-auto"></i>
+          </button>
+        </div>
       </div>
-      <div class="modal-body">
+      <div class="p-6">
         <div class="form-group">
           <label for="gemini-api-key">Gemini API Key</label>
           <input 
@@ -801,20 +853,27 @@ async function showSettingsModal() {
             placeholder="${hasApiKey ? "已設定（輸入新值以更新）" : "請輸入您的 Gemini API Key"}"
             value=""
           />
-          ${hasApiKey ? `<p style="font-size: 0.85rem; color: #48bb78; margin-top: 8px;">✓ API Key 已設定</p>` : ""}
-          <p style="font-size: 0.85rem; color: #718096; margin-top: 8px;">
+          ${hasApiKey ? `<p class="text-xs text-green-600 mt-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4"></i>API Key 已設定</p>` : ""}
+          <p class="text-xs text-slate-500 mt-2">
             用於 AI 估值功能。如果未設定，將無法使用 AI 估值功能。
           </p>
         </div>
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button class="btn-secondary" onclick="closeSettingsModal()">取消</button>
-          <button class="btn-primary" onclick="saveSettings()">儲存</button>
+        <div class="flex gap-3 justify-end mt-6">
+          <button class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors" onclick="closeSettingsModal()">取消</button>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="saveSettings()">
+            <i data-lucide="save" class="w-4 h-4 mr-2"></i>儲存
+          </button>
         </div>
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
   // 點擊 Modal 外部關閉
   modal.addEventListener("click", (e) => {
@@ -871,17 +930,21 @@ async function saveSettings() {
     }
 
     // 顯示成功訊息
-    const modalBody = document.querySelector("#settings-modal .modal-body");
+    const modalBody = document.querySelector("#settings-modal .p-6");
     if (modalBody) {
       const message = inputValue.length > 0 
-        ? "✓ 設定已儲存" 
-        : "✓ API Key 已清除";
+        ? "設定已儲存" 
+        : "API Key 已清除";
       modalBody.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-          <p style="margin-bottom: 20px; color: #48bb78; font-weight: 600;">${message}</p>
-          <button class="btn-primary" onclick="closeSettingsModal()">確定</button>
+        <div class="text-center py-5">
+          <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4 text-green-600"></i>
+          <p class="mb-5 text-green-600 font-semibold">${message}</p>
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700 transition-colors" onclick="closeSettingsModal()">確定</button>
         </div>
       `;
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
   } catch (error) {
     console.error("Error saving settings:", error);

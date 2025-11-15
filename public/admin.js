@@ -91,6 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 設置預設日期
   setDefaultDates();
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // 載入使用者資訊
@@ -114,7 +119,11 @@ async function loadUserInfo() {
       const user = await response.json();
       document.getElementById("user-name").textContent = user.name || user.email || "使用者";
       document.getElementById("user-email").textContent = user.email || "";
-      document.getElementById("user-info").style.display = "block";
+      document.getElementById("user-info").style.display = "flex";
+      // Refresh Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
   } catch (error) {
     console.error("Error loading user info:", error);
@@ -226,9 +235,9 @@ function handleItemTypeChange() {
       }
       
       return `
-      <div class="form-group">
-        <label>${label}</label>
-        <input type="${inputType}" id="field-${field}" class="form-control" placeholder="${placeholder}" ${inputAttributes} />
+      <div class="space-y-2 mb-4">
+        <label class="text-sm font-medium">${label}</label>
+        <input type="${inputType}" id="field-${field}" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" placeholder="${placeholder}" ${inputAttributes} />
       </div>
     `;
     })
@@ -282,7 +291,10 @@ async function generateCertificate() {
 
   const btn = document.getElementById("generate-btn");
   btn.disabled = true;
-  btn.textContent = "生成中...";
+  btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 mr-2 animate-spin"></i>生成中...';
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
   hideError();
 
   try {
@@ -364,7 +376,10 @@ async function generateCertificate() {
     }
   } finally {
     btn.disabled = false;
-    btn.textContent = "生成憑證 QR Code";
+    btn.innerHTML = '<i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>生成憑證 QR Code';
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   }
 }
 
@@ -390,9 +405,13 @@ function startPolling(transactionId) {
       const data = await response.json();
 
       // 成功
-      document.getElementById("qr-status").textContent = "✓ 憑證發行成功！";
+      const statusEl = document.getElementById("qr-status");
+      statusEl.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 inline-block mr-2 text-green-600"></i>憑證發行成功！';
       document.getElementById("success-info").style.display = "block";
       document.getElementById("success-cid").textContent = data.cid || "N/A";
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
 
       clearInterval(pollingInterval);
 
@@ -423,7 +442,10 @@ async function revokeCredential() {
 
   const btn = document.getElementById("revoke-btn");
   btn.disabled = true;
-  btn.textContent = "撤銷中...";
+  btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i>撤銷中...';
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
   try {
     const response = await fetch(`/api/issuer/revoke-credential/${cid}`, {
@@ -444,7 +466,10 @@ async function revokeCredential() {
     alert(error.message);
   } finally {
     btn.disabled = false;
-    btn.textContent = "撤銷憑證";
+    btn.innerHTML = '<i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>撤銷憑證';
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   }
 }
 
@@ -527,18 +552,18 @@ function displayFormError(errorData) {
           ? error.invalid.join("、") 
           : error.invalid || "驗證失敗";
         return `
-          <div class="error-item">
-            <span class="error-field">${fieldName}</span>
-            <span class="error-reason">${invalidReasons}</span>
+          <div class="flex items-start gap-3 p-3 bg-white rounded-lg border-l-4 border-red-500 mb-2">
+            <span class="font-semibold text-slate-900 min-w-20 flex-shrink-0">${fieldName}</span>
+            <span class="text-red-600 flex-1">${invalidReasons}</span>
           </div>
         `;
       }).join("");
     } else {
-      errorDetailsHTML = `<div class="error-item"><span class="error-reason">${typeof errorData === "string" ? errorData : "驗證失敗"}</span></div>`;
+      errorDetailsHTML = `<div class="flex items-start gap-3 p-3 bg-white rounded-lg border-l-4 border-red-500 mb-2"><span class="text-red-600 flex-1">${typeof errorData === "string" ? errorData : "驗證失敗"}</span></div>`;
     }
   } catch (e) {
     console.error("Error parsing error message:", e);
-    errorDetailsHTML = `<div class="error-item"><span class="error-reason">${typeof errorData === "string" ? errorData : "驗證失敗"}</span></div>`;
+    errorDetailsHTML = `<div class="flex items-start gap-3 p-3 bg-white rounded-lg border-l-4 border-red-500 mb-2"><span class="text-red-600 flex-1">${typeof errorData === "string" ? errorData : "驗證失敗"}</span></div>`;
   }
   
   // 更新錯誤詳情

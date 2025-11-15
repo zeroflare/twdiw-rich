@@ -4,43 +4,47 @@
     <title>資產憑證登記 - Rich App</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
-    <div class="nav-container">
-      <nav class="navbar">
-        <div class="nav-links">
-          <a href="/index.html" class="nav-link">首頁</a>
-          <a href="/dashboard.html" class="nav-link">淨資產儀表板</a>
-          <a href="/certificate.html" class="nav-link active">資產憑證登記</a>
-          <a href="/admin.html" class="nav-link">憑證發行後台</a>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5">
+    <div class="max-w-7xl mx-auto mb-6">
+      <nav class="flex items-center justify-between rounded-lg border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 shadow-sm">
+        <div class="flex gap-2 flex-wrap">
+          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">首頁</a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">淨資產儀表板</a>
+          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-blue-600 px-3 py-2 rounded-md">資產憑證登記</a>
+          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">憑證發行後台</a>
         </div>
-        <div class="nav-user-section">
+        <div class="flex items-center gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="user-info-content">
-              <span class="user-icon">👤</span>
-              <div class="user-details">
-                <span class="user-name" id="user-name">載入中...</span>
-                <span class="user-email" id="user-email"></span>
+            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
+              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
+              <div class="flex flex-col gap-1">
+                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500" id="user-email"></span>
               </div>
             </div>
           </div>
-          <button id="settings-btn" class="nav-link settings-btn" title="設定">⚙️</button>
-          <a href="/logout" class="nav-link logout-link">登出</a>
+          <button id="settings-btn" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md" title="設定">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+          </button>
+          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">登出</a>
         </div>
       </nav>
     </div>
 
-    <div class="container">
-      <h1>資產憑證登記</h1>
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-white text-center mb-8 text-4xl md:text-5xl font-bold text-shadow-lg">資產憑證登記</h1>
 
-      <div class="certificate-layout">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Left Panel - Registered Certificates -->
-        <div class="certificate-left-panel">
-          <div class="card">
-            <h2>已登記憑證</h2>
-            <div id="certificates-list" class="certificate-list-text">
-              <div class="empty-state">
+        <div>
+          <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8">
+            <h2 class="text-2xl font-semibold mb-6">已登記憑證</h2>
+            <div id="certificates-list" class="max-h-[600px] overflow-y-auto">
+              <div class="text-center py-12 text-slate-500">
                 <p>載入中...</p>
               </div>
             </div>
@@ -48,32 +52,36 @@
         </div>
 
         <!-- Right Panel - Registration Form -->
-        <div class="certificate-right-panel">
-          <div class="card">
-            <h2>資產憑證登記</h2>
+        <div>
+          <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8">
+            <h2 class="text-2xl font-semibold mb-6">資產憑證登記</h2>
             <div id="registration-form">
-              <div class="form-group">
-                <label>選擇憑證類型</label>
-                <select id="certificate-type" class="form-control">
+              <div class="space-y-2 mb-4">
+                <label class="text-sm font-medium">選擇憑證類型</label>
+                <select id="certificate-type" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                   <option value="">請選擇憑證類型</option>
                   <option value="0052696330_vp_liquid_finance_certificate">流動性金融憑證</option>
-                  <option value="0052696330_vp_real_estate_asset_certificate">
-                    不動產資產憑證
-                  </option>
+                  <option value="0052696330_vp_real_estate_asset_certificate">不動產資產憑證</option>
                   <option value="0052696330_vp_personal_property_certificate">動產憑證</option>
                   <option value="0052696330_vp_credit_liability_certificate">信用與負債憑證</option>
                   <option value="0052696330_vp_income_certificate">年收入憑證</option>
                 </select>
               </div>
-              <button id="generate-qr-btn" class="btn-primary">生成 QR Code</button>
+              <button id="generate-qr-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-6 py-2 font-semibold hover:bg-blue-700 transition-colors w-full">
+                <i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>
+                生成 QR Code
+              </button>
             </div>
 
             <div id="qrcode-section" style="display: none">
-              <div class="qrcode-section">
-                <div id="cert-type-info" class="verified-info"></div>
-                <img id="qrcode-image" src="" alt="QR Code" class="qrcode-image" />
-                <p class="status-text" id="status-text">請使用數位憑證皮夾 APP 掃描 QR Code</p>
-                <button id="reset-btn" class="btn-secondary">重新生成</button>
+              <div class="text-center">
+                <div id="cert-type-info" class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200"></div>
+                <img id="qrcode-image" src="" alt="QR Code" class="max-w-xs w-full h-auto my-5 border-4 border-blue-600 rounded-lg p-4 bg-white mx-auto" />
+                <p class="text-lg text-slate-900 font-semibold my-5" id="status-text">請使用數位憑證皮夾 APP 掃描 QR Code</p>
+                <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">
+                  <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
+                  重新生成
+                </button>
               </div>
             </div>
           </div>
@@ -81,6 +89,10 @@
       </div>
     </div>
 
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
     <script src="/certificate.js"></script>
   </body>
 </html>

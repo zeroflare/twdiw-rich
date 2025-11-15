@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("claim-rank-btn")?.addEventListener("click", claimRankCertificate);
   document.getElementById("close-modal")?.addEventListener("click", closeModal);
   document.getElementById("close-modal-btn")?.addEventListener("click", closeModal);
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // 載入使用者資訊
@@ -45,7 +50,11 @@ async function loadUserInfo() {
       const user = await response.json();
       document.getElementById("user-name").textContent = user.name || user.email || "使用者";
       document.getElementById("user-email").textContent = user.email || "";
-      document.getElementById("user-info").style.display = "block";
+      document.getElementById("user-info").style.display = "flex";
+      // Refresh Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
   } catch (error) {
     console.error("Error loading user info:", error);
@@ -155,7 +164,7 @@ function updateAssets(assets) {
   const container = document.getElementById("assets-content");
   if (assets.length === 0) {
     container.innerHTML =
-      '<div style="padding: 20px; text-align: center; color: #718096;">尚無資產記錄</div>';
+      '<div class="py-5 text-center text-slate-500">尚無資產記錄</div>';
     return;
   }
 
@@ -171,19 +180,19 @@ function updateAssets(assets) {
   let html = "";
   for (const [type, items] of Object.entries(grouped)) {
     html += `
-      <div class="asset-category-group">
-        <div class="category-header">
+      <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
           <div>
-            <span class="category-badge">${typeNames[type] || type}</span>
-            <span class="category-count">(${items.length} 項)</span>
+            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
+            <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
           </div>
         </div>
         ${items
           .map(
             (asset) => `
-          <div class="breakdown-item">
-            <span class="claim-name">${asset.asset_name}</span>
-            <span class="claim-value">$${formatNumber(asset.current_value)}</span>
+          <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-600 mb-2 shadow-sm">
+            <span class="font-semibold text-slate-900">${asset.asset_name}</span>
+            <span class="font-bold text-blue-600">$${formatNumber(asset.current_value)}</span>
           </div>
         `
           )
@@ -202,7 +211,7 @@ function updateLiabilities(liabilities) {
   const container = document.getElementById("liabilities-content");
   if (liabilities.length === 0) {
     container.innerHTML =
-      '<div style="padding: 20px; text-align: center; color: #718096;">尚無負債記錄</div>';
+      '<div class="py-5 text-center text-slate-500">尚無負債記錄</div>';
     return;
   }
 
@@ -219,19 +228,19 @@ function updateLiabilities(liabilities) {
   let html = "";
   for (const [type, items] of Object.entries(grouped)) {
     html += `
-      <div class="liability-category-group">
-        <div class="category-header">
+      <div class="mb-5 p-5 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-slate-200">
           <div>
-            <span class="category-badge">${typeNames[type] || type}</span>
-            <span class="category-count">(${items.length} 項)</span>
+            <span class="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-xs font-bold">${typeNames[type] || type}</span>
+            <span class="text-xs text-blue-600 font-bold ml-2">(${items.length} 項)</span>
           </div>
         </div>
         ${items
           .map(
             (liability) => `
-          <div class="breakdown-item">
-            <span class="claim-name">${liability.liability_name}</span>
-            <span class="claim-value">$${formatNumber(liability.remaining_balance)}</span>
+          <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-600 mb-2 shadow-sm">
+            <span class="font-semibold text-slate-900">${liability.liability_name}</span>
+            <span class="font-bold text-blue-600">$${formatNumber(liability.remaining_balance)}</span>
           </div>
         `
           )
@@ -289,20 +298,26 @@ function displayRankCertificate(certificate) {
   });
   
   container.innerHTML = `
-    <div class="rank-certificate-card">
-      <button class="certificate-reclaim-btn" id="reclaim-rank-btn" title="重新領取憑證">
-        <span class="reclaim-icon">🔄</span>
-        <span class="reclaim-text">重新領取</span>
+    <div class="relative mt-6 p-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white text-center shadow-lg overflow-hidden">
+      <button class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-semibold cursor-pointer transition-all hover:bg-white/30 hover:border-white/50 hover:-translate-y-0.5 hover:shadow-lg z-10" id="reclaim-rank-btn" title="重新領取憑證">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        <span class="hidden md:inline">重新領取</span>
       </button>
-      <div class="certificate-icon">🎖️</div>
-      <div class="certificate-title">${certificate.rank}</div>
-      <div class="certificate-divider"></div>
-      <div class="certificate-time">
-        <span class="time-label">領取時間</span>
-        <span class="time-value">${claimTime}</span>
+      <div class="text-5xl mb-4 filter drop-shadow-lg">
+        <i data-lucide="award" class="w-16 h-16 mx-auto"></i>
+      </div>
+      <div class="text-2xl font-bold mb-5 text-shadow">${certificate.rank}</div>
+      <div class="w-16 h-1 bg-white/50 mx-auto mb-5 rounded"></div>
+      <div class="flex flex-col gap-2 pt-4 border-t border-white/20">
+        <span class="text-sm opacity-90 font-medium">領取時間</span>
+        <span class="text-base font-semibold opacity-100 font-mono">${claimTime}</span>
       </div>
     </div>
   `;
+  // Refresh Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
   container.style.display = "block";
   document.getElementById("claim-rank-btn-container").style.display = "none";
   
@@ -315,14 +330,17 @@ async function claimRankCertificate() {
   const btn = document.getElementById("claim-rank-btn") || document.getElementById("reclaim-rank-btn");
   if (btn) {
     btn.disabled = true;
-    if (btn.id === "reclaim-rank-btn") {
-      const icon = btn.querySelector(".reclaim-icon");
-      const text = btn.querySelector(".reclaim-text");
-      if (icon) icon.textContent = "⏳";
-      if (text) text.textContent = "領取中...";
-    } else {
-      btn.textContent = "領取中...";
-    }
+      if (btn.id === "reclaim-rank-btn") {
+        btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span class="hidden md:inline ml-2">領取中...</span>';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      } else {
+        btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 mr-2 animate-spin"></i>領取中...';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      }
   }
 
   try {
@@ -384,12 +402,15 @@ async function claimRankCertificate() {
     if (btn) {
       btn.disabled = false;
       if (btn.id === "reclaim-rank-btn") {
-        const icon = btn.querySelector(".reclaim-icon");
-        const text = btn.querySelector(".reclaim-text");
-        if (icon) icon.textContent = "🔄";
-        if (text) text.textContent = "重新領取";
+        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4"></i><span class="hidden md:inline ml-2">重新領取</span>';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
       } else {
-        btn.textContent = "🎖️ 領取財富階層憑證";
+        btn.innerHTML = '<i data-lucide="award" class="w-5 h-5 mr-2"></i>領取財富階層憑證';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
       }
     }
   }
@@ -418,9 +439,13 @@ function startPolling(transactionId) {
       const data = await response.json();
 
       // 成功
-      document.getElementById("qr-status").textContent = "✓ 憑證領取成功！";
+      const statusEl = document.getElementById("qr-status");
+      statusEl.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 inline-block mr-2 text-green-600"></i>憑證領取成功！';
       document.getElementById("success-info").style.display = "block";
       document.getElementById("credential-cid").textContent = data.cid || "N/A";
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
 
       clearInterval(pollingInterval);
 
@@ -428,10 +453,10 @@ function startPolling(transactionId) {
       const reclaimBtn = document.getElementById("reclaim-rank-btn");
       if (reclaimBtn) {
         reclaimBtn.disabled = false;
-        const icon = reclaimBtn.querySelector(".reclaim-icon");
-        const text = reclaimBtn.querySelector(".reclaim-text");
-        if (icon) icon.textContent = "🔄";
-        if (text) text.textContent = "重新領取";
+        reclaimBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4"></i><span class="hidden md:inline ml-2">重新領取</span>';
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
       }
 
       // 5 秒後自動關閉
@@ -458,14 +483,25 @@ function closeModal() {
 function toggleSection(contentId, toggleId) {
   const content = document.getElementById(contentId);
   const toggle = document.getElementById(toggleId);
-  const icon = toggle.querySelector(".collapse-icon");
+  const iconId = contentId === "assets-content" ? "assets-icon" : "liabilities-icon";
+  const icon = document.getElementById(iconId);
 
   if (content.style.display === "none") {
     content.style.display = "block";
-    icon.textContent = "▼";
+    if (icon) {
+      icon.setAttribute("data-lucide", "chevron-down");
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
   } else {
     content.style.display = "none";
-    icon.textContent = "▶";
+    if (icon) {
+      icon.setAttribute("data-lucide", "chevron-right");
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
   }
 }
 
@@ -532,13 +568,16 @@ function displayIncomeCertificates(certificates) {
   
   if (!certificates || certificates.length === 0) {
     content.innerHTML = `
-      <div class="income-empty-state">
-        <div class="income-icon">💰</div>
-        <div class="income-empty-text">尚無年收入憑證記錄</div>
-        <div class="income-empty-hint">請前往「資產憑證登記」頁面登記年收入憑證</div>
+      <div class="text-center py-12">
+        <i data-lucide="dollar-sign" class="w-16 h-16 mx-auto mb-4 text-slate-400 opacity-50"></i>
+        <div class="text-xl text-slate-700 font-semibold mb-2">尚無年收入憑證記錄</div>
+        <div class="text-sm text-slate-500">請前往「資產憑證登記」頁面登記年收入憑證</div>
       </div>
     `;
     section.style.display = "block";
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     return;
   }
 
@@ -566,14 +605,14 @@ function displayIncomeCertificates(certificates) {
 
   // 顯示總覽
   html += `
-    <div class="income-summary">
-      <div class="income-summary-item">
-        <div class="income-summary-label">${currentYear} 年度收入</div>
-        <div class="income-summary-value">$${formatNumber(currentYearIncome)}</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
+      <div class="text-center">
+        <div class="text-sm text-slate-700 font-semibold mb-2">${currentYear} 年度收入</div>
+        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">$${formatNumber(currentYearIncome)}</div>
       </div>
-      <div class="income-summary-item">
-        <div class="income-summary-label">累計總收入</div>
-        <div class="income-summary-value">$${formatNumber(totalIncome)}</div>
+      <div class="text-center">
+        <div class="text-sm text-slate-700 font-semibold mb-2">累計總收入</div>
+        <div class="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">$${formatNumber(totalIncome)}</div>
       </div>
     </div>
   `;
@@ -585,19 +624,19 @@ function displayIncomeCertificates(certificates) {
     const yearTotal = yearCerts.reduce((sum, cert) => sum + cert.value, 0);
     
     html += `
-      <div class="income-year-group">
-        <div class="income-year-header">
-          <span class="income-year-badge">${year} 年</span>
-          <span class="income-year-total">$${formatNumber(yearTotal)}</span>
+      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-5">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b-2 border-slate-200">
+          <span class="inline-block px-4 py-1.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-sm font-bold">${year} 年</span>
+          <span class="text-xl font-bold text-blue-600">$${formatNumber(yearTotal)}</span>
         </div>
-        <div class="income-year-items">
+        <div class="flex flex-col gap-3">
           ${yearCerts.map(cert => `
-            <div class="income-cert-item">
-              <div class="income-cert-info">
-                <div class="income-cert-description">${cert.description || "年收入憑證"}</div>
-                <div class="income-cert-time">${cert.created_at ? new Date(cert.created_at * 1000).toLocaleDateString("zh-TW") : ""}</div>
+            <div class="flex justify-between items-center p-4 bg-white rounded-lg border-l-4 border-blue-500 transition-all hover:shadow-md hover:translate-x-1">
+              <div class="flex-1 flex flex-col gap-1">
+                <div class="font-semibold text-slate-900">${cert.description || "年收入憑證"}</div>
+                <div class="text-xs text-slate-500">${cert.created_at ? new Date(cert.created_at * 1000).toLocaleDateString("zh-TW") : ""}</div>
               </div>
-              <div class="income-cert-value">$${formatNumber(cert.value)}</div>
+              <div class="font-bold text-blue-600 text-lg">$${formatNumber(cert.value)}</div>
             </div>
           `).join("")}
         </div>
@@ -608,4 +647,8 @@ function displayIncomeCertificates(certificates) {
 
   content.innerHTML = html;
   section.style.display = "block";
+  // Refresh Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }

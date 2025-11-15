@@ -4,41 +4,43 @@
     <title>憑證發行後台 - Rich App</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
-    <div class="nav-container">
-      <nav class="navbar">
-        <div class="nav-links">
-          <a href="/index.html" class="nav-link">首頁</a>
-          <a href="/dashboard.html" class="nav-link">淨資產儀表板</a>
-          <a href="/certificate.html" class="nav-link">資產憑證登記</a>
-          <a href="/admin.html" class="nav-link active">憑證發行後台</a>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5">
+    <div class="max-w-7xl mx-auto mb-6">
+      <nav class="flex items-center justify-between rounded-lg border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 shadow-sm">
+        <div class="flex gap-2 flex-wrap">
+          <a href="/index.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">首頁</a>
+          <a href="/dashboard.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">淨資產儀表板</a>
+          <a href="/certificate.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">資產憑證登記</a>
+          <a href="/admin.html" class="text-sm font-medium transition-colors hover:text-blue-600 text-blue-600 px-3 py-2 rounded-md">憑證發行後台</a>
         </div>
-        <div class="nav-user-section">
+        <div class="flex items-center gap-3 flex-wrap">
           <div class="user-info" id="user-info" style="display: none;">
-            <div class="user-info-content">
-              <span class="user-icon">👤</span>
-              <div class="user-details">
-                <span class="user-name" id="user-name">載入中...</span>
-                <span class="user-email" id="user-email"></span>
+            <div class="flex items-center gap-3 px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
+              <i data-lucide="user" class="w-5 h-5 text-slate-600"></i>
+              <div class="flex flex-col gap-1">
+                <span class="font-semibold text-slate-900 text-sm" id="user-name">載入中...</span>
+                <span class="text-xs text-slate-500" id="user-email"></span>
               </div>
             </div>
           </div>
-          <a href="/logout" class="nav-link logout-link">登出</a>
+          <a href="/logout" class="text-sm font-medium transition-colors hover:text-blue-600 text-slate-600 px-3 py-2 rounded-md">登出</a>
         </div>
       </nav>
     </div>
 
-    <div class="container">
-      <h1>憑證發行後台</h1>
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-white text-center mb-8 text-4xl md:text-5xl font-bold text-shadow-lg">憑證發行後台</h1>
 
-      <div class="card">
-        <h2>憑證發行</h2>
+      <div class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6">
+        <h2 class="text-2xl font-semibold mb-6">憑證發行</h2>
 
-        <div class="form-group">
-          <label>憑證類型</label>
-          <select id="certificate-type" class="form-control">
+        <div class="space-y-2 mb-4">
+          <label class="text-sm font-medium">憑證類型</label>
+          <select id="certificate-type" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
             <option value="liquid_finance_certificate">流動性金融憑證</option>
             <option value="real_estate_asset_certificate">不動產資產憑證</option>
             <option value="personal_property_certificate">動產憑證</option>
@@ -47,74 +49,91 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label>項目類型</label>
-          <select id="item-type" class="form-control"></select>
+        <div class="space-y-2 mb-4">
+          <label class="text-sm font-medium">項目類型</label>
+          <select id="item-type" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"></select>
         </div>
 
         <div id="dynamic-fields"></div>
 
-        <div class="form-group">
-          <label>發行日期 (選填，格式：YYYYMMDD)</label>
-          <input type="text" id="issuance-date" class="form-control" placeholder="20250430" />
+        <div class="space-y-2 mb-4">
+          <label class="text-sm font-medium">發行日期 (選填，格式：YYYYMMDD)</label>
+          <input type="text" id="issuance-date" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" placeholder="20250430" />
         </div>
 
-        <div class="form-group">
-          <label>到期日期 (選填，格式：YYYYMMDD)</label>
-          <input type="text" id="expired-date" class="form-control" placeholder="20250609" />
+        <div class="space-y-2 mb-4">
+          <label class="text-sm font-medium">到期日期 (選填，格式：YYYYMMDD)</label>
+          <input type="text" id="expired-date" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" placeholder="20250609" />
         </div>
 
-        <div id="error-message" class="error-message" style="display: none">
-          <div class="error-content">
-            <div class="error-header">
-              <span class="error-icon">⚠️</span>
-              <span class="error-title">生成憑證失敗</span>
+        <div id="error-message" class="mt-5 p-0 bg-red-50 border-2 border-red-200 rounded-lg shadow-sm overflow-hidden" style="display: none">
+          <div class="p-5">
+            <div class="flex items-center gap-3 mb-3 pb-3 border-b border-red-200">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+              <span class="text-lg font-bold text-red-600">生成憑證失敗</span>
             </div>
             <div class="error-details"></div>
           </div>
         </div>
 
-        <div class="button-group">
-          <button id="generate-btn" class="btn-primary">生成憑證 QR Code</button>
-          <button id="reset-btn" class="btn-secondary">重置表單</button>
+        <div class="flex gap-3 mt-6">
+          <button id="generate-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-6 py-2 font-semibold hover:bg-blue-700 transition-colors">
+            <i data-lucide="qrcode" class="w-5 h-5 mr-2"></i>
+            生成憑證 QR Code
+          </button>
+          <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">
+            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
+            重置表單
+          </button>
         </div>
       </div>
 
-      <div id="credential-info" class="card" style="display: none">
-        <h2>憑證資訊</h2>
-        <div class="credential-info">
-          <p><strong>CID:</strong> <span id="credential-cid"></span></p>
-          <p><strong>憑證狀態:</strong> <span id="credential-status">已發行</span></p>
-          <div style="margintop: 20px">
-            <button id="revoke-btn" class="btn-danger">撤銷憑證</button>
+      <div id="credential-info" class="rounded-lg border bg-white text-slate-900 shadow-sm p-8 mb-6" style="display: none">
+        <h2 class="text-2xl font-semibold mb-6">憑證資訊</h2>
+        <div>
+          <p class="mb-2"><strong>CID:</strong> <span id="credential-cid"></span></p>
+          <p class="mb-5"><strong>憑證狀態:</strong> <span id="credential-status">已發行</span></p>
+          <div class="mt-5">
+            <button id="revoke-btn" class="inline-flex items-center justify-center rounded-md bg-red-600 text-white px-4 py-2 font-semibold hover:bg-red-700 transition-colors">
+              <i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>
+              撤銷憑證
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- QR Code Modal -->
-    <div id="qr-modal" class="modal-overlay" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>憑證發行 QR Code</h2>
-          <button class="modal-close" id="close-modal">×</button>
+    <div id="qr-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" style="display: none">
+      <div class="relative z-50 w-full max-w-lg rounded-lg border bg-white p-6 shadow-lg">
+        <div class="flex flex-col space-y-1.5 mb-4">
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold">憑證發行 QR Code</h2>
+            <button class="bg-slate-100 border-none text-slate-600 text-2xl w-10 h-10 rounded-full cursor-pointer hover:bg-slate-200 transition-colors" id="close-modal">
+              <i data-lucide="x" class="w-5 h-5 mx-auto"></i>
+            </button>
+          </div>
         </div>
-        <div class="modal-body">
-          <div class="qrcode-section">
-            <img id="qr-code-image" src="" alt="QR Code" class="qrcode-image" />
-            <p class="status-text" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
-            <div id="success-info" style="display: none">
-              <p><strong>CID:</strong> <span id="success-cid"></span></p>
-              <p class="auto-close-hint">將在 5 秒後自動關閉</p>
+        <div class="p-6">
+          <div class="text-center">
+            <img id="qr-code-image" src="" alt="QR Code" class="max-w-xs w-full h-auto my-5 border-4 border-blue-600 rounded-lg p-4 bg-white mx-auto" />
+            <p class="text-lg text-slate-900 font-semibold my-5" id="qr-status">請使用數位憑證皮夾 APP 掃描此 QR Code</p>
+            <div id="success-info" style="display: none" class="mt-5 p-4 bg-green-50 rounded-lg">
+              <p class="my-2 text-green-800 font-semibold"><strong>CID:</strong> <span id="success-cid"></span></p>
+              <p class="text-sm text-green-600 italic">將在 5 秒後自動關閉</p>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button id="close-modal-btn" class="btn-secondary">關閉</button>
+        <div class="flex justify-end mt-4">
+          <button id="close-modal-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">關閉</button>
         </div>
       </div>
     </div>
 
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
     <script src="/admin.js"></script>
   </body>
 </html>
