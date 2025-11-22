@@ -224,7 +224,7 @@ function displayCertificates(certificates) {
                </button>`
             : ""}
           <i data-lucide="check-circle" class="w-5 h-5 text-green-600 font-bold"></i>
-          <span class="text-xs text-slate-500">${cert.timestamp.toLocaleTimeString("zh-TW")}</span>
+          <span class="text-xs text-slate-500">${cert.timestamp.toLocaleDateString("zh-TW", { year: "numeric", month: "2-digit", day: "2-digit" })}</span>
           <button class="bg-transparent border-none cursor-pointer text-lg p-1 rounded-md transition-all opacity-70 hover:opacity-100 hover:bg-red-100 hover:scale-110" title="刪除憑證">
             <i data-lucide="trash-2" class="w-5 h-5 text-red-600"></i>
           </button>
