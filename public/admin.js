@@ -45,6 +45,7 @@ const CERTIFICATE_CONFIGS = {
 
 let pollingInterval = null;
 let countdownInterval = null;
+let currentIssuerInfo = null; // 儲存當前發行資訊，用於查詢時保存到資料庫
 
 // 計算薪資百分位數並生成描述
 function calculateIncomePercentile(income) {
@@ -86,9 +87,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("item-type")?.addEventListener("change", handleItemTypeChange);
   document.getElementById("generate-btn")?.addEventListener("click", generateCertificate);
   document.getElementById("reset-btn")?.addEventListener("click", resetForm);
-  document.getElementById("revoke-btn")?.addEventListener("click", revokeCredential);
   document.getElementById("close-modal")?.addEventListener("click", closeModal);
   document.getElementById("close-modal-btn")?.addEventListener("click", closeModal);
+
+  // Tab 切換 - 確保按鈕存在後再綁定事件
+  const tabIssue = document.getElementById("tab-issue");
+  const tabList = document.getElementById("tab-list");
+  
+  if (tabIssue) {
+    tabIssue.addEventListener("click", (e) => {
+      e.preventDefault();
+      switchTab("issue");
+    });
+  }
+  
+  if (tabList) {
+    tabList.addEventListener("click", (e) => {
+      e.preventDefault();
+      switchTab("list");
+    });
+  }
 
   // 設置預設日期
   setDefaultDates();
@@ -361,6 +379,14 @@ async function generateCertificate() {
 
     const data = await response.json();
 
+    // 儲存發行資訊，用於查詢時保存到資料庫
+    currentIssuerInfo = {
+      vcUid: config.vcUid,
+      fields,
+      issuanceDate: issuanceDate || undefined,
+      expiredDate: expiredDate || undefined,
+    };
+
     // 顯示彈窗
     document.getElementById("qr-code-image").src = data.qrCode;
     document.getElementById("qr-modal").style.display = "flex";
@@ -391,9 +417,15 @@ function startPolling(transactionId) {
 
   pollingInterval = setInterval(async () => {
     try {
-      const response = await fetch(`/api/issuer/query-credential/${transactionId}`, {
+      // 如果有發行資訊，使用 POST 請求傳遞資訊以便保存到資料庫
+      const requestOptions = {
+        method: currentIssuerInfo ? "POST" : "GET",
+        headers: currentIssuerInfo ? { "Content-Type": "application/json" } : {},
         credentials: "include",
-      });
+        body: currentIssuerInfo ? JSON.stringify(currentIssuerInfo) : undefined,
+      };
+
+      const response = await fetch(`/api/issuer/query-credential/${transactionId}`, requestOptions);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -415,10 +447,10 @@ function startPolling(transactionId) {
       }
 
       clearInterval(pollingInterval);
+      currentIssuerInfo = null; // 清除發行資訊
 
-      // 顯示憑證資訊
-      document.getElementById("credential-info").style.display = "block";
-      document.getElementById("credential-cid").textContent = data.cid || "N/A";
+      // 重新載入憑證列表
+      void loadCertificates();
 
       // 倒數計時並自動關閉
       let countdown = 5;
@@ -450,22 +482,152 @@ function startPolling(transactionId) {
   }, 5000);
 }
 
-async function revokeCredential() {
-  const cid = document.getElementById("credential-cid").textContent;
-  if (!cid || cid === "N/A") {
-    alert("請先查詢憑證取得 CID");
-    return;
+// Tab 切換功能
+function switchTab(tabName) {
+  const tabIssue = document.getElementById("tab-issue");
+  const tabList = document.getElementById("tab-list");
+  const contentIssue = document.getElementById("tab-content-issue");
+  const contentList = document.getElementById("tab-content-list");
+
+  // 更新 Tab 按鈕樣式
+  document.querySelectorAll(".tab-button").forEach((btn) => {
+    btn.classList.remove("text-blue-600", "border-b-2", "border-blue-600");
+    btn.classList.add("text-slate-600");
+  });
+
+  if (tabName === "issue") {
+    if (tabIssue) {
+      tabIssue.classList.add("text-blue-600", "border-b-2", "border-blue-600");
+      tabIssue.classList.remove("text-slate-600");
+    }
+    if (contentIssue) contentIssue.style.display = "block";
+    if (contentList) contentList.style.display = "none";
+  } else if (tabName === "list") {
+    if (tabList) {
+      tabList.classList.add("text-blue-600", "border-b-2", "border-blue-600");
+      tabList.classList.remove("text-slate-600");
+    }
+    if (contentIssue) contentIssue.style.display = "none";
+    if (contentList) contentList.style.display = "block";
+    // 切換到列表時重新載入
+    void loadCertificates();
   }
 
-  if (!confirm("確定要撤銷此憑證嗎？此操作無法復原。")) {
-    return;
-  }
-
-  const btn = document.getElementById("revoke-btn");
-  btn.disabled = true;
-  btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i>撤銷中...';
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
+  }
+}
+
+// 載入憑證列表
+async function loadCertificates() {
+  const loadingEl = document.getElementById("certificates-loading");
+  const emptyEl = document.getElementById("certificates-empty");
+  const listEl = document.getElementById("certificates-list");
+
+  loadingEl.style.display = "block";
+  emptyEl.style.display = "none";
+  listEl.innerHTML = "";
+
+  try {
+    const response = await fetch("/api/issuer/certificates", {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("載入憑證列表失敗");
+    }
+
+    const certificates = await response.json();
+
+    loadingEl.style.display = "none";
+
+    if (certificates.length === 0) {
+      emptyEl.style.display = "block";
+      return;
+    }
+
+    // 顯示憑證列表
+    certificates.forEach((cert) => {
+      const certCard = createCertificateCard(cert);
+      listEl.appendChild(certCard);
+    });
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  } catch (error) {
+    console.error("Error loading certificates:", error);
+    loadingEl.style.display = "none";
+    listEl.innerHTML = `
+      <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-red-600">載入失敗：${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+// 創建憑證卡片
+function createCertificateCard(cert) {
+  const card = document.createElement("div");
+  card.className = "border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow";
+
+  const statusBadge = cert.status === "REVOKED" 
+    ? '<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-sm font-semibold">已撤銷</span>'
+    : '<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-sm font-semibold">已發行</span>';
+
+  const fieldsHtml = cert.fields.map(f => 
+    `<div class="text-sm"><span class="font-medium">${f.ename}:</span> ${f.content}</div>`
+  ).join("");
+
+  const issuanceDate = cert.issuance_date || "未設定";
+  const expiredDate = cert.expired_date || "未設定";
+  const createdDate = cert.created_at ? new Date(cert.created_at * 1000).toLocaleString("zh-TW") : "未知";
+
+  card.innerHTML = `
+    <div class="flex justify-between items-start mb-3">
+      <div>
+        <h3 class="font-semibold text-lg text-slate-900">${cert.vc_uid}</h3>
+        <p class="text-sm text-slate-500 mt-1">CID: ${cert.cid}</p>
+      </div>
+      ${statusBadge}
+    </div>
+    <div class="space-y-2 mb-4 text-slate-600">
+      ${fieldsHtml}
+    </div>
+    <div class="grid grid-cols-2 gap-4 text-sm text-slate-600 mb-4">
+      <div>
+        <span class="font-medium">發行日期:</span> ${issuanceDate}
+      </div>
+      <div>
+        <span class="font-medium">到期日期:</span> ${expiredDate}
+      </div>
+      <div class="col-span-2">
+        <span class="font-medium">建立時間:</span> ${createdDate}
+      </div>
+    </div>
+    ${cert.status === "ISSUED" ? `
+      <div class="flex justify-end">
+        <button class="revoke-btn inline-flex items-center justify-center rounded-md bg-red-600 text-white px-4 py-2 text-sm font-semibold hover:bg-red-700 transition-colors" data-cid="${cert.cid}">
+          <i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>
+          撤銷憑證
+        </button>
+      </div>
+    ` : ""}
+  `;
+
+  // 綁定撤銷按鈕事件
+  const revokeBtn = card.querySelector(".revoke-btn");
+  if (revokeBtn) {
+    revokeBtn.addEventListener("click", () => revokeCertificate(cert.cid));
+  }
+
+  return card;
+}
+
+// 撤銷憑證
+async function revokeCertificate(cid) {
+  if (!confirm("確定要撤銷此憑證嗎？此操作無法復原。")) {
+    return;
   }
 
   try {
@@ -481,16 +643,12 @@ async function revokeCredential() {
 
     const data = await response.json();
     alert(`憑證已撤銷：${data.credentialStatus}`);
-    document.getElementById("credential-info").style.display = "none";
+    
+    // 重新載入憑證列表
+    void loadCertificates();
   } catch (error) {
     console.error("Error revoking credential:", error);
-    alert(error.message);
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>撤銷憑證';
-    if (typeof lucide !== 'undefined') {
-      lucide.createIcons();
-    }
+    alert(`撤銷失敗：${error.message}`);
   }
 }
 
@@ -515,7 +673,7 @@ function resetForm() {
     .forEach((input) => (input.value = ""));
   setDefaultDates();
   hideError();
-  document.getElementById("credential-info").style.display = "none";
+  currentIssuerInfo = null;
   closeModal();
 }
 

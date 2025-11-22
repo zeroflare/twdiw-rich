@@ -599,7 +599,13 @@ export class CertificateService {
   // 查詢憑證
   static async queryCredential(
     c: Context,
-    transactionId: string
+    transactionId: string,
+    issuerInfo?: {
+      vcUid: string;
+      fields: Array<{ ename: string; content: string }>;
+      issuanceDate?: string;
+      expiredDate?: string;
+    }
   ): Promise<{ cid?: string; credential?: string; credentialStatus?: string }> {
     const env = getEnv(c);
 
@@ -653,6 +659,32 @@ export class CertificateService {
       }
     }
 
+    // 如果成功取得 CID 且有發行資訊，保存到資料庫
+    if (cid && issuerInfo) {
+      try {
+        const session = await import("../services/SessionService").then((m) =>
+          m.SessionService.get(c)
+        );
+        if (session?.userId) {
+          const { IssuedCertificateModel } = await import("../models/IssuedCertificate");
+          await IssuedCertificateModel.create(c, {
+            user_id: session.userId,
+            transaction_id: transactionId,
+            cid,
+            vc_uid: issuerInfo.vcUid,
+            issuance_date: issuerInfo.issuanceDate,
+            expired_date: issuerInfo.expiredDate,
+            fields: JSON.stringify(issuerInfo.fields),
+            status: "ISSUED",
+          });
+          console.log("Successfully saved issued certificate to database:", { cid, transactionId });
+        }
+      } catch (saveError) {
+        console.error("Error saving issued certificate to database:", saveError);
+        // 不拋出錯誤，因為查詢憑證本身已經成功
+      }
+    }
+
     return {
       ...data,
       cid,
@@ -687,6 +719,18 @@ export class CertificateService {
       throw new Error(errorData.message || "Failed to revoke credential");
     }
 
-    return await response.json();
+    const result = await response.json();
+
+    // 更新資料庫中的憑證狀態
+    try {
+      const { IssuedCertificateModel } = await import("../models/IssuedCertificate");
+      await IssuedCertificateModel.updateStatus(c, cid, "REVOKED");
+      console.log("Successfully updated certificate status to REVOKED:", cid);
+    } catch (updateError) {
+      console.error("Error updating certificate status in database:", updateError);
+      // 不拋出錯誤，因為撤銷 API 調用已經成功
+    }
+
+    return result;
   }
 }

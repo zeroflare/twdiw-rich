@@ -52,13 +52,27 @@
         </p>
       </div>
 
+      <!-- Tab Navigation -->
       <div class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="p-2 bg-blue-500 rounded-lg">
-            <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
-          </div>
-          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">憑證發行</h2>
+        <div class="flex border-b border-slate-200 mb-6">
+          <button id="tab-issue" class="tab-button px-6 py-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-colors cursor-pointer">
+            <i data-lucide="qr-code" class="w-5 h-5 inline-block mr-2"></i>
+            發行憑證
+          </button>
+          <button id="tab-list" class="tab-button px-6 py-3 font-semibold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer">
+            <i data-lucide="list" class="w-5 h-5 inline-block mr-2"></i>
+            憑證列表
+          </button>
         </div>
+
+        <!-- 發行憑證 Tab -->
+        <div id="tab-content-issue" class="tab-content">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-blue-500 rounded-lg">
+              <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">憑證發行</h2>
+          </div>
 
         <div class="space-y-2 mb-4">
           <label class="text-sm font-medium">憑證類型</label>
@@ -88,46 +102,51 @@
           <input type="text" id="expired-date" class="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" placeholder="20250609" />
         </div>
 
-        <div id="error-message" class="mt-5 p-0 bg-red-50 border-2 border-red-200 rounded-lg shadow-sm overflow-hidden" style="display: none">
-          <div class="p-5">
-            <div class="flex items-center gap-3 mb-3 pb-3 border-b border-red-200">
-              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
-              <span class="text-lg font-bold text-red-600">生成憑證失敗</span>
+          <div id="error-message" class="mt-5 p-0 bg-red-50 border-2 border-red-200 rounded-lg shadow-sm overflow-hidden" style="display: none">
+            <div class="p-5">
+              <div class="flex items-center gap-3 mb-3 pb-3 border-b border-red-200">
+                <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+                <span class="text-lg font-bold text-red-600">生成憑證失敗</span>
+              </div>
+              <div class="error-details"></div>
             </div>
-            <div class="error-details"></div>
           </div>
-        </div>
 
-        <div class="flex gap-3 mt-6">
-          <button id="generate-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors shadow-sm">
-            <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
-            生成憑證 QR Code
-          </button>
-          <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">
-            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
-            重置表單
-          </button>
-        </div>
-      </div>
-
-      <div id="credential-info" class="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm text-slate-900 shadow-lg shadow-slate-200/50 p-6 md:p-8 mb-6" style="display: none">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="p-2 bg-blue-500 rounded-lg">
-            <i data-lucide="info" class="w-6 h-6 text-white"></i>
-          </div>
-          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">憑證資訊</h2>
-        </div>
-        <div>
-          <p class="mb-2"><strong>CID:</strong> <span id="credential-cid"></span></p>
-          <p class="mb-5"><strong>憑證狀態:</strong> <span id="credential-status">已發行</span></p>
-          <div class="mt-5">
-            <button id="revoke-btn" class="inline-flex items-center justify-center rounded-md bg-red-600 text-white px-4 py-2 font-semibold hover:bg-red-700 transition-colors">
-              <i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>
-              撤銷憑證
+          <div class="flex gap-3 mt-6">
+            <button id="generate-btn" class="inline-flex items-center justify-center rounded-md bg-blue-500 text-white px-6 py-2 font-semibold hover:bg-blue-600 transition-colors shadow-sm">
+              <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
+              生成憑證 QR Code
+            </button>
+            <button id="reset-btn" class="inline-flex items-center justify-center rounded-md bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 transition-colors">
+              <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
+              重置表單
             </button>
           </div>
         </div>
+
+        <!-- 憑證列表 Tab -->
+        <div id="tab-content-list" class="tab-content" style="display: none;">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-blue-500 rounded-lg">
+              <i data-lucide="list" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">憑證列表</h2>
+          </div>
+
+          <div id="certificates-loading" class="text-center py-8">
+            <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto text-blue-600"></i>
+            <p class="mt-4 text-slate-600">載入中...</p>
+          </div>
+
+          <div id="certificates-empty" class="text-center py-12" style="display: none;">
+            <i data-lucide="file-x" class="w-16 h-16 mx-auto text-slate-400 mb-4"></i>
+            <p class="text-slate-600 text-lg">尚無發行憑證</p>
+          </div>
+
+          <div id="certificates-list" class="space-y-4"></div>
+        </div>
       </div>
+
     </div>
 
     <!-- QR Code Modal -->

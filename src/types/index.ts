@@ -64,6 +64,21 @@ export interface IncomeCertificate {
   updated_at?: number;
 }
 
+// Issued Certificate 類型（發行憑證）
+export interface IssuedCertificate {
+  issued_certificate_id: string;
+  user_id: string;
+  transaction_id: string;
+  cid: string;
+  vc_uid: string;
+  issuance_date?: string;
+  expired_date?: string;
+  fields: string; // JSON 格式
+  status: "ISSUED" | "REVOKED";
+  created_at?: number;
+  updated_at?: number;
+}
+
 // Session 類型
 export interface Session {
   userId?: string;

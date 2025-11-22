@@ -45,8 +45,14 @@ export function setupApiRoutes(app: Hono<{ Bindings: AppBindings }>) {
   app.get("/api/issuer/query-credential/:transactionId", requireAuth, (c) =>
     CertificateController.queryCredential(c)
   );
+  app.post("/api/issuer/query-credential/:transactionId", requireAuth, (c) =>
+    CertificateController.queryCredential(c)
+  );
   app.put("/api/issuer/revoke-credential/:cid", requireAuth, (c) =>
     CertificateController.revokeCredential(c)
+  );
+  app.get("/api/issuer/certificates", requireAuth, (c) =>
+    CertificateController.getAllIssuedCertificates(c)
   );
 
   // 財富階層憑證相關 API（需要認證）

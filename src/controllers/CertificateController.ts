@@ -98,7 +98,25 @@ export class CertificateController {
         return c.json({ error: "Transaction ID is required" }, 400);
       }
 
-      const result = await CertificateService.queryCredential(c, transactionId);
+      // 嘗試從請求體中獲取發行資訊（僅 POST 請求）
+      let issuerInfo;
+      if (c.req.method === "POST") {
+        try {
+          const body = await c.req.json();
+          if (body.vcUid && body.fields) {
+            issuerInfo = {
+              vcUid: body.vcUid,
+              fields: body.fields,
+              issuanceDate: body.issuanceDate,
+              expiredDate: body.expiredDate,
+            };
+          }
+        } catch {
+          // 如果解析失敗，忽略
+        }
+      }
+
+      const result = await CertificateService.queryCredential(c, transactionId, issuerInfo);
 
       return c.json(result);
     } catch (error) {
@@ -121,6 +139,33 @@ export class CertificateController {
     } catch (error) {
       console.error("Error revoking credential:", error);
       const message = error instanceof Error ? error.message : "Failed to revoke credential";
+      return c.json({ error: message }, 500);
+    }
+  }
+
+  // 獲取所有發行憑證列表
+  static async getAllIssuedCertificates(c: Context): Promise<Response> {
+    try {
+      const session = await import("../services/SessionService").then((m) =>
+        m.SessionService.get(c)
+      );
+      if (!session?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const { IssuedCertificateModel } = await import("../models/IssuedCertificate");
+      const certificates = await IssuedCertificateModel.findByUserId(c, session.userId);
+
+      // 解析 fields JSON 字串
+      const certificatesWithParsedFields = certificates.map((cert) => ({
+        ...cert,
+        fields: JSON.parse(cert.fields),
+      }));
+
+      return c.json(certificatesWithParsedFields);
+    } catch (error) {
+      console.error("Error getting issued certificates:", error);
+      const message = error instanceof Error ? error.message : "Failed to get certificates";
       return c.json({ error: message }, 500);
     }
   }
